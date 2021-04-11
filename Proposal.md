@@ -3,9 +3,9 @@
 ## Introduction
 
 ## Team Members
-| Kai    | Nathan | Alex   |
-| :------: | :------: | :------: |
-| Third year | x | x |
+| Kai Colorado | Alex Haddad |
+| :------: | :------: |
+| I am a third year Sociology major with minors in Digital Humanities and Cognitive Science | x |
 
 ## Overview
 
@@ -18,8 +18,8 @@
 | 2 | Complete Proposal |
 | 3 | Investigate existing literature and data |
 | 4 | Storyboard |
-| 5 |  |
-| 6 |
+| 5 | Begin designing website |
+| 6 | 
 | 7 |
 | 8 |
 | 9 |
