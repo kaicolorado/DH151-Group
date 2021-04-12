@@ -17,7 +17,7 @@ Our project will be looking at ...
 
 ## Methodology
 
-...
+Our project will involve mapping various data features and having a map layer for each. We will look at standardized scores and arts education policies per state. Having a layer for each data feature will allow users to look at the data that they want to see. We also want to show the correlation between these two feature categories to see if there is any sort of impact that one has on the other. Hopefully this will help people/users understand a relationship (if there is one) that was hard to see or visualize before.
 
 ## Workflow
 
