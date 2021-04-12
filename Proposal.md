@@ -1,19 +1,19 @@
-# ~Group Name~
+# cARTographers
 
 ## Introduction
 
-...
+We are the cARTographers, a duo of mapping students looking to research the effects that artistic education has on the American education system.
 
 ## Team Members
 
 | Kai Colorado | Alex Haddad |
 | :-: | :-: |
-|  | <img src="assets/alex-avatar.jpg" width="200px"> |
-| I am a third year Sociology major with minors in Digital Humanities and Cognitive Science. | I'm a third year Computer Science major. Besides programming, I really enjoy watching TV shows and playing the piano in my spare time. I'm excited to learn how to properly analyze data and use it on a GIS map for this project. |
+| <img src="assets/kai-picture.jpg" width="200px"> | <img src="assets/alex-avatar.jpg" width="200px"> |
+| I am a third year Sociology major with minors in Digital Humanities and Cognitive Science. In my free time I enjoy skateboarding and photography. I also enjoy burritos, as pictured above. | I'm a third year Computer Science major. Besides programming, I really enjoy watching TV shows and playing the piano in my spare time. I'm excited to learn how to properly analyze data and use it on a GIS map for this project. |
 
 ## Overview
 
-Our project will be looking at ...
+Our project will be looking at differences in standardized test scores across states in relation to artistic education polices. We are aiming to study how artistic education impacts the academic careers of students. Artistic programs are usually one of the first to go when schools experience budget cuts. However, the arts are widely recognized as a defining aspect of human culture. We seek to investigate the possible benefits or drawbacks of artistic education on other aspects of academic performance. Through this analysis, we may better understand the role of art within the American school system.
 
 ## Methodology
 
