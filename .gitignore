@@ -192,4 +192,4 @@ $RECYCLE.BIN/
 # Custom
 Project Data_output/*
 *.ipyhistory
-.virtual_documents/*
+*/.virtual_documents/*
