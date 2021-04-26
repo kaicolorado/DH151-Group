@@ -10,6 +10,8 @@
 
 ### Kai
 
+![Kai's Mindmap](assets/kai-mm.jpg)
+
 ## Crazy Eights
 
 ### Alex
@@ -19,6 +21,8 @@
 - **My Notes:** I visualized what the different overlays could possibly look like and drew out the most important aspects of the site, such as the layer selection, sidebar details, correlation statistics, etc. I also had the idea of an expandable sidebar so that the user can view more data without having to leave the map, but it can hide to avoid crowding the screen with two sidebars.
 
 ### Kai
+
+![Kai's Crazy Eights](assets/kai-crazy8s.jpg)
 
 ## Wireframe
 
