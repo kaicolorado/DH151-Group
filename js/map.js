@@ -6,6 +6,7 @@ let statesJSON;
 // initialize
 $(function () {
 	createMap();
+	setUpStatePolygons();
 });
 
 // create the map
@@ -18,10 +19,14 @@ async function createMap() {
 	}).addTo(map);
 
 	// map.fitBounds(markers.getBounds());
-
-	await setUpGeoJSON().then(() => L.geoJson(statesJSON).addTo(map)); // waits until this line finishes before continuing function
 }
 
-async function setUpGeoJSON() {
-	await $.get("../data/states-polygons-20m.json").then((json) => (statesJSON = json));
+function setUpStatePolygons() {
+	$.get("../data/states-polygons-20m.json")
+		.then((json) => (statesJSON = json))
+		.then(() => mapStatePolygons());
+}
+
+function mapStatePolygons() {
+	L.geoJson(statesJSON).addTo(map);
 }
