@@ -1,0 +1,3 @@
+// this empty file allows our external js files to locate the leaflet typings so that VS Code
+// autocomplete works. The location of the file is what matters. It points VS Code to to project
+// root directory.
