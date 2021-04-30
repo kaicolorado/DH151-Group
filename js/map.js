@@ -1,11 +1,13 @@
 let map;
-let artsEducationPoliciesLayer = L.geoJson();
-let spG4Math2019Layer = L.geoJson();
-let spG8Math2019Layer = L.geoJson();
-let spG4Reading2019Layer = L.geoJson();
-let spG8Reading2019Layer = L.geoJson();
+var controls = L.control.layers();
 
-let statesJSON;
+var artsEducationPolicyLayers = [];
+var spG4Math2019Layer;
+var spG8Math2019Layer;
+var spG4Reading2019Layer;
+var spG8Reading2019Layer;
+
+var statesJSON;
 
 var csvPaths = [
 	csvPath_EducationalSpendingInPublicSchools,
@@ -24,7 +26,7 @@ var csvData = [];
 // initialize
 $(function () {
 	createMap();
-	setUpStatePolygons();
+	getStatePolygons();
 	readCSVs();
 });
 
@@ -37,36 +39,44 @@ function createMap() {
 			'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 	}).addTo(map);
 
-	var layers = {
-		"Arts Education Policies": artsEducationPoliciesLayer,
-		"Standardized Performances - Grade 4 - Math - 2019": spG4Math2019Layer,
-		"Standardized Performances - Grade 8 - Math - 2019": spG8Math2019Layer,
-		"Standardized Performances - Grade 4 - Reading - 2019": spG4Reading2019Layer,
-		"Standardized Performances - Grade 8 - Reading - 2019": spG8Reading2019Layer,
-	};
-
-	L.control.layers(null, layers).addTo(map);
+	controls.addTo(map);
 }
 
-function setUpStatePolygons() {
+function getStatePolygons() {
 	$.get("../data/states-polygons-20m.json")
 		.then((json) => (statesJSON = json))
-		.then(() => mapStatePolygons());
+		.then(() => createLayers());
 }
 
-function mapStatePolygons() {
-	artsEducationPoliciesLayer.addData(statesJSON);
+function createLayers() {
+	for (var i = 0; i < 10; i++) {
+		artsEducationPolicyLayers.push(L.geoJson(statesJSON));
+		controls.addOverlay(artsEducationPolicyLayers[i], `Arts Education Policy ${i + 1}`);
+	}
+
+	// TODO: these 4 layers are currently empty.
+	spG4Math2019Layer = L.geoJson();
+	spG8Math2019Layer = L.geoJson();
+	spG4Reading2019Layer = L.geoJson();
+	spG8Reading2019Layer = L.geoJson();
+
+	controls.addOverlay(spG4Math2019Layer, "Standardized Performances - Grade 4 - Math - 2019");
+	controls.addOverlay(spG8Math2019Layer, "Standardized Performances - Grade 8 - Math - 2019");
+	controls.addOverlay(
+		spG4Reading2019Layer,
+		"Standardized Performances - Grade 4 - Reading - 2019"
+	);
+	controls.addOverlay(
+		spG8Reading2019Layer,
+		"Standardized Performances - Grade 8 - Reading - 2019"
+	);
+
 	// var myStyle = {
 	// 	color: "#ff7800",
 	// 	weight: 5,
 	// 	opacity: 0.65,
 	// };
 	// artPoliciesLayer.setStyle(myStyle);
-
-	// var layers = {
-	// 	hi: artPoliciesLayer,
-	// };
-	// L.control.layers(layers).addTo(map);
 }
 
 async function readCSVs() {
