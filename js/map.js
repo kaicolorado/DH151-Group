@@ -43,7 +43,7 @@ function createMap() {
 }
 
 function getStatePolygons() {
-	$.get("../data/states-polygons-20m.json").then((json) => (statesJSON = json));
+	$.get("data/states-polygons-20m.json").then((json) => (statesJSON = json));
 }
 
 function createLayers() {
