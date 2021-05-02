@@ -43,7 +43,9 @@ function createMap() {
 }
 
 function getStatePolygons() {
-	$.get("/data/states-polygons-20m.json").then((json) => (statesJSON = json));
+	fetch("data/states-polygons-20m.json").then(async (response) => {
+		statesJSON = await response.json();
+	});
 }
 
 function createLayers() {
