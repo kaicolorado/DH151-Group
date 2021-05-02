@@ -44,3 +44,32 @@ body {
 	padding: 10px;
 	background-color: rgb(175, 175, 175);
 }
+
+.activated-layers-legend {
+	position: relative;
+	background: rgba(214, 214, 214, 0.6);
+	padding: 1rem;
+	padding-top: 0.6em;
+	border-radius: 1em;
+	line-height: 0.5;
+}
+
+.activated-layers-legend h3 {
+	text-align: center;
+}
+
+.activated-layers-legend .color-box {
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	background-color: rgba(255, 255, 255, 0);
+	padding: 0.2em;
+	margin-right: 0.5em;
+	opacity: 40%;
+	vertical-align: middle;
+}
+
+.activated-layers-legend p {
+	display: inline-block;
+	vertical-align: middle;
+}

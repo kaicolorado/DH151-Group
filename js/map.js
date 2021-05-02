@@ -1,5 +1,6 @@
 var map;
 const controls = L.control.layers();
+const legend = new L.Legend();
 
 const artsEducationPolicyLayers = [];
 var spG4Math2019Layer;
@@ -40,6 +41,64 @@ function createMap() {
 	}).addTo(map);
 
 	controls.addTo(map);
+
+	legend.setPosition("bottomright");
+
+	legend.onAdd = function (map) {
+		var div = L.DomUtil.create("div", "activated-layers-legend");
+
+		div.innerHTML = getNewLegendContent();
+
+		return div;
+	};
+
+	legend.addTo(map);
+
+	map.on("overlayadd", (event) => legend.setContent(getNewLegendContent()));
+	map.on("overlayremove", (event) => legend.setContent(getNewLegendContent()));
+}
+
+function getNewLegendContent() {
+	const overlays = controls.getOverlays(); //* gets all overlays and whether they're currently selected
+	const activeOverlayTitles = [];
+
+	//* if the layer controls have at least been interacted with (i.e. something has been (de)selected)
+	if (Object.keys(overlays).length !== 0) {
+		for (var key in overlays) {
+			//* if layer is currently selected
+			if (overlays[key]) {
+				const index = Object.keys(overlays).indexOf(key);
+				var titleObj = {};
+				titleObj[key] = index;
+
+				activeOverlayTitles.push(titleObj);
+			}
+		}
+	}
+
+	var newLegendContent = /*html*/ `<h3>Activated Layers</h3>`;
+
+	//* if no layers are currently selected, we want to display 'None'
+	if (activeOverlayTitles.length === 0) {
+		newLegendContent += /*html*/ `<p style="width: 100%; text-align: center;">None</p>`;
+	} else {
+		//* display color and layer name for each activated layer
+		activeOverlayTitles.forEach(function (activeOverlayTitle) {
+			const title = Object.keys(activeOverlayTitle)[0];
+			const originalIndex = Object.values(activeOverlayTitle)[0];
+
+			const colorBoxHTML = /*html*/ `
+					<div
+						class="color-box"
+						style="background-color: ${getArtsEducationPolicyColor(originalIndex + 1)};"
+					></div>
+				`;
+
+			newLegendContent += /*html*/ `${colorBoxHTML} <p>${title}</p> <br>`;
+		});
+	}
+
+	return newLegendContent;
 }
 
 function getStatePolygons() {
@@ -85,6 +144,7 @@ function getArtsEducationPolicyStyle(feature, index) {
 	if (state && state[Object.keys(state)[index]] === "Yes") {
 		return {
 			fillColor: getArtsEducationPolicyColor(index),
+			fillOpacity: 0.2,
 			color: "black",
 			weight: 0.3,
 		};
