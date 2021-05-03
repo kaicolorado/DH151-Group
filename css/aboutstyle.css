@@ -7,13 +7,13 @@ html {
 
 body {
 	display: grid;
-	grid-template-rows: 40px 60px 400px 600px;
+	grid-template-rows: 40px 60px 550px 500px;
 	grid-template-columns: 50% 50%;
 	grid-template-areas:
 		"tabs tabs"
-        "header header"
+		"header header"
 		"text text"
-        "column1 column2";
+		"column1 column2";
 }
 
 .header {
@@ -22,6 +22,7 @@ body {
 	background-color: rgb(0, 0, 134);
 	color: white;
 	font-size: 2em;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .sidebar {
@@ -71,7 +72,7 @@ body {
 	vertical-align: middle;
 }
 
-.tabs{
+.tabs {
 	grid-area: tabs;
 	vertical-align: middle;
 	background-color: white;
@@ -79,68 +80,103 @@ body {
 	vertical-align: middle;
 	word-spacing: 30px;
 	padding: 10px;
-	
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.column1{
+.column1 {
 	grid-area: column1;
 	background-color: rgb(100, 177, 224);
 	text-align: center;
 	vertical-align: top;
 	padding: 20px;
-	border-right: white;
-	border-width: 3px;
-	border-right-style: dotted;
 	color: white;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.column2{
+.column1 p {
+	margin-left: 20%;
+	margin-right: 20%;
+}
+
+.column2 {
 	grid-area: column2;
 	background-color: rgb(100, 177, 224);
 	text-align: center;
 	vertical-align: top;
 	padding: 20px;
 	color: white;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.text{
+.column2 p {
+	margin-left: 20%;
+	margin-right: 20%;
+}
+
+.column1 h1,
+.column2 h1 {
+	font-weight: normal;
+}
+.column1 h2,
+.column2 h2 {
+	font-weight: normal;
+}
+
+.column1 p,
+.column2 p {
+	font-size: larger;
+}
+
+.overview {
 	grid-area: text;
 	background-color: rgb(100, 177, 224);
 	text-align: center;
 	padding: 20px;
 	color: white;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.description-title{
+.overview h1 {
+	font-weight: normal;
+}
+
+.overview p {
+	font-size: 20px;
+	word-wrap: break-word;
+	vertical-align: middle;
+	max-width: 1000px;
+	margin: 0 auto 2em;
+	float: none;
+}
+
+.description-title {
 	font-size: 20pt;
 }
 
-a.tab:link{
-	background-color: rgb(100,177,224);
-	color:white;
-	padding:5px;
+a.tab:link {
+	background-color: rgb(100, 177, 224);
+	color: white;
+	padding: 5px;
 	text-decoration: none;
 }
 
-a.tab:visited{
-	
-	background-color: rgb(100,177,224);
-	color:white;
-	padding:5px;
+a.tab:visited {
+	background-color: rgb(100, 177, 224);
+	color: white;
+	padding: 5px;
 	text-decoration: none;
 }
 
-a.tab:hover{
+a.tab:hover {
 	background-color: rgb(0, 0, 134);
-	color:white;
-	padding:5px;
+	color: white;
+	padding: 5px;
 	text-decoration: underline;
 }
 
-a.tab:active{
+a.tab:active {
 	background-color: rgb(0, 0, 134);
-	color:white;
-	padding:5px;
+	color: white;
+	padding: 5px;
 	text-decoration: underline;
 }
-

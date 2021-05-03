@@ -25,6 +25,7 @@ body {
 	background-color: rgb(0, 0, 134);
 	color: white;
 	font-size: 2em;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .sidebar {
@@ -33,6 +34,7 @@ body {
 	padding: 10px;
 	background-color: rgb(100, 177, 224);
 	overflow: auto;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .content {
@@ -52,6 +54,7 @@ body {
 	padding-top: 0.6em;
 	border-radius: 1em;
 	line-height: 0.5;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .activated-layers-legend h3 {
@@ -74,7 +77,7 @@ body {
 	vertical-align: middle;
 }
 
-.tabs{
+.tabs {
 	grid-area: tabs;
 	vertical-align: middle;
 	background-color: white;
@@ -82,41 +85,38 @@ body {
 	vertical-align: middle;
 	word-spacing: 30px;
 	padding: 10px;
-	
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-a.tab:link{
-	background-color: rgb(100,177,224);
-	color:white;
-	padding:5px;
+a.tab:link {
+	background-color: rgb(100, 177, 224);
+	color: white;
+	padding: 5px;
 	text-decoration: none;
 }
 
-a.tab:visited{
-	
-	background-color: rgb(100,177,224);
-	color:white;
-	padding:5px;
+a.tab:visited {
+	background-color: rgb(100, 177, 224);
+	color: white;
+	padding: 5px;
 	text-decoration: none;
 }
 
-a.tab:hover{
+a.tab:hover {
 	background-color: rgb(0, 0, 134);
-	color:white;
-	padding:5px;
+	color: white;
+	padding: 5px;
 	text-decoration: underline;
 }
 
-a.tab:active{
+a.tab:active {
 	background-color: rgb(0, 0, 134);
-	color:white;
-	padding:5px;
+	color: white;
+	padding: 5px;
 	text-decoration: underline;
 }
 
-
-
-.text{
+.text {
 	grid-area: text;
 	background-color: rgb(100, 177, 224);
 	text-align: center;
