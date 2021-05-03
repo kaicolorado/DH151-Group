@@ -5,19 +5,16 @@ html {
 	width: 100%;
 }
 
-#map {
-	height: 100%;
-}
-
 body {
 	display: grid;
-	grid-template-rows: 40px 60px 1fr 40px;
-	grid-template-columns: 300px 1fr;
+	grid-template-rows: 40px 60px 400px 600px 40px;
+	grid-template-columns: 50% 50%;
 	grid-template-areas:
 		"tabs tabs"
-		"header header"
-		"sidebar content"
-		"footer footer";
+        "header header"
+		"text text"
+        "column1 column2"
+        "footer footer";
 }
 
 .header {
@@ -83,4 +80,30 @@ body {
 	vertical-align: middle;
 	word-spacing: 100px;
 	padding: 10px;
+}
+
+.column1{
+	grid-area: column1;
+	background-color: lightgrey;
+	text-align: center;
+	vertical-align: top;
+	padding: 30px;
+	border-right: black;
+	border-width: 3px;
+	border-right-style: dotted;
+}
+
+.column2{
+	grid-area: column2;
+	background-color: lightgrey;
+	text-align: center;
+	vertical-align: top;
+	padding: 30px;
+}
+
+.text{
+	grid-area: text;
+	background-color: lightslategray;
+	text-align: left;
+	padding: 50px;
 }
