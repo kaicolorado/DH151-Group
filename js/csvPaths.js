@@ -10,3 +10,8 @@ let csvPath_SP_G4_Reading_2019 =
 	"https://docs.google.com/spreadsheets/d/1BkXJjCqXiWi_ysFu2Jcnqbo0otuC-BwLhfqJNl1Fx18/export?format=csv&id=1BkXJjCqXiWi_ysFu2Jcnqbo0otuC-BwLhfqJNl1Fx18&gid=1273736783";
 let csvPath_SP_G8_Reading_2019 =
 	"https://docs.google.com/spreadsheets/d/1BkXJjCqXiWi_ysFu2Jcnqbo0otuC-BwLhfqJNl1Fx18/export?format=csv&id=1BkXJjCqXiWi_ysFu2Jcnqbo0otuC-BwLhfqJNl1Fx18&gid=960745170";
+
+let csvPath_ArtsEducationPolicies2021 =
+	"https://docs.google.com/spreadsheets/d/1BkXJjCqXiWi_ysFu2Jcnqbo0otuC-BwLhfqJNl1Fx18/export?format=csv&id=1BkXJjCqXiWi_ysFu2Jcnqbo0otuC-BwLhfqJNl1Fx18&gid=496847001";
+let csvPath_StateHappiness =
+	"https://docs.google.com/spreadsheets/d/1BkXJjCqXiWi_ysFu2Jcnqbo0otuC-BwLhfqJNl1Fx18/export?format=csv&id=1BkXJjCqXiWi_ysFu2Jcnqbo0otuC-BwLhfqJNl1Fx18&gid=937005672";
