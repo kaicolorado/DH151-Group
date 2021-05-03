@@ -173,6 +173,7 @@ function getArtsEducationPolicyColor(index) {
 }
 
 async function readCSVs() {
+	console.log("Downloading and parsing CSVs...");
 	csvPaths.forEach(function (path, index) {
 		Papa.parse(path, {
 			header: true,
