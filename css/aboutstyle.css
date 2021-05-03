@@ -87,7 +87,7 @@ body {
 	background-color: lightgrey;
 	text-align: center;
 	vertical-align: top;
-	padding: 30px;
+	padding: 20px;
 	border-right: black;
 	border-width: 3px;
 	border-right-style: dotted;
@@ -98,12 +98,12 @@ body {
 	background-color: lightgrey;
 	text-align: center;
 	vertical-align: top;
-	padding: 30px;
+	padding: 20px;
 }
 
 .text{
 	grid-area: text;
 	background-color: lightslategray;
-	text-align: left;
-	padding: 50px;
+	text-align: center;
+	padding: 20px;
 }
