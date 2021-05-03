@@ -11,19 +11,18 @@ html {
 
 body {
 	display: grid;
-	grid-template-rows: 40px 60px 1fr 40px;
+	grid-template-rows: 40px 60px 1fr;
 	grid-template-columns: 300px 1fr;
 	grid-template-areas:
 		"tabs tabs"
 		"header header"
-		"sidebar content"
-		"footer footer";
+		"sidebar content";
 }
 
 .header {
 	grid-area: header;
 	padding: 10px;
-	background-color: #333;
+	background-color: rgb(0, 0, 134);
 	color: white;
 	font-size: 2em;
 }
@@ -32,7 +31,7 @@ body {
 	color: white;
 	grid-area: sidebar;
 	padding: 10px;
-	background-color: #555;
+	background-color: rgb(100, 177, 224);
 	overflow: auto;
 }
 
@@ -78,9 +77,49 @@ body {
 .tabs{
 	grid-area: tabs;
 	vertical-align: middle;
-	background-color: lightgrey;
-	text-align: center;
+	background-color: white;
+	text-align: left;
 	vertical-align: middle;
-	word-spacing: 100px;
+	word-spacing: 30px;
 	padding: 10px;
+	
+}
+
+a.tab:link{
+	background-color: rgb(100,177,224);
+	color:white;
+	padding:5px;
+	text-decoration: none;
+}
+
+a.tab:visited{
+	
+	background-color: rgb(100,177,224);
+	color:white;
+	padding:5px;
+	text-decoration: none;
+}
+
+a.tab:hover{
+	background-color: rgb(0, 0, 134);
+	color:white;
+	padding:5px;
+	text-decoration: underline;
+}
+
+a.tab:active{
+	background-color: rgb(0, 0, 134);
+	color:white;
+	padding:5px;
+	text-decoration: underline;
+}
+
+
+
+.text{
+	grid-area: text;
+	background-color: rgb(100, 177, 224);
+	text-align: center;
+	padding: 20px;
+	color: white;
 }

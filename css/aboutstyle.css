@@ -7,20 +7,19 @@ html {
 
 body {
 	display: grid;
-	grid-template-rows: 40px 60px 400px 600px 40px;
+	grid-template-rows: 40px 60px 400px 600px;
 	grid-template-columns: 50% 50%;
 	grid-template-areas:
 		"tabs tabs"
         "header header"
 		"text text"
-        "column1 column2"
-        "footer footer";
+        "column1 column2";
 }
 
 .header {
 	grid-area: header;
 	padding: 10px;
-	background-color: #333;
+	background-color: rgb(0, 0, 134);
 	color: white;
 	font-size: 2em;
 }
@@ -75,35 +74,73 @@ body {
 .tabs{
 	grid-area: tabs;
 	vertical-align: middle;
-	background-color: lightgrey;
-	text-align: center;
+	background-color: white;
+	text-align: left;
 	vertical-align: middle;
-	word-spacing: 100px;
+	word-spacing: 30px;
 	padding: 10px;
+	
 }
 
 .column1{
 	grid-area: column1;
-	background-color: lightgrey;
+	background-color: rgb(100, 177, 224);
 	text-align: center;
 	vertical-align: top;
 	padding: 20px;
-	border-right: black;
+	border-right: white;
 	border-width: 3px;
 	border-right-style: dotted;
+	color: white;
 }
 
 .column2{
 	grid-area: column2;
-	background-color: lightgrey;
+	background-color: rgb(100, 177, 224);
 	text-align: center;
 	vertical-align: top;
 	padding: 20px;
+	color: white;
 }
 
 .text{
 	grid-area: text;
-	background-color: lightslategray;
+	background-color: rgb(100, 177, 224);
 	text-align: center;
 	padding: 20px;
+	color: white;
 }
+
+.description-title{
+	font-size: 20pt;
+}
+
+a.tab:link{
+	background-color: rgb(100,177,224);
+	color:white;
+	padding:5px;
+	text-decoration: none;
+}
+
+a.tab:visited{
+	
+	background-color: rgb(100,177,224);
+	color:white;
+	padding:5px;
+	text-decoration: none;
+}
+
+a.tab:hover{
+	background-color: rgb(0, 0, 134);
+	color:white;
+	padding:5px;
+	text-decoration: underline;
+}
+
+a.tab:active{
+	background-color: rgb(0, 0, 134);
+	color:white;
+	padding:5px;
+	text-decoration: underline;
+}
+
