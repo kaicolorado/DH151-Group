@@ -16,31 +16,8 @@ body {
 		"column1 column2";
 }
 
-.header {
-	grid-area: header;
-	padding: 10px;
-	background-color: rgb(0, 0, 134);
-	color: white;
-	font-size: 2em;
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.sidebar {
-	color: white;
-	grid-area: sidebar;
-	padding: 10px;
-	background-color: #555;
-	overflow: auto;
-}
-
 .content {
 	grid-area: content;
-}
-
-.footer {
-	grid-area: footer;
-	padding: 10px;
-	background-color: rgb(175, 175, 175);
 }
 
 .activated-layers-legend {
@@ -50,37 +27,6 @@ body {
 	padding-top: 0.6em;
 	border-radius: 1em;
 	line-height: 0.5;
-}
-
-.activated-layers-legend h3 {
-	text-align: center;
-}
-
-.activated-layers-legend .color-box {
-	width: 10px;
-	height: 10px;
-	display: inline-block;
-	background-color: rgba(255, 255, 255, 0);
-	padding: 0.2em;
-	margin-right: 0.5em;
-	opacity: 40%;
-	vertical-align: middle;
-}
-
-.activated-layers-legend p {
-	display: inline-block;
-	vertical-align: middle;
-}
-
-.tabs {
-	grid-area: tabs;
-	vertical-align: middle;
-	background-color: white;
-	text-align: left;
-	vertical-align: middle;
-	word-spacing: 30px;
-	padding: 10px;
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .column1 {
@@ -151,32 +97,4 @@ body {
 
 .description-title {
 	font-size: 20pt;
-}
-
-a.tab:link {
-	background-color: rgb(100, 177, 224);
-	color: white;
-	padding: 5px;
-	text-decoration: none;
-}
-
-a.tab:visited {
-	background-color: rgb(100, 177, 224);
-	color: white;
-	padding: 5px;
-	text-decoration: none;
-}
-
-a.tab:hover {
-	background-color: rgb(0, 0, 134);
-	color: white;
-	padding: 5px;
-	text-decoration: underline;
-}
-
-a.tab:active {
-	background-color: rgb(0, 0, 134);
-	color: white;
-	padding: 5px;
-	text-decoration: underline;
 }
