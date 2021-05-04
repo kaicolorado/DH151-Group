@@ -14,39 +14,18 @@ body {
 	grid-template-areas: "column1 column2";
 }
 
-.column1 {
-	grid-area: column1;
-	text-align: center;
-	vertical-align: top;
-	padding: 20px;
-	color: white;
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.column1 p {
-	margin-left: 20%;
-	margin-right: 20%;
-}
-
+.column1,
 .column2 {
-	grid-area: column2;
 	text-align: center;
 	vertical-align: top;
 	padding: 20px;
 	color: white;
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.column2 p {
-	margin-left: 20%;
-	margin-right: 20%;
 }
 
 .column1 h1,
-.column2 h1 {
-	font-weight: normal;
-}
 .column1 h2,
+.column2 h1,
 .column2 h2 {
 	font-weight: normal;
 }
@@ -54,6 +33,16 @@ body {
 .column1 p,
 .column2 p {
 	font-size: larger;
+	margin-left: 20%;
+	margin-right: 20%;
+}
+
+.column1 {
+	grid-area: column1;
+}
+
+.column2 {
+	grid-area: column2;
 }
 
 .overview {

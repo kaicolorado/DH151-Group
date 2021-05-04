@@ -44,7 +44,7 @@ function createMap() {
 
 	legend.setPosition("bottomright");
 
-	legend.onAdd = function (map) {
+	legend.onAdd = function (_) {
 		var div = L.DomUtil.create("div", "activated-layers-legend");
 
 		div.innerHTML = getNewLegendContent();
@@ -54,8 +54,8 @@ function createMap() {
 
 	legend.addTo(map);
 
-	map.on("overlayadd", (event) => legend.setContent(getNewLegendContent()));
-	map.on("overlayremove", (event) => legend.setContent(getNewLegendContent()));
+	map.on("overlayadd", (_) => legend.setContent(getNewLegendContent()));
+	map.on("overlayremove", (_) => legend.setContent(getNewLegendContent()));
 }
 
 function getNewLegendContent() {
