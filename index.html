@@ -21,16 +21,46 @@
 
 		<!-- papaparse for csv data -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+		<script>
+			var expanded = false;
+			const expandWidth = "16em";
+
+			function toggleSidebar() {
+				if (expanded) {
+					closeNav();
+				} else {
+					openNav();
+				}
+				expanded = !expanded;
+			}
+
+			function openNav() {
+				document.getElementById("expandable-sidebar").style.width = expandWidth;
+				document.getElementById("expand-button-div").style.marginRight = expandWidth;
+				document.getElementById("sidebar-and-content").style.marginRight = expandWidth;
+				document.getElementById("expand-icon").style.transform = "rotate(180deg)"; // flip icon
+			}
+
+			function closeNav() {
+				document.getElementById("expandable-sidebar").style.width = "0";
+				document.getElementById("expand-button-div").style.marginRight = "0";
+				document.getElementById("sidebar-and-content").style.marginRight = "0";
+				document.getElementById("expand-icon").style.transform = "rotate(0)"; // flip icon back
+			}
+		</script>
 	</head>
 	<body>
 		<div class="header">cARTographers: Mapping U.S. Art Education</div>
+
 		<!-- links to pages -->
 		<div class="tabs">
 			<a class="tab" href="index.html">Home</a>
 			<a class="tab" href="about.html">About</a>
 		</div>
-		<div class="sidebar-and-content">
-			<div class="sidebar">
+
+		<div id="sidebar-and-content">
+			<div id="left-sidebar">
 				<div class="sidebar-title"><h3>Welcome!</h3></div>
 				<div class="sidebar-content">
 					To interact with the map, begin selecting filters.
@@ -40,10 +70,19 @@
 					bottom right of the map to interpret the shading.
 				</div>
 			</div>
+
 			<div class="content">
 				<div id="map"></div>
 			</div>
 		</div>
+
+		<div id="expand-button-div">
+			<button id="expand-button" onclick="toggleSidebar()">
+				<img id="expand-icon" alt="expand-icon" src="assets/angle-double-left-solid.svg" />
+			</button>
+		</div>
+
+		<div id="expandable-sidebar">{Expandable Sidebar}</div>
 
 		<script src="js/csvPaths.js"></script>
 		<script src="js/leafletExtensions.js"></script>

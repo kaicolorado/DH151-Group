@@ -1,3 +1,5 @@
+/* *** General */
+
 body,
 html {
 	margin: 0;
@@ -10,26 +12,6 @@ body {
 	flex-direction: column;
 }
 
-#map {
-	height: 100%;
-}
-
-.sidebar-and-content {
-	display: grid;
-	grid-template-columns: 18em 1fr;
-	grid-template-areas: "sidebar content";
-	flex-grow: 1;
-}
-
-.sidebar {
-	color: white;
-	grid-area: sidebar;
-	padding: 10px;
-	background-color: rgb(100, 177, 224);
-	overflow: auto;
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
 .content {
 	grid-area: content;
 }
@@ -38,6 +20,21 @@ body {
 	grid-area: footer;
 	padding: 10px;
 	background-color: rgb(175, 175, 175);
+}
+
+#sidebar-and-content {
+	display: grid;
+	grid-template-columns: 18em 1fr;
+	grid-template-areas: "sidebar content";
+	flex-grow: 1;
+	transition: margin-right 0.5s;
+}
+
+/* *** Map */
+
+#map {
+	height: 100%;
+	z-index: 0;
 }
 
 .activated-layers-legend {
@@ -70,10 +67,98 @@ body {
 	vertical-align: middle;
 }
 
-.text {
-	grid-area: text;
-	background-color: rgb(100, 177, 224);
-	text-align: center;
-	padding: 20px;
+/* *** Left Sidebar */
+
+#left-sidebar {
 	color: white;
+	grid-area: sidebar;
+	padding: 10px;
+	background-color: rgb(100, 177, 224);
+	overflow: auto;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* *** Expandable Sidebar */
+
+#expandable-sidebar {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	right: 0;
+	background-color: rgb(100, 177, 224);
+	overflow-x: hidden; /* Disable horizontal scroll */
+	padding-top: 60px; /* Place content 60px from the top */
+	transition: 0.5s;
+}
+
+/* #expandable-sidebar a {
+	padding: 8px 8px 8px 32px;
+	text-decoration: none;
+	font-size: 25px;
+	color: #818181;
+	display: block;
+	transition: 0.3s;
+} */
+
+/* #expandable-sidebar a:hover {
+	color: #f1f1f1;
+} */
+
+#expand-button-div {
+	transition: margin-right 0.5s; /* If you want a transition effect */
+	position: fixed;
+	z-index: 2;
+	height: fit-content;
+	margin: auto;
+	margin-right: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+}
+
+/* The button used to open the sidebar */
+#expand-button {
+	cursor: pointer;
+	background-color: rgb(100, 177, 224);
+	padding: 10px 10px;
+	border: none;
+	outline: none;
+	display: grid;
+	place-items: center;
+	grid-template-areas: "icon";
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+	/* box-shadow: 1px 0px 0 rgb(158, 216, 252); */
+}
+
+#expand-button:hover {
+	background-color: rgb(110, 199, 255);
+}
+
+#expand-icon {
+	filter: invert(100%); /* make icon color white instead of black */
+	width: 2em;
+	height: 2em;
+	grid-area: icon;
+	transform: rotate(0deg);
+	transition: transform 0.2s;
+}
+
+#collapse-icon {
+	filter: invert(100%); /* make icon color white instead of black */
+	width: 2em;
+	height: 2em;
+	grid-area: icon;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+	#expandable-sidebar {
+		padding-top: 15px;
+	}
+	#expandable-sidebar a {
+		font-size: 18px;
+	}
 }
