@@ -5,18 +5,20 @@ html {
 	width: 100%;
 }
 
+body {
+	display: flex;
+	flex-direction: column;
+}
+
 #map {
 	height: 100%;
 }
 
-body {
+.sidebar-and-content {
 	display: grid;
-	grid-template-rows: 40px 60px 1fr;
-	grid-template-columns: 300px 1fr;
-	grid-template-areas:
-		"tabs tabs"
-		"header header"
-		"sidebar content";
+	grid-template-columns: 18em 1fr;
+	grid-template-areas: "sidebar content";
+	flex-grow: 1;
 }
 
 .sidebar {
