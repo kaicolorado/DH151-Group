@@ -4,8 +4,9 @@ html {
 	height: 100%;
 	width: 100%;
 }
+
 body {
-	background-color: rgb(100, 177, 224);
+	background-color: var(--light-blue);
 }
 
 .team-description {

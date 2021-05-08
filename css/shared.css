@@ -1,6 +1,11 @@
+:root {
+	--light-blue: rgb(100, 177, 224);
+	--dark-blue: rgb(0, 0, 134);
+}
+
 .header {
 	padding: 10px;
-	background-color: rgb(0, 0, 134);
+	background-color: var(--dark-blue);
 	color: white;
 	font-size: 2em;
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -18,7 +23,7 @@
 
 .tab:link,
 .tab:visited {
-	background-color: rgb(100, 177, 224);
+	background-color: var(--light-blue);
 	color: white;
 	padding: 8px;
 	padding-left: 20px;
@@ -29,6 +34,6 @@
 
 .tab:hover,
 .tab:active {
-	background-color: rgb(0, 0, 134);
+	background-color: var(--dark-blue);
 	color: white;
 }
