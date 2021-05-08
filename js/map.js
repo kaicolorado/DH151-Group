@@ -7,6 +7,7 @@ var spG4Math2019Layer;
 var spG8Math2019Layer;
 var spG4Reading2019Layer;
 var spG8Reading2019Layer;
+const scoresLayers = [spG4Math2019Layer, spG8Math2019Layer, spG4Reading2019Layer, spG8Reading2019Layer];
 
 var statesPolygonsJSON;
 var statesCentersJSON;
@@ -128,31 +129,22 @@ function createLayers() {
 		controls.addOverlay(artsEducationPolicyLayers[i - 1], `Arts Education Policy ${i}`);
 	}
 
-	const spG4Math2019NumberLayer = L.featureGroup();
-	const spG8Math2019NumberLayer = L.featureGroup();
-	const spG4Reading2019NumberLayer = L.featureGroup();
-	const spG8Reading2019NumberLayer = L.featureGroup();
-
 	const scoresKey = Object.keys(csvData[2].data[0])[1];
-	const scores_G4Math2019 = csvData[2].data.map((val) => val[scoresKey]);
-	const scores_G8Math2019 = csvData[3].data.map((val) => val[scoresKey]);
-	const scores_G4Reading2019 = csvData[4].data.map((val) => val[scoresKey]);
-	const scores_G8Reading2019 = csvData[5].data.map((val) => val[scoresKey]);
-	scores_G4Math2019.pop(); //* removes last element, Puerto Rico (b/c not a state)
-	scores_G8Math2019.pop();
-	scores_G4Reading2019.pop();
-	scores_G8Reading2019.pop();
 
-	const min_G4Math2019 = Math.min(...scores_G4Math2019);
-	const max_G4Math2019 = Math.max(...scores_G4Math2019);
-	const min_G8Math2019 = Math.min(...scores_G8Math2019);
-	const max_G8Math2019 = Math.max(...scores_G8Math2019);
-	const min_G4Reading2019 = Math.min(...scores_G4Reading2019);
-	const max_G4Reading2019 = Math.max(...scores_G4Reading2019);
-	const min_G8Reading2019 = Math.min(...scores_G8Reading2019);
-	const max_G8Reading2019 = Math.max(...scores_G8Reading2019);
+	const scoresLayerObjects = [];
+	scoresLayers.forEach(function (_, index) {
+		const scoresNumberLayer = L.featureGroup();
 
-	statesCentersJSON.forEach(function (state, index) {
+		const scores = csvData[index + 2].data.map((val) => val[scoresKey]);
+		scores.pop(); //* removes last element, Puerto Rico (b/c not a state)
+
+		const min = Math.min(...scores);
+		const max = Math.max(...scores);
+
+		scoresLayerObjects.push({ scoresNumberLayer, min, max });
+	});
+
+	statesCentersJSON.forEach(function (state, _) {
 		function getMarker(score) {
 			return L.marker([state.latitude, state.longitude], {
 				icon: L.divIcon({
@@ -163,44 +155,25 @@ function createLayers() {
 			});
 		}
 
-		const score_G4Math2019 = getStateScore(state.state, 2);
-		const score_G8Math2019 = getStateScore(state.state, 3);
-		const score_G4Reading2019 = getStateScore(state.state, 4);
-		const score_G8Reading2019 = getStateScore(state.state, 5);
-
-		const marker_G4Math2019 = getMarker(score_G4Math2019);
-		const marker_G8Math2019 = getMarker(score_G8Math2019);
-		const marker_G4Reading2019 = getMarker(score_G4Reading2019);
-		const marker_G8Reading2019 = getMarker(score_G8Reading2019);
-
-		spG4Math2019NumberLayer.addLayer(marker_G4Math2019);
-		spG8Math2019NumberLayer.addLayer(marker_G8Math2019);
-		spG4Reading2019NumberLayer.addLayer(marker_G4Reading2019);
-		spG8Reading2019NumberLayer.addLayer(marker_G8Reading2019);
+		scoresLayers.forEach(function (_, index) {
+			const score = getStateScore(state.state, index + 2);
+			const marker = getMarker(score);
+			scoresLayerObjects[index].scoresNumberLayer.addLayer(marker);
+		});
 	});
 
-	const spG4Math2019ColorLayer = L.geoJson(statesPolygonsJSON, {
-		style: (feature) => getScoresStyle(feature, 2, min_G4Math2019, max_G4Math2019),
-	});
-	const spG8Math2019ColorLayer = L.geoJson(statesPolygonsJSON, {
-		style: (feature) => getScoresStyle(feature, 3, min_G8Math2019, max_G8Math2019),
-	});
-	const spG4Reading2019ColorLayer = L.geoJson(statesPolygonsJSON, {
-		style: (feature) => getScoresStyle(feature, 4, min_G4Reading2019, max_G4Reading2019),
-	});
-	const spG8Reading2019ColorLayer = L.geoJson(statesPolygonsJSON, {
-		style: (feature) => getScoresStyle(feature, 5, min_G8Reading2019, max_G8Reading2019),
+	scoresLayers.forEach(function (_, index) {
+		const scoresColorLayer = L.geoJson(statesPolygonsJSON, {
+			style: (feature) =>
+				getScoresStyle(feature, index + 2, scoresLayerObjects[index].min, scoresLayerObjects[index].max),
+		});
+		scoresLayers[index] = L.layerGroup([scoresLayerObjects[index].scoresNumberLayer, scoresColorLayer]);
 	});
 
-	spG4Math2019Layer = L.layerGroup([spG4Math2019NumberLayer, spG4Math2019ColorLayer]);
-	spG8Math2019Layer = L.layerGroup([spG8Math2019NumberLayer, spG8Math2019ColorLayer]);
-	spG4Reading2019Layer = L.layerGroup([spG4Reading2019NumberLayer, spG4Reading2019ColorLayer]);
-	spG8Reading2019Layer = L.layerGroup([spG8Reading2019NumberLayer, spG8Reading2019ColorLayer]);
-
-	controls.addOverlay(spG4Math2019Layer, "Standardized Performances - Grade 4 - Math - 2019");
-	controls.addOverlay(spG8Math2019Layer, "Standardized Performances - Grade 8 - Math - 2019");
-	controls.addOverlay(spG4Reading2019Layer, "Standardized Performances - Grade 4 - Reading - 2019");
-	controls.addOverlay(spG8Reading2019Layer, "Standardized Performances - Grade 8 - Reading - 2019");
+	controls.addOverlay(scoresLayers[0], "Standardized Performances - Grade 4 - Math - 2019");
+	controls.addOverlay(scoresLayers[1], "Standardized Performances - Grade 8 - Math - 2019");
+	controls.addOverlay(scoresLayers[2], "Standardized Performances - Grade 4 - Reading - 2019");
+	controls.addOverlay(scoresLayers[3], "Standardized Performances - Grade 8 - Reading - 2019");
 }
 
 function getStateScore(state, csvPathsIndex) {
