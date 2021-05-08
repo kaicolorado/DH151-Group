@@ -38,8 +38,7 @@ function createMap() {
 	map = L.map("map").setView([39.8283, -98.5795], 5); // coords for center of the US
 
 	L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-		attribution:
-			'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 	}).addTo(map);
 
 	controls.addTo(map);
@@ -85,9 +84,12 @@ function getNewLegendContent() {
 		newLegendContent += /*html*/ `<p style="width: 100%; text-align: center;">None</p>`;
 	} else {
 		//* display color and layer name for each activated layer
+		// TODO: if active layer is one of the score ones, we want to have 2 legend entries. One that shows low color and another that shows high
+		// TODO: OR - just have 2 squares next to one entry and put (Low-High) in parentheses
 		activeOverlayTitles.forEach(function (activeOverlayTitle) {
 			const title = Object.keys(activeOverlayTitle)[0];
 			const originalIndex = Object.values(activeOverlayTitle)[0];
+			// console.log(title);
 
 			const colorBoxHTML = /*html*/ `
 					<div
@@ -116,9 +118,6 @@ function getStateCenters() {
 }
 
 function createLayers() {
-	// console.log(csvData[2].data);
-	// var scoresKey = Object.keys(csvData[2].data[0])[1];
-	// console.log(csvData[2].data.map((val) => val[scoresKey]));
 	for (var i = 1; i < 11; i++) {
 		const index = i;
 		artsEducationPolicyLayers.push(
@@ -129,14 +128,29 @@ function createLayers() {
 		controls.addOverlay(artsEducationPolicyLayers[i - 1], `Arts Education Policy ${i}`);
 	}
 
-	// spG4Math2019Layer = L.geoJson(statesJSON, {
-	// 	style: (feature) => getScoresStyle(feature, 2),
-	// });
-
 	const spG4Math2019NumberLayer = L.featureGroup();
 	const spG8Math2019NumberLayer = L.featureGroup();
 	const spG4Reading2019NumberLayer = L.featureGroup();
 	const spG8Reading2019NumberLayer = L.featureGroup();
+
+	const scoresKey = Object.keys(csvData[2].data[0])[1];
+	const scores_G4Math2019 = csvData[2].data.map((val) => val[scoresKey]);
+	const scores_G8Math2019 = csvData[3].data.map((val) => val[scoresKey]);
+	const scores_G4Reading2019 = csvData[4].data.map((val) => val[scoresKey]);
+	const scores_G8Reading2019 = csvData[5].data.map((val) => val[scoresKey]);
+	scores_G4Math2019.pop(); //* removes last element, Puerto Rico (b/c not a state)
+	scores_G8Math2019.pop();
+	scores_G4Reading2019.pop();
+	scores_G8Reading2019.pop();
+
+	const min_G4Math2019 = Math.min(...scores_G4Math2019);
+	const max_G4Math2019 = Math.max(...scores_G4Math2019);
+	const min_G8Math2019 = Math.min(...scores_G8Math2019);
+	const max_G8Math2019 = Math.max(...scores_G8Math2019);
+	const min_G4Reading2019 = Math.min(...scores_G4Reading2019);
+	const max_G4Reading2019 = Math.max(...scores_G4Reading2019);
+	const min_G8Reading2019 = Math.min(...scores_G8Reading2019);
+	const max_G8Reading2019 = Math.max(...scores_G8Reading2019);
 
 	statesCentersJSON.forEach(function (state, index) {
 		function getMarker(score) {
@@ -165,22 +179,28 @@ function createLayers() {
 		spG8Reading2019NumberLayer.addLayer(marker_G8Reading2019);
 	});
 
-	// spG4Math2019Layer = L.layerGroup([spG4Math2019NumberLayer, spG4Math2019ColorLayer]);
-	spG4Math2019Layer = L.layerGroup([spG4Math2019NumberLayer]);
-	spG8Math2019Layer = L.layerGroup([spG8Math2019NumberLayer]);
-	spG4Reading2019Layer = L.layerGroup([spG4Reading2019NumberLayer]);
-	spG8Reading2019Layer = L.layerGroup([spG8Reading2019NumberLayer]);
+	const spG4Math2019ColorLayer = L.geoJson(statesPolygonsJSON, {
+		style: (feature) => getScoresStyle(feature, 2, min_G4Math2019, max_G4Math2019),
+	});
+	const spG8Math2019ColorLayer = L.geoJson(statesPolygonsJSON, {
+		style: (feature) => getScoresStyle(feature, 3, min_G8Math2019, max_G8Math2019),
+	});
+	const spG4Reading2019ColorLayer = L.geoJson(statesPolygonsJSON, {
+		style: (feature) => getScoresStyle(feature, 4, min_G4Reading2019, max_G4Reading2019),
+	});
+	const spG8Reading2019ColorLayer = L.geoJson(statesPolygonsJSON, {
+		style: (feature) => getScoresStyle(feature, 5, min_G8Reading2019, max_G8Reading2019),
+	});
+
+	spG4Math2019Layer = L.layerGroup([spG4Math2019NumberLayer, spG4Math2019ColorLayer]);
+	spG8Math2019Layer = L.layerGroup([spG8Math2019NumberLayer, spG8Math2019ColorLayer]);
+	spG4Reading2019Layer = L.layerGroup([spG4Reading2019NumberLayer, spG4Reading2019ColorLayer]);
+	spG8Reading2019Layer = L.layerGroup([spG8Reading2019NumberLayer, spG8Reading2019ColorLayer]);
 
 	controls.addOverlay(spG4Math2019Layer, "Standardized Performances - Grade 4 - Math - 2019");
 	controls.addOverlay(spG8Math2019Layer, "Standardized Performances - Grade 8 - Math - 2019");
-	controls.addOverlay(
-		spG4Reading2019Layer,
-		"Standardized Performances - Grade 4 - Reading - 2019"
-	);
-	controls.addOverlay(
-		spG8Reading2019Layer,
-		"Standardized Performances - Grade 8 - Reading - 2019"
-	);
+	controls.addOverlay(spG4Reading2019Layer, "Standardized Performances - Grade 4 - Reading - 2019");
+	controls.addOverlay(spG8Reading2019Layer, "Standardized Performances - Grade 8 - Reading - 2019");
 }
 
 function getStateScore(state, csvPathsIndex) {
@@ -188,6 +208,27 @@ function getStateScore(state, csvPathsIndex) {
 	const stateData = csvData[csvPathsIndex].data.find((row) => row.Jurisdiction === state);
 	const stateScore = stateData[scoresKey];
 	return stateScore;
+}
+
+// TODO: if scores layers are the only ones selected, we want to do heatmap. else, we should just do the numbers
+function getScoresStyle(feature, csvPathsIndex, min, max) {
+	const stateData = csvData[csvPathsIndex].data.find((row) => row.Jurisdiction === feature.properties.NAME);
+
+	if (stateData) {
+		var scoresKey = Object.keys(csvData[csvPathsIndex].data[0])[1];
+		const stateScore = stateData[scoresKey];
+
+		const scaledVal = (stateScore - min) / (max - min);
+		const colorHSL = getHeatmapColorFromValue(scaledVal);
+		const colorHex = hslToHex(colorHSL.hue, colorHSL.saturation, colorHSL.luminance);
+
+		return {
+			fillColor: colorHex,
+			fillOpacity: 0.2,
+			color: "black",
+			weight: 0.3,
+		};
+	}
 }
 
 function getArtsEducationPolicyStyle(feature, index) {
@@ -209,14 +250,6 @@ function getArtsEducationPolicyStyle(feature, index) {
 		};
 	}
 }
-
-// TODO: if scores layers are the only ones selected, we want to do heatmap. else, we should just do the numbers
-// function getScoresStyle(feature, csvPathsIndex) {
-// 	const state = csvData[2].data.find((row) => row.Jurisdiction === feature.properties.NAME);
-
-// 	if (state) {
-// 	}
-// }
 
 //* get color based on what art policy we specify (by index)
 function getArtsEducationPolicyColor(index) {
@@ -258,39 +291,18 @@ async function readCSVs() {
 //* `value` must be from 0 to 1
 function getHeatmapColorFromValue(value) {
 	var h = (1.0 - value) * 240;
-	return { hue: h, saturation: 1, luminance: 0.5 };
+	return { hue: h, saturation: 100, luminance: 50 };
 }
 
-function hslToRGB(h, s, l) {
-	var r, g, b, hue2rgb, q, p;
-
-	if (s === 0) {
-		r = g = b = l;
-	} else {
-		hue2rgb = function hue2rgb(p, q, t) {
-			if (t < 0) {
-				t += 1;
-			} else if (t > 1) {
-				t -= 1;
-			}
-
-			if (t >= 0.66) {
-				return p;
-			} else if (t >= 0.5) {
-				return p + (q - p) * (0.66 - t) * 6;
-			} else if (t >= 0.33) {
-				return q;
-			} else {
-				return p + (q - p) * 6 * t;
-			}
-		};
-
-		q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-		p = 2 * l - q;
-		r = hue2rgb(p, q, h + 0.33);
-		g = hue2rgb(p, q, h);
-		b = hue2rgb(p, q, h - 0.33);
-	}
-
-	return [(r * 255) | 0, (g * 255) | 0, (b * 255) | 0]; // (x << 0) = Math.floor(x)
+function hslToHex(h, s, l) {
+	l /= 100;
+	const a = (s * Math.min(l, 1 - l)) / 100;
+	const f = (n) => {
+		const k = (n + h / 30) % 12;
+		const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+		return Math.round(255 * color)
+			.toString(16)
+			.padStart(2, "0"); // convert to Hex and prefix "0" if needed
+	};
+	return `#${f(0)}${f(8)}${f(4)}`;
 }

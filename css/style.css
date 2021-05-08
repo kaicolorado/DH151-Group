@@ -75,6 +75,7 @@ body {
 	vertical-align: middle;
 	font-size: large;
 	font-weight: bold;
+	cursor: grab !important;
 }
 
 /* *** Left Sidebar */
