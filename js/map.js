@@ -8,7 +8,8 @@ var spG8Math2019Layer;
 var spG4Reading2019Layer;
 var spG8Reading2019Layer;
 
-var statesJSON;
+var statesPolygonsJSON;
+var statesCentersJSON;
 
 const csvPaths = [
 	csvPath_EducationalSpendingInPublicSchools,
@@ -28,6 +29,7 @@ const csvData = new Array(csvPaths.length);
 $(function () {
 	createMap();
 	getStatePolygons();
+	getStateCenters();
 	readCSVs();
 });
 
@@ -103,26 +105,71 @@ function getNewLegendContent() {
 
 function getStatePolygons() {
 	fetch("data/states-polygons-20m.json").then(async (response) => {
-		statesJSON = await response.json();
+		statesPolygonsJSON = await response.json();
+	});
+}
+
+function getStateCenters() {
+	fetch("data/states-center-coords.json").then(async (response) => {
+		statesCentersJSON = await response.json();
 	});
 }
 
 function createLayers() {
+	// console.log(csvData[2].data);
+	// var scoresKey = Object.keys(csvData[2].data[0])[1];
+	// console.log(csvData[2].data.map((val) => val[scoresKey]));
 	for (var i = 1; i < 11; i++) {
 		const index = i;
 		artsEducationPolicyLayers.push(
-			L.geoJson(statesJSON, {
+			L.geoJson(statesPolygonsJSON, {
 				style: (feature) => getArtsEducationPolicyStyle(feature, index),
 			})
 		);
 		controls.addOverlay(artsEducationPolicyLayers[i - 1], `Arts Education Policy ${i}`);
 	}
 
-	// TODO: these 4 layers are currently empty.
-	spG4Math2019Layer = L.geoJson();
-	spG8Math2019Layer = L.geoJson();
-	spG4Reading2019Layer = L.geoJson();
-	spG8Reading2019Layer = L.geoJson();
+	// spG4Math2019Layer = L.geoJson(statesJSON, {
+	// 	style: (feature) => getScoresStyle(feature, 2),
+	// });
+
+	const spG4Math2019NumberLayer = L.featureGroup();
+	const spG8Math2019NumberLayer = L.featureGroup();
+	const spG4Reading2019NumberLayer = L.featureGroup();
+	const spG8Reading2019NumberLayer = L.featureGroup();
+
+	statesCentersJSON.forEach(function (state, index) {
+		function getMarker(score) {
+			return L.marker([state.latitude, state.longitude], {
+				icon: L.divIcon({
+					iconSize: null,
+					className: "score-overlay",
+					html: `<div>${score}</div>`,
+				}),
+			});
+		}
+
+		const score_G4Math2019 = getStateScore(state.state, 2);
+		const score_G8Math2019 = getStateScore(state.state, 3);
+		const score_G4Reading2019 = getStateScore(state.state, 4);
+		const score_G8Reading2019 = getStateScore(state.state, 5);
+
+		const marker_G4Math2019 = getMarker(score_G4Math2019);
+		const marker_G8Math2019 = getMarker(score_G8Math2019);
+		const marker_G4Reading2019 = getMarker(score_G4Reading2019);
+		const marker_G8Reading2019 = getMarker(score_G8Reading2019);
+
+		spG4Math2019NumberLayer.addLayer(marker_G4Math2019);
+		spG8Math2019NumberLayer.addLayer(marker_G8Math2019);
+		spG4Reading2019NumberLayer.addLayer(marker_G4Reading2019);
+		spG8Reading2019NumberLayer.addLayer(marker_G8Reading2019);
+	});
+
+	// spG4Math2019Layer = L.layerGroup([spG4Math2019NumberLayer, spG4Math2019ColorLayer]);
+	spG4Math2019Layer = L.layerGroup([spG4Math2019NumberLayer]);
+	spG8Math2019Layer = L.layerGroup([spG8Math2019NumberLayer]);
+	spG4Reading2019Layer = L.layerGroup([spG4Reading2019NumberLayer]);
+	spG8Reading2019Layer = L.layerGroup([spG8Reading2019NumberLayer]);
 
 	controls.addOverlay(spG4Math2019Layer, "Standardized Performances - Grade 4 - Math - 2019");
 	controls.addOverlay(spG8Math2019Layer, "Standardized Performances - Grade 8 - Math - 2019");
@@ -134,6 +181,13 @@ function createLayers() {
 		spG8Reading2019Layer,
 		"Standardized Performances - Grade 8 - Reading - 2019"
 	);
+}
+
+function getStateScore(state, csvPathsIndex) {
+	var scoresKey = Object.keys(csvData[csvPathsIndex].data[0])[1];
+	const stateData = csvData[csvPathsIndex].data.find((row) => row.Jurisdiction === state);
+	const stateScore = stateData[scoresKey];
+	return stateScore;
 }
 
 function getArtsEducationPolicyStyle(feature, index) {
@@ -156,19 +210,28 @@ function getArtsEducationPolicyStyle(feature, index) {
 	}
 }
 
+// TODO: if scores layers are the only ones selected, we want to do heatmap. else, we should just do the numbers
+// function getScoresStyle(feature, csvPathsIndex) {
+// 	const state = csvData[2].data.find((row) => row.Jurisdiction === feature.properties.NAME);
+
+// 	if (state) {
+// 	}
+// }
+
 //* get color based on what art policy we specify (by index)
 function getArtsEducationPolicyColor(index) {
 	// prettier-ignore
-	const fillColor = index == 1 ? "#007AFF" :
-					  index == 2 ? "#FF0000" :
-					  index == 3 ? "#FFE600" :
-					  index == 4 ? "#24FF00" :
-					  index == 5 ? "#00FFA3" :
-					  index == 6 ? "#DB00FF" :
-					  index == 7 ? "#4200FF" :
-					  index == 8 ? "#FF7A00" :
-					  index == 9 ? "#5E382C" :
-					 			   "#6F4200";
+	const fillColor = index == 1  ? "#007AFF" :
+					  index == 2  ? "#FF0000" :
+					  index == 3  ? "#FFE600" :
+					  index == 4  ? "#24FF00" :
+					  index == 5  ? "#00FFA3" :
+					  index == 6  ? "#DB00FF" :
+					  index == 7  ? "#4200FF" :
+					  index == 8  ? "#FF7A00" :
+					  index == 9  ? "#5E382C" :
+					  index == 10 ? "#6F4200" :
+					  null;
 	return fillColor;
 }
 
@@ -190,4 +253,44 @@ async function readCSVs() {
 			},
 		});
 	});
+}
+
+//* `value` must be from 0 to 1
+function getHeatmapColorFromValue(value) {
+	var h = (1.0 - value) * 240;
+	return { hue: h, saturation: 1, luminance: 0.5 };
+}
+
+function hslToRGB(h, s, l) {
+	var r, g, b, hue2rgb, q, p;
+
+	if (s === 0) {
+		r = g = b = l;
+	} else {
+		hue2rgb = function hue2rgb(p, q, t) {
+			if (t < 0) {
+				t += 1;
+			} else if (t > 1) {
+				t -= 1;
+			}
+
+			if (t >= 0.66) {
+				return p;
+			} else if (t >= 0.5) {
+				return p + (q - p) * (0.66 - t) * 6;
+			} else if (t >= 0.33) {
+				return q;
+			} else {
+				return p + (q - p) * 6 * t;
+			}
+		};
+
+		q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+		p = 2 * l - q;
+		r = hue2rgb(p, q, h + 0.33);
+		g = hue2rgb(p, q, h);
+		b = hue2rgb(p, q, h - 0.33);
+	}
+
+	return [(r * 255) | 0, (g * 255) | 0, (b * 255) | 0]; // (x << 0) = Math.floor(x)
 }
