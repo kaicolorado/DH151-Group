@@ -150,6 +150,82 @@ body {
 	grid-area: icon;
 }
 
+.layer-control {
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	vertical-align: middle;
+}
+
+.layer-control-item {
+	display: flex;
+	position: relative;
+	padding-bottom: 1em;
+}
+
+.layer-control-item-text {
+	margin-left: 70px;
+}
+
+.layer-control-item-text p {
+	margin: 0;
+}
+
+.switch input {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.slider {
+	position: relative;
+	cursor: pointer;
+	top: 50%;
+	transform: translateY(-50%);
+	float: left;
+	background-color: #ccc;
+	-webkit-transition: 0.4s;
+	transition: 0.4s;
+	width: 60px;
+	height: 34px;
+}
+
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 26px;
+	top: 50%;
+	margin: 0;
+	transform: translateY(-50%);
+	margin-left: 4px;
+	width: 26px;
+	background-color: white;
+	-webkit-transition: 0.4s;
+	transition: 0.4s;
+}
+
+input:checked + .slider {
+	background-color: #2196f3;
+}
+
+input:focus + .slider {
+	box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+	-webkit-transform: translateX(26px) translateY(-50%);
+	-ms-transform: translateX(26px) translateY(-50%);
+	transform: translateX(26px) translateY(-50%);
+}
+
+.slider.round {
+	border-radius: 34px;
+}
+
+.slider.round:before {
+	border-radius: 50%;
+}
+
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
 	#expandable-sidebar {

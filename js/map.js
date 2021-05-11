@@ -20,16 +20,19 @@ const artsEducationPolicyTitles = [
 	"AEP10: State provides funding for arts edu grant program or school for the arts",
 ];
 
+const scoresLayersTitles = [
+	"Standardized Performances - Grade 4 - Math - 2019",
+	"Standardized Performances - Grade 8 - Math - 2019",
+	"Standardized Performances - Grade 4 - Reading - 2019",
+	"Standardized Performances - Grade 8 - Reading - 2019",
+];
+
 var map;
 const controls = L.control.layers();
 const legend = new L.Legend();
 
 const artsEducationPolicyLayers = [];
-var spG4Math2019Layer;
-var spG8Math2019Layer;
-var spG4Reading2019Layer;
-var spG8Reading2019Layer;
-const scoresLayers = [spG4Math2019Layer, spG8Math2019Layer, spG4Reading2019Layer, spG8Reading2019Layer];
+const scoresLayers = [];
 
 var statesPolygonsJSON;
 var statesCentersJSON;
@@ -84,7 +87,7 @@ function createMap() {
 }
 
 function createLayers() {
-	for (var i = 0; i < 10; i++) {
+	for (let i = 0; i < 10; i++) {
 		const index = i;
 		artsEducationPolicyLayers.push(
 			L.geoJson(statesPolygonsJSON, {
@@ -97,17 +100,17 @@ function createLayers() {
 	const scoresKey = Object.keys(csvData[2].data[0])[1];
 
 	const scoresLayerObjects = [];
-	scoresLayers.forEach(function (_, index) {
+	for (let i = 0; i < 4; i++) {
 		const scoresNumberLayer = L.featureGroup();
 
-		const scores = csvData[index + 2].data.map((val) => val[scoresKey]);
+		const scores = csvData[i + 2].data.map((val) => val[scoresKey]);
 		scores.pop(); //* removes last element, Puerto Rico (b/c not a state)
 
 		const min = Math.min(...scores);
 		const max = Math.max(...scores);
 
 		scoresLayerObjects.push({ scoresNumberLayer, min, max });
-	});
+	}
 
 	statesCentersJSON.forEach(function (state, _) {
 		function getMarker(score) {
@@ -120,25 +123,70 @@ function createLayers() {
 			});
 		}
 
-		scoresLayers.forEach(function (__, index) {
-			const score = getStateScore(state.state, index + 2);
+		for (let i = 0; i < 4; i++) {
+			const score = getStateScore(state.state, i + 2);
 			const marker = getMarker(score);
-			scoresLayerObjects[index].scoresNumberLayer.addLayer(marker);
-		});
+			scoresLayerObjects[i].scoresNumberLayer.addLayer(marker);
+		}
 	});
 
-	scoresLayers.forEach(function (_, index) {
+	for (let i = 0; i < 4; i++) {
+		const index = i;
 		const scoresColorLayer = L.geoJson(statesPolygonsJSON, {
 			style: (feature) =>
 				getScoresStyle(feature, index + 2, scoresLayerObjects[index].min, scoresLayerObjects[index].max),
 		});
-		scoresLayers[index] = L.layerGroup([scoresLayerObjects[index].scoresNumberLayer, scoresColorLayer]);
+		scoresLayers.push(L.layerGroup([scoresLayerObjects[i].scoresNumberLayer, scoresColorLayer]));
+
+		controls.addOverlay(scoresLayers[i], scoresLayersTitles[i]);
+	}
+
+	setExpandableSidebarContent();
+}
+
+function setExpandableSidebarContent() {
+	$("#correlation-stats").html(`<h3>Please select two layers to view correlation data.</h3>`);
+
+	artsEducationPolicyLayers.forEach(function (_, index) {
+		$(".layer-control").append(/*html*/ `
+			<div class="layer-control-item">
+				<label class="switch">
+					<input type="checkbox" data-layertype="artsEducationPolicy" data-layerindex="${index}">
+					<span class="slider round"></span>
+					<div class="layer-control-item-text"><p>${artsEducationPolicyTitles[index]}</p></div>
+				</label>
+			</div>
+		`);
 	});
 
-	controls.addOverlay(scoresLayers[0], "Standardized Performances - Grade 4 - Math - 2019");
-	controls.addOverlay(scoresLayers[1], "Standardized Performances - Grade 8 - Math - 2019");
-	controls.addOverlay(scoresLayers[2], "Standardized Performances - Grade 4 - Reading - 2019");
-	controls.addOverlay(scoresLayers[3], "Standardized Performances - Grade 8 - Reading - 2019");
+	scoresLayers.forEach(function (_, index) {
+		$(".layer-control").append(/*html*/ `
+			<div class="layer-control-item">
+				<label class="switch">
+					<input type="checkbox" data-layertype="scores" data-layerindex="${index}">
+					<span class="slider round"></span>
+					<div class="layer-control-item-text"><p>${scoresLayersTitles[index]}</p></div>
+				</label>
+			</div>
+		`);
+	});
+
+	$('.layer-control-item input[type="checkbox"]').on("change", function () {
+		var checkbox = $(this);
+
+		const layerType = checkbox.data().layertype;
+		const layerIndex = checkbox.data().layerindex;
+
+		if (checkbox.is(":checked")) {
+			layerType === "artsEducationPolicy"
+				? map.addLayer(artsEducationPolicyLayers[layerIndex])
+				: map.addLayer(scoresLayers[layerIndex]);
+		} else {
+			layerType === "artsEducationPolicy"
+				? map.removeLayer(artsEducationPolicyLayers[layerIndex])
+				: map.removeLayer(scoresLayers[layerIndex]);
+		}
+	});
 }
 
 function updateCurrentCorrelation() {
@@ -146,13 +194,13 @@ function updateCurrentCorrelation() {
 	const activeOverlayIndices = getActiveOverlayIndices();
 
 	if (activeOverlayIndices.length != 2) {
-		$("#expandable-sidebar").html("Please select two layers to view correlation data.");
+		$("#correlation-stats").html(`<h3>Please select two layers to view correlation data.</h3>`);
 	} else {
 		const correlation = layersCorrelationMatrix[activeOverlayIndices[0]][activeOverlayIndices[1]];
 		if (correlation === null) {
-			$("#expandable-sidebar").html("N/A");
+			$("#correlation-stats").html("N/A");
 		} else {
-			$("#expandable-sidebar").html(correlation);
+			$("#correlation-stats").html(correlation);
 		}
 	}
 }
