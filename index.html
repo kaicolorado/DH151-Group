@@ -39,14 +39,38 @@
 				$("#expandable-sidebar").css("margin-right", "0");
 				$("#expand-button-div").css("margin-right", expandWidth);
 				$("#sidebar-and-content").css("margin-right", expandWidth);
-				$("#expand-icon").css("transform", "rotate(180deg)"); //* flip icon
+				$("#expand-sidebar-icon").css("transform", "rotate(180deg)"); //* flip icon
 			}
 
 			function closeNav() {
 				$("#expandable-sidebar").css("margin-right", `-${expandWidth}`);
 				$("#expand-button-div").css("margin-right", "0");
 				$("#sidebar-and-content").css("margin-right", "0");
-				$("#expand-icon").css("transform", "rotate(0)"); //* flip icon back
+				$("#expand-sidebar-icon").css("transform", "rotate(0)"); //* flip icon back
+			}
+		</script>
+
+		<script>
+			$(function () {
+				initializeCollapsibles();
+			});
+
+			function initializeCollapsibles() {
+				var collapsibles = $(".collapsible");
+
+				collapsibles.on("click", function () {
+					this.classList.toggle("collapsible-active");
+					var icon = $(this).find("#expand-list-icon");
+					var content = this.nextElementSibling;
+
+					if (content.style.maxHeight) {
+						$(icon).css("transform", "rotate(0deg)");
+						content.style.maxHeight = null;
+					} else {
+						$(icon).css("transform", "rotate(90deg)");
+						content.style.maxHeight = content.scrollHeight + "px";
+					}
+				});
 			}
 		</script>
 	</head>
@@ -78,12 +102,23 @@
 
 		<div id="expand-button-div">
 			<button id="expand-button" onclick="toggleSidebar()">
-				<img id="expand-icon" alt="expand-icon" src="assets/angle-double-left-solid.svg" />
+				<img id="expand-sidebar-icon" alt="expand-sidebar-icon" src="assets/angle-double-left-solid.svg" />
 			</button>
 		</div>
 
 		<div id="expandable-sidebar">
-			<div class="layer-control"></div>
+			<button type="button" class="collapsible">
+				Arts Education Policies
+				<img id="expand-list-icon" alt="expand-list-icon" src="assets/angle-right-solid.svg" />
+			</button>
+			<div class="layer-control" id="arts-education-policy-layers"></div>
+
+			<button type="button" class="collapsible">
+				Standardized Scores
+				<img id="expand-list-icon" alt="expand-list-icon" src="assets/angle-right-solid.svg" />
+			</button>
+			<div class="layer-control" id="scores-layers"></div>
+
 			<div id="correlation-stats"></div>
 		</div>
 

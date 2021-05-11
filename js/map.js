@@ -148,10 +148,10 @@ function setExpandableSidebarContent() {
 	$("#correlation-stats").html(`<h3>Please select two layers to view correlation data.</h3>`);
 
 	artsEducationPolicyLayers.forEach(function (_, index) {
-		$(".layer-control").append(/*html*/ `
+		$("#arts-education-policy-layers").append(/*html*/ `
 			<div class="layer-control-item">
 				<label class="switch">
-					<input type="checkbox" data-layertype="artsEducationPolicy" data-layerindex="${index}">
+					<input type="checkbox" data-layerindex="${index}">
 					<span class="slider round"></span>
 					<div class="layer-control-item-text"><p>${artsEducationPolicyTitles[index]}</p></div>
 				</label>
@@ -160,10 +160,10 @@ function setExpandableSidebarContent() {
 	});
 
 	scoresLayers.forEach(function (_, index) {
-		$(".layer-control").append(/*html*/ `
+		$("#scores-layers").append(/*html*/ `
 			<div class="layer-control-item">
 				<label class="switch">
-					<input type="checkbox" data-layertype="scores" data-layerindex="${index}">
+					<input type="checkbox" data-layerindex="${index}">
 					<span class="slider round"></span>
 					<div class="layer-control-item-text"><p>${scoresLayersTitles[index]}</p></div>
 				</label>
@@ -171,20 +171,27 @@ function setExpandableSidebarContent() {
 		`);
 	});
 
-	$('.layer-control-item input[type="checkbox"]').on("change", function () {
+	$('#arts-education-policy-layers .layer-control-item input[type="checkbox"]').on("change", function () {
 		var checkbox = $(this);
 
-		const layerType = checkbox.data().layertype;
 		const layerIndex = checkbox.data().layerindex;
 
 		if (checkbox.is(":checked")) {
-			layerType === "artsEducationPolicy"
-				? map.addLayer(artsEducationPolicyLayers[layerIndex])
-				: map.addLayer(scoresLayers[layerIndex]);
+			map.addLayer(artsEducationPolicyLayers[layerIndex]);
 		} else {
-			layerType === "artsEducationPolicy"
-				? map.removeLayer(artsEducationPolicyLayers[layerIndex])
-				: map.removeLayer(scoresLayers[layerIndex]);
+			map.removeLayer(artsEducationPolicyLayers[layerIndex]);
+		}
+	});
+
+	$('#scores-layers .layer-control-item input[type="checkbox"]').on("change", function () {
+		var checkbox = $(this);
+
+		const layerIndex = checkbox.data().layerindex;
+
+		if (checkbox.is(":checked")) {
+			map.addLayer(scoresLayers[layerIndex]);
+		} else {
+			map.removeLayer(scoresLayers[layerIndex]);
 		}
 	});
 }

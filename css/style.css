@@ -134,7 +134,7 @@ body {
 	background-color: var(--light-blue);
 }
 
-#expand-icon {
+#expand-sidebar-icon {
 	filter: invert(100%); /* make icon color white instead of black */
 	width: 2em;
 	height: 2em;
@@ -143,17 +143,45 @@ body {
 	transition: transform 0.2s;
 }
 
-#collapse-icon {
-	filter: invert(100%); /* make icon color white instead of black */
+.collapsible {
+	position: relative;
+	background-color: rgb(77, 187, 255);
+	cursor: pointer;
+	padding: 14px;
+	border: none;
+	text-align: left;
+	outline: none;
+	font-size: 16px;
+	display: flex;
+	align-items: center;
+	margin-bottom: 5px;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+	width: calc(100% - 1em); /** 100% - margin-left - margin-right */
+	border-radius: 5px;
+}
+
+.collapsible-active,
+.collapsible:hover {
+	background-color: rgb(166, 219, 252);
+}
+
+#expand-list-icon {
+	/* filter: invert(100%); make icon color white instead of black */
 	width: 2em;
 	height: 2em;
-	grid-area: icon;
+	margin-left: auto;
+	transform: rotate(0deg);
+	transition: transform 0.2s;
 }
 
 .layer-control {
 	padding-left: 0.5em;
 	padding-right: 0.5em;
 	vertical-align: middle;
+	overflow: hidden;
+	max-height: 0;
+	transition: max-height 0.2s ease-out;
 }
 
 .layer-control-item {
