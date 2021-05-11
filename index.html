@@ -36,17 +36,17 @@
 			}
 
 			function openNav() {
-				document.getElementById("expandable-sidebar").style.width = expandWidth;
+				document.getElementById("expandable-sidebar").style.marginRight = "0";
 				document.getElementById("expand-button-div").style.marginRight = expandWidth;
 				document.getElementById("sidebar-and-content").style.marginRight = expandWidth;
-				document.getElementById("expand-icon").style.transform = "rotate(180deg)"; // flip icon
+				document.getElementById("expand-icon").style.transform = "rotate(180deg)"; //* flip icon
 			}
 
 			function closeNav() {
-				document.getElementById("expandable-sidebar").style.width = "0";
+				document.getElementById("expandable-sidebar").style.marginRight = `-${expandWidth}`;
 				document.getElementById("expand-button-div").style.marginRight = "0";
 				document.getElementById("sidebar-and-content").style.marginRight = "0";
-				document.getElementById("expand-icon").style.transform = "rotate(0)"; // flip icon back
+				document.getElementById("expand-icon").style.transform = "rotate(0)"; //* flip icon back
 			}
 		</script>
 	</head>
@@ -66,8 +66,8 @@
 					To interact with the map, begin selecting filters.
 					<br />
 					<br />
-					As you select policies, states will be shaded accordingly. Use the legend in the
-					bottom right of the map to interpret the shading.
+					As you select policies, states will be shaded accordingly. Use the legend in the bottom right of the
+					map to interpret the shading.
 				</div>
 			</div>
 
@@ -82,7 +82,7 @@
 			</button>
 		</div>
 
-		<div id="expandable-sidebar">{Expandable Sidebar}</div>
+		<div id="expandable-sidebar"><h3>Please select two layers to view correlation data.</h3></div>
 
 		<script src="js/csvPaths.js"></script>
 		<script src="js/leafletExtensions.js"></script>

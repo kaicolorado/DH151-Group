@@ -12,6 +12,8 @@ const scoresLayers = [spG4Math2019Layer, spG8Math2019Layer, spG4Reading2019Layer
 var statesPolygonsJSON;
 var statesCentersJSON;
 
+var layersCorrelationMatrix;
+
 const csvPaths = [
 	csvPath_EducationalSpendingInPublicSchools,
 	csvPath_ArtsEducationPolicies,
@@ -31,6 +33,7 @@ $(function () {
 	createMap();
 	getStatePolygons();
 	getStateCenters();
+	getCorrelationMatrix();
 	readCSVs();
 });
 
@@ -56,65 +59,14 @@ function createMap() {
 
 	legend.addTo(map);
 
-	map.on("overlayadd", (_) => legend.setContent(getNewLegendContent()));
-	map.on("overlayremove", (_) => legend.setContent(getNewLegendContent()));
-}
-
-function getNewLegendContent() {
-	const overlays = controls.getOverlays(); //* gets all overlays and whether they're currently selected
-	const activeOverlayTitles = [];
-
-	//* if the layer controls have at least been interacted with (i.e. something has been (de)selected)
-	if (Object.keys(overlays).length !== 0) {
-		for (var key in overlays) {
-			//* if layer is currently selected
-			if (overlays[key]) {
-				const index = Object.keys(overlays).indexOf(key);
-				var titleObj = {};
-				titleObj[key] = index;
-
-				activeOverlayTitles.push(titleObj);
-			}
-		}
-	}
-
-	var newLegendContent = /*html*/ `<h3>Activated Layers</h3>`;
-
-	//* if no layers are currently selected, we want to display 'None'
-	if (activeOverlayTitles.length === 0) {
-		newLegendContent += /*html*/ `<p style="width: 100%; text-align: center;">None</p>`;
-	} else {
-		//* display color and layer name for each activated layer
-		// TODO: if active layer is one of the score ones, we want to have 2 legend entries. One that shows low color and another that shows high
-		// TODO: OR - just have 2 squares next to one entry and put (Low-High) in parentheses
-		activeOverlayTitles.forEach(function (activeOverlayTitle) {
-			const title = Object.keys(activeOverlayTitle)[0];
-			const originalIndex = Object.values(activeOverlayTitle)[0];
-			// console.log(title);
-
-			const colorBoxHTML = /*html*/ `
-					<div
-						class="color-box"
-						style="background-color: ${getArtsEducationPolicyColor(originalIndex + 1)};"
-					></div>
-				`;
-
-			newLegendContent += /*html*/ `${colorBoxHTML} <p>${title}</p> <br>`;
-		});
-	}
-
-	return newLegendContent;
-}
-
-function getStatePolygons() {
-	fetch("data/states-polygons-20m.json").then(async (response) => {
-		statesPolygonsJSON = await response.json();
+	map.on("overlayadd", (_) => {
+		legend.setContent(getNewLegendContent());
+		updateCurrentCorrelation();
 	});
-}
 
-function getStateCenters() {
-	fetch("data/states-center-coords.json").then(async (response) => {
-		statesCentersJSON = await response.json();
+	map.on("overlayremove", (_) => {
+		legend.setContent(getNewLegendContent());
+		updateCurrentCorrelation();
 	});
 }
 
@@ -174,6 +126,110 @@ function createLayers() {
 	controls.addOverlay(scoresLayers[1], "Standardized Performances - Grade 8 - Math - 2019");
 	controls.addOverlay(scoresLayers[2], "Standardized Performances - Grade 4 - Reading - 2019");
 	controls.addOverlay(scoresLayers[3], "Standardized Performances - Grade 8 - Reading - 2019");
+}
+
+function updateCurrentCorrelation() {
+	//* get current index (from list of toggleable layers in the top right of the map) of the layer that was passed to this function
+	const activeOverlayIndices = getActiveOverlayIndices();
+
+	if (activeOverlayIndices.length != 2) {
+		document.getElementById("expandable-sidebar").innerHTML = "Please select two layers to view correlation data.";
+	} else {
+		const correlation = layersCorrelationMatrix[activeOverlayIndices[0]][activeOverlayIndices[1]];
+		if (correlation === null) {
+			document.getElementById("expandable-sidebar").innerHTML = "N/A";
+		} else {
+			document.getElementById("expandable-sidebar").innerHTML = correlation;
+		}
+	}
+}
+
+function getNewLegendContent() {
+	const activeOverlayTitles = getActiveOverlayTitles();
+
+	var newLegendContent = /*html*/ `<h3>Activated Layers</h3>`;
+
+	//* if no layers are currently selected, we want to display 'None'
+	if (activeOverlayTitles.length === 0) {
+		newLegendContent += /*html*/ `<p style="width: 100%; text-align: center;">None</p>`;
+	} else {
+		//* display color and layer name for each activated layer
+		// TODO: if active layer is one of the score ones, we want to have 2 legend entries. One that shows low color and another that shows high
+		// TODO: OR - just have 2 squares next to one entry and put (Low-High) in parentheses
+		activeOverlayTitles.forEach(function (activeOverlayTitle) {
+			const title = Object.keys(activeOverlayTitle)[0];
+			const originalIndex = Object.values(activeOverlayTitle)[0];
+
+			const colorBoxHTML = /*html*/ `
+					<div
+						class="color-box"
+						style="background-color: ${getArtsEducationPolicyColor(originalIndex + 1)};"
+					></div>
+				`;
+
+			newLegendContent += /*html*/ `${colorBoxHTML} <p>${title}</p> <br>`;
+		});
+	}
+
+	return newLegendContent;
+}
+
+function getActiveOverlayTitles() {
+	const overlays = controls.getOverlays(); //* gets all overlays and whether they're currently selected
+	const activeOverlayTitles = [];
+
+	//* if the layer controls have at least been interacted with (i.e. something has been (de)selected)
+	if (Object.keys(overlays).length !== 0) {
+		for (var key in overlays) {
+			//* if layer is currently selected
+			if (overlays[key]) {
+				const index = Object.keys(overlays).indexOf(key);
+				var titleObj = {};
+				titleObj[key] = index;
+
+				activeOverlayTitles.push(titleObj);
+			}
+		}
+	}
+
+	return activeOverlayTitles;
+}
+
+function getActiveOverlayIndices() {
+	const overlays = controls.getOverlays(); //* gets all overlays and whether they're currently selected
+	const activeOverlayIndices = [];
+
+	//* if the layer controls have at least been interacted with (i.e. something has been (de)selected)
+	if (Object.keys(overlays).length !== 0) {
+		for (var key in overlays) {
+			//* if layer is currently selected
+			if (overlays[key]) {
+				const index = Object.keys(overlays).indexOf(key);
+				activeOverlayIndices.push(index);
+			}
+		}
+	}
+
+	return activeOverlayIndices;
+}
+
+function getStatePolygons() {
+	fetch("data/states-polygons-20m.json").then(async (response) => {
+		statesPolygonsJSON = await response.json();
+	});
+}
+
+function getStateCenters() {
+	fetch("data/states-center-coords.json").then(async (response) => {
+		statesCentersJSON = await response.json();
+	});
+}
+
+//* correlation matrix indices must match the indices of the layers in the layer picker
+function getCorrelationMatrix() {
+	fetch("data/correlation-matrix.json").then(async (response) => {
+		layersCorrelationMatrix = await response.json();
+	});
 }
 
 function getStateScore(state, csvPathsIndex) {
