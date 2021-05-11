@@ -146,13 +146,13 @@ function updateCurrentCorrelation() {
 	const activeOverlayIndices = getActiveOverlayIndices();
 
 	if (activeOverlayIndices.length != 2) {
-		document.getElementById("expandable-sidebar").innerHTML = "Please select two layers to view correlation data.";
+		$("#expandable-sidebar").html("Please select two layers to view correlation data.");
 	} else {
 		const correlation = layersCorrelationMatrix[activeOverlayIndices[0]][activeOverlayIndices[1]];
 		if (correlation === null) {
-			document.getElementById("expandable-sidebar").innerHTML = "N/A";
+			$("#expandable-sidebar").html("N/A");
 		} else {
-			document.getElementById("expandable-sidebar").innerHTML = correlation;
+			$("#expandable-sidebar").html(correlation);
 		}
 	}
 }

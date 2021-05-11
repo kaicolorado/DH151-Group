@@ -36,17 +36,17 @@
 			}
 
 			function openNav() {
-				document.getElementById("expandable-sidebar").style.marginRight = "0";
-				document.getElementById("expand-button-div").style.marginRight = expandWidth;
-				document.getElementById("sidebar-and-content").style.marginRight = expandWidth;
-				document.getElementById("expand-icon").style.transform = "rotate(180deg)"; //* flip icon
+				$("#expandable-sidebar").css("margin-right", "0");
+				$("#expand-button-div").css("margin-right", expandWidth);
+				$("#sidebar-and-content").css("margin-right", expandWidth);
+				$("#expand-icon").css("transform", "rotate(180deg)"); //* flip icon
 			}
 
 			function closeNav() {
-				document.getElementById("expandable-sidebar").style.marginRight = `-${expandWidth}`;
-				document.getElementById("expand-button-div").style.marginRight = "0";
-				document.getElementById("sidebar-and-content").style.marginRight = "0";
-				document.getElementById("expand-icon").style.transform = "rotate(0)"; //* flip icon back
+				$("#expandable-sidebar").css("margin-right", `-${expandWidth}`);
+				$("#expand-button-div").css("margin-right", "0");
+				$("#sidebar-and-content").css("margin-right", "0");
+				$("#expand-icon").css("transform", "rotate(0)"); //* flip icon back
 			}
 		</script>
 	</head>
