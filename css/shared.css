@@ -3,12 +3,16 @@
 	--dark-blue: rgb(0, 0, 134);
 }
 
+body,
+html {
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .header {
 	padding: 10px;
 	background-color: var(--dark-blue);
 	color: white;
 	font-size: 2em;
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .tabs {
@@ -18,7 +22,6 @@
 	vertical-align: middle;
 	word-spacing: 30px;
 	padding: 10px;
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .tab:link,

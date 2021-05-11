@@ -1,3 +1,25 @@
+const csvPaths = [
+	csvPath_EducationalSpendingInPublicSchools,
+	csvPath_ArtsEducationPolicies,
+	csvPath_SP_G4_Math_2019,
+	csvPath_SP_G8_Math_2019,
+	csvPath_SP_G4_Reading_2019,
+	csvPath_SP_G8_Reading_2019,
+];
+
+const artsEducationPolicyTitles = [
+	"AEP1: State defines arts as a core academic subject",
+	"AEP2: State adopted early childhood arts edu standards",
+	"AEP3: State adopted elementary/secondary arts edu standards",
+	"AEP4: State requires arts instruction at elementary school level",
+	"AEP5: State requires arts instruction at middle school level",
+	"AEP6: State requires arts instruction at high school level",
+	"AEP7: State includes arts courses as option to fulfill graduation reqs",
+	"AEP8: State requires assessment of students learning in the arts",
+	"AEP9: State requires school to offer arts edu to be accredited",
+	"AEP10: State provides funding for arts edu grant program or school for the arts",
+];
+
 var map;
 const controls = L.control.layers();
 const legend = new L.Legend();
@@ -13,15 +35,6 @@ var statesPolygonsJSON;
 var statesCentersJSON;
 
 var layersCorrelationMatrix;
-
-const csvPaths = [
-	csvPath_EducationalSpendingInPublicSchools,
-	csvPath_ArtsEducationPolicies,
-	csvPath_SP_G4_Math_2019,
-	csvPath_SP_G8_Math_2019,
-	csvPath_SP_G4_Reading_2019,
-	csvPath_SP_G8_Reading_2019,
-];
 
 const csvData = new Array(csvPaths.length);
 
@@ -71,14 +84,14 @@ function createMap() {
 }
 
 function createLayers() {
-	for (var i = 1; i < 11; i++) {
+	for (var i = 0; i < 10; i++) {
 		const index = i;
 		artsEducationPolicyLayers.push(
 			L.geoJson(statesPolygonsJSON, {
-				style: (feature) => getArtsEducationPolicyStyle(feature, index),
+				style: (feature) => getArtsEducationPolicyStyle(feature, index + 1),
 			})
 		);
-		controls.addOverlay(artsEducationPolicyLayers[i - 1], `Arts Education Policy ${i}`);
+		controls.addOverlay(artsEducationPolicyLayers[i], artsEducationPolicyTitles[i]);
 	}
 
 	const scoresKey = Object.keys(csvData[2].data[0])[1];
@@ -107,7 +120,7 @@ function createLayers() {
 			});
 		}
 
-		scoresLayers.forEach(function (_, index) {
+		scoresLayers.forEach(function (__, index) {
 			const score = getStateScore(state.state, index + 2);
 			const marker = getMarker(score);
 			scoresLayerObjects[index].scoresNumberLayer.addLayer(marker);

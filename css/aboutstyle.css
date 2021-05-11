@@ -21,7 +21,6 @@ body {
 	vertical-align: top;
 	padding: 20px;
 	color: white;
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .column1 h1,
@@ -47,25 +46,20 @@ body {
 }
 
 .overview {
-	text-align: center;
+	max-width: 1000px;
 	padding: 20px;
+	margin: 0 auto 2em;
+	word-wrap: break-word;
+	text-align: justify;
 	color: white;
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.overview h1 {
+.overview h1,
+.overview h2 {
 	font-weight: normal;
 }
 
-.overview p {
+.overview p,
+.overview li {
 	font-size: 20px;
-	word-wrap: break-word;
-	vertical-align: middle;
-	max-width: 1000px;
-	margin: 0 auto 2em;
-	float: none;
-}
-
-.description-title {
-	font-size: 20pt;
 }
