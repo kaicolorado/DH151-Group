@@ -91,15 +91,16 @@ body {
 
 #expandable-sidebar {
 	margin-right: -16em;
-	height: 100%;
+	height: auto;
 	width: 16em;
 	position: fixed;
 	z-index: 1;
 	top: 0;
 	right: 0;
+	bottom: 0;
 	background-color: var(--light-blue);
 	overflow-x: hidden; /* Disable horizontal scroll */
-	padding-top: 60px; /* Place content 60px from the top */
+	padding-top: 50px; /* Place content 60px from the top */
 	transition: 0.5s;
 }
 
@@ -143,6 +144,22 @@ body {
 	transition: transform 0.2s;
 }
 
+#expandable-sidebar-content {
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+}
+
+#correlation-stats {
+	height: 60px;
+	padding-bottom: 1em;
+	display: flex;
+}
+
+#correlation-stats h3 {
+	margin: 0;
+	align-self: center;
+}
+
 .collapsible {
 	position: relative;
 	background-color: rgb(77, 187, 255);
@@ -155,9 +172,7 @@ body {
 	display: flex;
 	align-items: center;
 	margin-bottom: 5px;
-	margin-left: 0.5em;
-	margin-right: 0.5em;
-	width: calc(100% - 1em); /** 100% - margin-left - margin-right */
+	width: 100%;
 	border-radius: 5px;
 }
 
@@ -176,8 +191,6 @@ body {
 }
 
 .layer-control {
-	padding-left: 0.5em;
-	padding-right: 0.5em;
 	vertical-align: middle;
 	overflow: hidden;
 	max-height: 0;

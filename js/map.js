@@ -205,9 +205,9 @@ function updateCurrentCorrelation() {
 	} else {
 		const correlation = layersCorrelationMatrix[activeOverlayIndices[0]][activeOverlayIndices[1]];
 		if (correlation === null) {
-			$("#correlation-stats").html("N/A");
+			$("#correlation-stats").html("<h3>Correlation: N/A</h3>");
 		} else {
-			$("#correlation-stats").html(correlation);
+			$("#correlation-stats").html(`<h3>Correlation: ${correlation.toFixed(5)}</h3>`);
 		}
 	}
 }
