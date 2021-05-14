@@ -27,6 +27,9 @@ const scoresLayersTitles = [
 	"Standardized Performances - Grade 8 - Reading - 2019",
 ];
 
+//* change b/w 1 and 0 based on whether you want the Arts Edu policy layers to be single colored or not
+const useMonoColorsForArtsEduPolicyLayers = 1;
+
 var map;
 const controls = L.control.layers();
 const legend = new L.Legend();
@@ -91,7 +94,10 @@ function createLayers() {
 		const index = i;
 		artsEducationPolicyLayers.push(
 			L.geoJson(statesPolygonsJSON, {
-				style: (feature) => getArtsEducationPolicyStyle(feature, index + 1),
+				style: (feature) =>
+					useMonoColorsForArtsEduPolicyLayers
+						? getArtsEducationPolicyStyleMono(feature, i + 1)
+						: getArtsEducationPolicyStyle(feature, i + 1),
 			})
 		);
 		controls.addOverlay(artsEducationPolicyLayers[i], artsEducationPolicyTitles[i]);
@@ -224,19 +230,49 @@ function getNewLegendContent() {
 		//* display color and layer name for each activated layer
 		// TODO: if active layer is one of the score ones, we want to have 2 legend entries. One that shows low color and another that shows high
 		// TODO: OR - just have 2 squares next to one entry and put (Low-High) in parentheses
-		activeOverlayTitles.forEach(function (activeOverlayTitle) {
-			const title = Object.keys(activeOverlayTitle)[0];
-			const originalIndex = Object.values(activeOverlayTitle)[0];
 
-			const colorBoxHTML = /*html*/ `
-					<div
-						class="color-box"
-						style="background-color: ${getArtsEducationPolicyColor(originalIndex + 1)};"
-					></div>
+		if (useMonoColorsForArtsEduPolicyLayers) {
+			const activeOverlayTitlesArtsEduPolicies = activeOverlayTitles.filter((titleObject) => {
+				const title = Object.keys(titleObject)[0];
+				return title.includes("AEP");
+			});
+
+			for (let i = 1; i <= activeOverlayTitlesArtsEduPolicies.length; i++) {
+				let colorBoxSingle = /*html*/ `<div class="color-box-single" style="background-color: #007aff;"></div>`;
+
+				for (let j = 1; j < i; j++) {
+					colorBoxSingle += /*html*/ `<div class="color-box-single" style="background-color: #007aff;"></div>`;
+				}
+
+				newLegendContent += /*html*/ `
+					<div class="legend-layer-info">
+						<div class="color-box">
+							${colorBoxSingle}
+						</div>
+						<p>${i} ${i === 1 ? "Art Policy" : "Art Policies"} Implemented</p>
+					</div>
+					<br>
+				`;
+			}
+		} else {
+			activeOverlayTitles.forEach(function (activeOverlayTitle) {
+				const title = Object.keys(activeOverlayTitle)[0];
+				const originalIndex = Object.values(activeOverlayTitle)[0];
+
+				const colorBoxHTML = /*html*/ `
+					<div class="color-box">
+						<div class="color-box-single" style="background-color: ${getArtsEducationPolicyColor(originalIndex + 1)};"></div>
+					</div>
 				`;
 
-			newLegendContent += /*html*/ `${colorBoxHTML} <p>${title}</p> <br>`;
-		});
+				newLegendContent += /*html*/ `
+					<div class="legend-layer-info">${colorBoxHTML}
+						<p>${title}</p>
+					</div>
+					<br>
+				`;
+			});
+		}
 	}
 
 	return newLegendContent;
@@ -336,6 +372,25 @@ function getArtsEducationPolicyStyle(feature, index) {
 	if (state && state[Object.keys(state)[index]] === "Yes") {
 		return {
 			fillColor: getArtsEducationPolicyColor(index),
+			fillOpacity: 0.2,
+			color: "black",
+			weight: 0.3,
+		};
+	} else {
+		return {
+			fillOpacity: 0,
+			weight: 0,
+		};
+	}
+}
+
+function getArtsEducationPolicyStyleMono(feature, index) {
+	const state = csvData[1].data.find((row) => row.State === feature.properties.NAME);
+
+	//* if we found a state from above and the current indexed column's result for that state is 'Yes', we want to give it a color
+	if (state && state[Object.keys(state)[index]] === "Yes") {
+		return {
+			fillColor: "#007AFF",
 			fillOpacity: 0.2,
 			color: "black",
 			weight: 0.3,

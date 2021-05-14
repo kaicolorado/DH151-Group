@@ -50,20 +50,26 @@ body {
 	text-align: center;
 }
 
-.activated-layers-legend .color-box {
-	width: 10px;
-	height: 10px;
-	display: inline-block;
-	background-color: rgba(255, 255, 255, 0);
-	padding: 0.2em;
-	margin-right: 0.5em;
-	opacity: 40%;
-	vertical-align: middle;
+.legend-layer-info {
+	display: flex;
+	align-items: center;
 }
 
-.activated-layers-legend p {
+.activated-layers-legend .color-box {
+	width: fit-content;
+	height: fit-content;
+	display: grid;
+	background-color: rgba(255, 255, 255, 0);
+	margin-right: 0.5em;
+}
+
+.color-box-single {
+	grid-area: 1/1;
+	width: 10px;
+	height: 10px;
+	padding: 0.2em;
 	display: inline-block;
-	vertical-align: middle;
+	opacity: 40%;
 }
 
 .score-overlay {
