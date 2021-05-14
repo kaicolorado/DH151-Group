@@ -44,6 +44,8 @@ var layersCorrelationMatrix;
 
 const csvData = new Array(csvPaths.length);
 
+// var activeOverlays = [];
+
 // REVIEW: we can either modify the colors of a single layer based on what layers the user selects,
 //         or overlay multiple layers, one for each feature.
 
@@ -79,19 +81,36 @@ function createMap() {
 	legend.addTo(map);
 
 	map.on("overlayadd", (_) => {
+		// addActiveOverlayID(event);
 		legend.setContent(getNewLegendContent());
+		updateScoresLayersStyle();
 		updateCurrentCorrelation();
 	});
 
 	map.on("overlayremove", (_) => {
+		// removeActiveOverlayID(event);
 		legend.setContent(getNewLegendContent());
+		updateScoresLayersStyle();
 		updateCurrentCorrelation();
 	});
 }
 
+// function addActiveOverlayID(event) {
+// 	activeOverlays.push({ name: event.name, id: event.layer._leaflet_id });
+// }
+
+// function removeActiveOverlayID(event) {
+// 	activeOverlays = activeOverlays.filter((overlay) => overlay.id !== event.layer._leaflet_id);
+// }
+
 function createLayers() {
+	createArtsEduPolicyLayers();
+	createScoresLayers();
+	setExpandableSidebarContent();
+}
+
+function createArtsEduPolicyLayers() {
 	for (let i = 0; i < 10; i++) {
-		const index = i;
 		artsEducationPolicyLayers.push(
 			L.geoJson(statesPolygonsJSON, {
 				style: (feature) =>
@@ -102,7 +121,9 @@ function createLayers() {
 		);
 		controls.addOverlay(artsEducationPolicyLayers[i], artsEducationPolicyTitles[i]);
 	}
+}
 
+function createScoresLayers() {
 	const scoresKey = Object.keys(csvData[2].data[0])[1];
 
 	const scoresLayerObjects = [];
@@ -146,8 +167,6 @@ function createLayers() {
 
 		controls.addOverlay(scoresLayers[i], scoresLayersTitles[i]);
 	}
-
-	setExpandableSidebarContent();
 }
 
 function setExpandableSidebarContent() {
@@ -231,12 +250,9 @@ function getNewLegendContent() {
 		// TODO: if active layer is one of the score ones, we want to have 2 legend entries. One that shows low color and another that shows high
 		// TODO: OR - just have 2 squares next to one entry and put (Low-High) in parentheses
 
-		if (useMonoColorsForArtsEduPolicyLayers) {
-			const activeOverlayTitlesArtsEduPolicies = activeOverlayTitles.filter((titleObject) => {
-				const title = Object.keys(titleObject)[0];
-				return title.includes("AEP");
-			});
+		const activeOverlayTitlesArtsEduPolicies = getActiveOverlayTitlesArtsEduPolicies();
 
+		if (useMonoColorsForArtsEduPolicyLayers) {
 			for (let i = 1; i <= activeOverlayTitlesArtsEduPolicies.length; i++) {
 				let colorBoxSingle = /*html*/ `<div class="color-box-single" style="background-color: #007aff;"></div>`;
 
@@ -255,7 +271,7 @@ function getNewLegendContent() {
 				`;
 			}
 		} else {
-			activeOverlayTitles.forEach(function (activeOverlayTitle) {
+			activeOverlayTitlesArtsEduPolicies.forEach(function (activeOverlayTitle) {
 				const title = Object.keys(activeOverlayTitle)[0];
 				const originalIndex = Object.values(activeOverlayTitle)[0];
 
@@ -266,13 +282,26 @@ function getNewLegendContent() {
 				`;
 
 				newLegendContent += /*html*/ `
-					<div class="legend-layer-info">${colorBoxHTML}
+					<div class="legend-layer-info">
+						${colorBoxHTML}
 						<p>${title}</p>
 					</div>
 					<br>
 				`;
 			});
 		}
+
+		const activeOverlayTitlesScores = getActiveOverlayTitlesScores();
+
+		activeOverlayTitlesScores.forEach(function (titleObject) {
+			const title = Object.keys(titleObject)[0];
+			newLegendContent += /*html*/ `
+					<div class="legend-layer-info">
+						<p>${title}</p>
+					</div>
+					<br>
+				`;
+		});
 	}
 
 	return newLegendContent;
@@ -317,6 +346,22 @@ function getActiveOverlayIndices() {
 	return activeOverlayIndices;
 }
 
+function getActiveOverlayTitlesArtsEduPolicies() {
+	return getActiveOverlayTitles().filter((titleObject) => {
+		const title = Object.keys(titleObject)[0];
+		return title.includes("AEP");
+		// REVIEW: may need to change this in the future if we stop including 'AEP' in the title
+	});
+}
+
+function getActiveOverlayTitlesScores() {
+	return getActiveOverlayTitles().filter((titleObject) => {
+		const title = Object.keys(titleObject)[0];
+		return title.includes("Standardized Performances");
+		// REVIEW: may need to change this in the future if we stop including 'Standardized Performances' in the title
+	});
+}
+
 function getStatePolygons() {
 	fetch("data/states-polygons-20m.json").then(async (response) => {
 		statesPolygonsJSON = await response.json();
@@ -341,27 +386,6 @@ function getStateScore(state, csvPathsIndex) {
 	const stateData = csvData[csvPathsIndex].data.find((row) => row.Jurisdiction === state);
 	const stateScore = stateData[scoresKey];
 	return stateScore;
-}
-
-// TODO: if scores layers are the only ones selected, we want to do heatmap. else, we should just do the numbers
-function getScoresStyle(feature, csvPathsIndex, min, max) {
-	const stateData = csvData[csvPathsIndex].data.find((row) => row.Jurisdiction === feature.properties.NAME);
-
-	if (stateData) {
-		var scoresKey = Object.keys(csvData[csvPathsIndex].data[0])[1];
-		const stateScore = stateData[scoresKey];
-
-		const scaledVal = (stateScore - min) / (max - min);
-		const colorHSL = getHeatmapColorFromValue(scaledVal);
-		const colorHex = hslToHex(colorHSL.hue, colorHSL.saturation, colorHSL.luminance);
-
-		return {
-			fillColor: colorHex,
-			fillOpacity: 0.2,
-			color: "black",
-			weight: 0.3,
-		};
-	}
 }
 
 function getArtsEducationPolicyStyle(feature, index) {
@@ -418,6 +442,44 @@ function getArtsEducationPolicyColor(index) {
 					  index == 10 ? "#6F4200" :
 					  null;
 	return fillColor;
+}
+
+function getScoresStyle(feature, csvPathsIndex, min, max) {
+	const stateData = csvData[csvPathsIndex].data.find((row) => row.Jurisdiction === feature.properties.NAME);
+
+	if (stateData) {
+		var scoresKey = Object.keys(csvData[csvPathsIndex].data[0])[1];
+		const stateScore = stateData[scoresKey];
+
+		const scaledVal = (stateScore - min) / (max - min);
+		const colorHSL = getHeatmapColorFromValue(scaledVal);
+		const colorHex = hslToHex(colorHSL.hue, colorHSL.saturation, colorHSL.luminance);
+
+		return {
+			fillColor: colorHex,
+			fillOpacity: 0.2,
+			color: "black",
+			weight: 0.3,
+		};
+	}
+}
+
+function updateScoresLayersStyle() {
+	if (getActiveOverlayTitlesArtsEduPolicies().length > 0) {
+		scoresLayers.forEach(function (layerGroup) {
+			layerGroup.eachLayer(function (layer) {
+				layer.setStyle({ fillOpacity: 0 });
+			});
+		});
+	} else {
+		scoresLayers.forEach(function (layerGroup) {
+			layerGroup.eachLayer(function (layer) {
+				if (layer instanceof L.GeoJSON) {
+					layer.resetStyle();
+				}
+			});
+		});
+	}
 }
 
 async function readCSVs() {
