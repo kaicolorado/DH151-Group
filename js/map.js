@@ -232,7 +232,8 @@ function resetHighlight(e, layerType, index) {
 		// scoresLayers[index].resetStyle(e.target);
 		scoresLayers[index].eachLayer(function (layer) {
 			if (layer instanceof L.GeoJSON) {
-				layer.resetStyle(e.target);
+				// layer.resetStyle(e.target);
+				layer.setStyle({ fillOpacity: 0, weight: 0.3 });
 			}
 		});
 	}
