@@ -81,17 +81,84 @@
 		<div class="tabs">
 			<a class="tab" href="index.html">Home</a>
 			<a class="tab" href="about.html">About</a>
+			<a class="tab" href="policies.html">Arts Edu Policies</a>
 		</div>
 
 		<div id="sidebar-and-content">
 			<div id="left-sidebar">
-				<div class="sidebar-title"><h3>Welcome!</h3></div>
+				<div class="sidebar-title"><h1>Welcome!</h1></div>
 				<div class="sidebar-content">
-					To interact with the map, begin selecting filters.
-					<br />
-					<br />
-					As you select policies, states will be shaded accordingly. Use the legend in the bottom right of the
-					map to interpret the shading.
+					<p>To interact with the map, begin selecting filters.</p>
+					<p>
+						As you select policies, states will be shaded accordingly. Use the legend in the bottom right of
+						the map to interpret the shading.
+					</p>
+
+					<h2>What it means</h2>
+					<!-- Make each section expandable -->
+					<button type="button" class="collapsible">
+						<h3>Arts Education Policies</h3>
+						<img id="expand-list-icon" alt="expand-list-icon" src="assets/angle-right-solid.svg" />
+					</button>
+					<div class="collapsible-content">
+						<p>
+							These policies describe where each state stands on different aspects of arts in education.
+						</p>
+
+						<h4>AEP1: Arts as a Core Academic Subject</h4>
+						<p>
+							Schools must offer classes in various arts disciplines. Examples include dance, music,
+							visual arts, and theatre.
+						</p>
+						<!-- TODO: combine these 2? -->
+						<h4>AEP2: Early Childhood Arts Ed Standards</h4>
+						<p>
+							The state has adopted/defined early childhood/prekindgergarden arts education standards.
+							This means they have set guidelines for how arts subjects should be taught in the state's
+							pre-K schools.
+						</p>
+
+						<h4>AEP3: Elementary & Secondary Arts Ed Standards</h4>
+						<p>
+							The state has adopted/defined elementary and secondary arts education standards. This means
+							they have set guidelines for how arts subjects should be taught in the state's elementary
+							and high schools.
+						</p>
+
+						<!-- TODO: combine these 3? -->
+						<h4>AEP4: Arts Ed Instructional Requirement - Elementary School</h4>
+						<p>Elementary schools must teach state-specified arts courses.</p>
+
+						<h4>AEP5: Arts Ed Instructional Requirement - Middle School</h4>
+						<p>Middle schools must teach state-specified arts courses.</p>
+
+						<h4>AEP6: Arts Ed Instructional Requirement - High School</h4>
+						<p>High schools must teach state-specified arts courses.</p>
+
+						<h4>AEP7: Arts Alteratives for High School Graduation</h4>
+						<p>Students may take arts courses to satisfy specific requirements for graduation.</p>
+
+						<h4>AEP8: Arts Ed Assessment Requirements</h4>
+						<p>
+							Schools must assess students taking arts classes based on the content covered in the class.
+							(This means they are not standardized, but specific to what is being taught at that
+							school/class.)
+						</p>
+
+						<h4>AEP9: Arts Ed Requirements for State Accreditation</h4>
+						<p>
+							Schools must offer arts classes as specified in each state's policy code to be
+							accredited/recognized.
+						</p>
+
+						<h4>AEP10: State Arts Ed Grant Program or School for Arts</h4>
+						<p>
+							Students studying the arts, along with students in other fields, may be supported
+							financially or otherwise to help further their careers. This can include supporting
+							exceptionally gifted students in the arts by including them in advanced schooling, helping
+							them get further along, faster.
+						</p>
+					</div>
 				</div>
 			</div>
 
@@ -108,19 +175,22 @@
 
 		<div id="expandable-sidebar">
 			<div id="expandable-sidebar-content">
+				<h3>Correlation</h3>
 				<div id="correlation-stats"></div>
 
+				<h3>Layer Controls</h3>
+				<br />
 				<button type="button" class="collapsible">
-					Arts Education Policies
+					<h4>Arts Education Policies</h4>
 					<img id="expand-list-icon" alt="expand-list-icon" src="assets/angle-right-solid.svg" />
 				</button>
-				<div class="layer-control" id="arts-education-policy-layers"></div>
+				<div class="collapsible-content" id="arts-education-policy-layers"></div>
 
 				<button type="button" class="collapsible">
-					Standardized Scores
+					<h4>Standardized Scores</h4>
 					<img id="expand-list-icon" alt="expand-list-icon" src="assets/angle-right-solid.svg" />
 				</button>
-				<div class="layer-control" id="scores-layers"></div>
+				<div class="collapsible-content" id="scores-layers"></div>
 			</div>
 		</div>
 

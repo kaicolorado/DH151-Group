@@ -1,4 +1,4 @@
-/* *** General */
+/* *************** General */
 
 body,
 html {
@@ -28,9 +28,10 @@ body {
 	grid-template-areas: "sidebar content";
 	flex-grow: 1;
 	transition: margin-right 0.5s;
+	overflow: hidden;
 }
 
-/* *** Map */
+/* *************** Map */
 
 #map {
 	height: 100%;
@@ -83,17 +84,84 @@ body {
 	cursor: grab !important;
 }
 
-/* *** Left Sidebar */
+/* *************** Sidebars - Shared */
+
+.collapsible {
+	position: relative;
+	background-color: rgb(77, 187, 255);
+	cursor: pointer;
+	padding: 14px;
+	border: none;
+	text-align: left;
+	outline: none;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	border-radius: 5px;
+}
+
+.collapsible-active,
+.collapsible:hover {
+	background-color: rgb(166, 219, 252);
+}
+
+.collapsible-content {
+	vertical-align: middle;
+	overflow: hidden;
+	max-height: 0;
+	transition: max-height 0.2s ease-out;
+}
+
+#expand-list-icon {
+	/* filter: invert(100%); make icon color white instead of black */
+	width: 2em;
+	height: 2em;
+	margin-left: auto;
+	transform: rotate(0deg);
+	transition: transform 0.2s;
+}
+
+/* *************** Left Sidebar */
 
 #left-sidebar {
-	color: white;
 	grid-area: sidebar;
 	padding: 10px;
 	background-color: var(--light-blue);
 	overflow: auto;
 }
 
-/* *** Expandable Sidebar */
+#left-sidebar .collapsible {
+	font-size: 15px;
+	transition: border-radius 0.7s;
+}
+
+#left-sidebar .collapsible-active {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	transition: border-radius 0.1s;
+}
+
+#left-sidebar .collapsible-content {
+	background-color: rgb(166, 219, 252);
+}
+
+#left-sidebar .collapsible-content h4,
+#left-sidebar .collapsible-content p {
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+#left-sidebar .collapsible-content h4 {
+	margin-bottom: 0;
+	padding-bottom: 8px;
+}
+
+#left-sidebar .collapsible-content p {
+	margin-top: 0;
+	padding-bottom: 8px;
+}
+
+/* *************** Expandable Sidebar */
 
 #expandable-sidebar {
 	margin-right: -16em;
@@ -155,52 +223,28 @@ body {
 	margin-right: 0.5em;
 }
 
+#expandable-sidebar .collapsible {
+	font-size: 16px;
+	margin-bottom: 8px;
+}
+
+#expandable-sidebar .collapsible h4 {
+	margin: 0;
+}
+
 #correlation-stats {
 	height: 60px;
 	padding-bottom: 1em;
 	display: flex;
 }
 
-#correlation-stats h3 {
+#expandable-sidebar-content h3 {
+	margin: 0;
+}
+
+#correlation-stats h4 {
 	margin: 0;
 	align-self: center;
-}
-
-.collapsible {
-	position: relative;
-	background-color: rgb(77, 187, 255);
-	cursor: pointer;
-	padding: 14px;
-	border: none;
-	text-align: left;
-	outline: none;
-	font-size: 16px;
-	display: flex;
-	align-items: center;
-	margin-bottom: 5px;
-	width: 100%;
-	border-radius: 5px;
-}
-
-.collapsible-active,
-.collapsible:hover {
-	background-color: rgb(166, 219, 252);
-}
-
-#expand-list-icon {
-	/* filter: invert(100%); make icon color white instead of black */
-	width: 2em;
-	height: 2em;
-	margin-left: auto;
-	transform: rotate(0deg);
-	transition: transform 0.2s;
-}
-
-.layer-control {
-	vertical-align: middle;
-	overflow: hidden;
-	max-height: 0;
-	transition: max-height 0.2s ease-out;
 }
 
 .layer-control-item {

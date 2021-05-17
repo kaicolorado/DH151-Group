@@ -1,3 +1,5 @@
+// TODO: use https://c0arw235.caspio.com/dp/b7f93000869e5c0fbadf42efabbc,  https://c0arw235.caspio.com/dp/b7f9300090f4ba51c9144867b01f, https://c0arw235.caspio.com/dp/b7f9300062f044d142eb469b83ba?state=California, etc. in map to give more information about each policy
+
 const csvPaths = [
 	csvPath_EducationalSpendingInPublicSchools,
 	csvPath_ArtsEducationPolicies,
@@ -8,16 +10,16 @@ const csvPaths = [
 ];
 
 const artsEducationPolicyTitles = [
-	"AEP1: State defines arts as a core academic subject",
-	"AEP2: State adopted early childhood arts edu standards",
-	"AEP3: State adopted elementary/secondary arts edu standards",
-	"AEP4: State requires arts instruction at elementary school level",
-	"AEP5: State requires arts instruction at middle school level",
-	"AEP6: State requires arts instruction at high school level",
-	"AEP7: State includes arts courses as option to fulfill graduation reqs",
-	"AEP8: State requires assessment of students learning in the arts",
-	"AEP9: State requires school to offer arts edu to be accredited",
-	"AEP10: State provides funding for arts edu grant program or school for the arts",
+	"AEP1: Arts as a Core Academic Subject",
+	"AEP2: Early Childhood Arts Ed Standards",
+	"AEP3: Elementary & Secondary Arts Ed Standards",
+	"AEP4: Arts Ed Instructional Requirement - Elementary School",
+	"AEP5: Arts Ed Instructional Requirement - Middle School",
+	"AEP6: Arts Ed Instructional Requirement - High School",
+	"AEP7: Arts Alteratives for High School Graduation",
+	"AEP8: Arts Ed Assessment Requirements",
+	"AEP9: Arts Ed Requirements for State Accreditation",
+	"AEP10: State Arts Ed Grant Program or School for Arts",
 ];
 
 const scoresLayersTitles = [
@@ -170,7 +172,7 @@ function createScoresLayers() {
 }
 
 function setExpandableSidebarContent() {
-	$("#correlation-stats").html(`<h3>Please select two layers to view correlation data.</h3>`);
+	$("#correlation-stats").html(`<h4>Please select two layers to view correlation data.</h4>`);
 
 	artsEducationPolicyLayers.forEach(function (_, index) {
 		$("#arts-education-policy-layers").append(/*html*/ `
@@ -226,13 +228,13 @@ function updateCurrentCorrelation() {
 	const activeOverlayIndices = getActiveOverlayIndices();
 
 	if (activeOverlayIndices.length != 2) {
-		$("#correlation-stats").html(`<h3>Please select two layers to view correlation data.</h3>`);
+		$("#correlation-stats").html(`<h4>Please select two layers to view correlation data.</h4>`);
 	} else {
 		const correlation = layersCorrelationMatrix[activeOverlayIndices[0]][activeOverlayIndices[1]];
 		if (correlation === null) {
-			$("#correlation-stats").html("<h3>Correlation: N/A</h3>");
+			$("#correlation-stats").html("<h4>N/A</h4>");
 		} else {
-			$("#correlation-stats").html(`<h3>Correlation: ${correlation.toFixed(5)}</h3>`);
+			$("#correlation-stats").html(`<h4>${correlation.toFixed(5)}</h4>`);
 		}
 	}
 }
