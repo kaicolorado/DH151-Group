@@ -158,6 +158,9 @@ function createScoresLayers() {
 				getScoresStyle(feature, index + 2, scoresLayerObjects[index].min, scoresLayerObjects[index].max),
 			onEachFeature: (feature, layer) => onEachFeature(feature, layer, "Score", i),
 		});
+		//* so that scores color layers are always below AEP layers. This is so the on hover color change works properly
+		scoresColorLayer.setZIndex(-1);
+
 		scoresLayers.push(L.layerGroup([scoresLayerObjects[i].scoresNumberLayer, scoresColorLayer]));
 
 		controls.addOverlay(scoresLayers[i], scoresLayersTitles[i]);
@@ -199,11 +202,17 @@ function resetHighlight(e, layerType, index) {
 	if (layerType === "AEP") {
 		artsEducationPolicyLayers[index].resetStyle(e.target);
 	} else if (layerType === "Score") {
-		scoresLayers[index].eachLayer(function (layer) {
-			if (layer instanceof L.GeoJSON) {
+		if (getActiveOverlayTitlesArtsEduPolicies().length > 0) {
+			scoresLayers[index].eachLayer(function (layer) {
 				layer.setStyle({ fillOpacity: 0, weight: 0.3 });
-			}
-		});
+			});
+		} else {
+			scoresLayers[index].eachLayer(function (layer) {
+				if (layer instanceof L.GeoJSON) {
+					layer.resetStyle(e.target);
+				}
+			});
+		}
 	}
 	infoPanel.update();
 }
