@@ -46,9 +46,7 @@ var layersCorrelationMatrix;
 
 const csvData = new Array(csvPaths.length);
 
-let info_panel = L.control();
-
-// var activeOverlays = [];
+let infoPanel = L.control();
 
 // REVIEW: we can either modify the colors of a single layer based on what layers the user selects,
 //         or overlay multiple layers, one for each feature.
@@ -85,86 +83,23 @@ function createMap() {
 	legend.addTo(map);
 
 	map.on("overlayadd", (_) => {
-		// addActiveOverlayID(event);
 		legend.setContent(getNewLegendContent());
 		updateScoresLayersStyle();
 		updateCurrentCorrelation();
 	});
 
 	map.on("overlayremove", (_) => {
-		// removeActiveOverlayID(event);
 		legend.setContent(getNewLegendContent());
 		updateScoresLayersStyle();
 		updateCurrentCorrelation();
 	});
 }
 
-// function addActiveOverlayID(event) {
-// 	activeOverlays.push({ name: event.name, id: event.layer._leaflet_id });
-// }
-
-// function removeActiveOverlayID(event) {
-// 	activeOverlays = activeOverlays.filter((overlay) => overlay.id !== event.layer._leaflet_id);
-// }
-
 function createLayers() {
 	createArtsEduPolicyLayers();
 	createScoresLayers();
 	setExpandableSidebarContent();
 	createInfoPanel();
-}
-
-function createInfoPanel() {
-	info_panel.onAdd = function (map) {
-		this._div = L.DomUtil.create("div", "info"); // create a div with a class "info"
-		this.update();
-		return this._div;
-	};
-
-	// method that we will use to update the control based on feature properties passed
-	info_panel.update = function (properties) {
-		// if feature is highlighted
-		if (properties) {
-			html = getStateInfo(properties.NAME);
-			this._div.innerHTML = /*html*/ `
-				<b>${properties.NAME}</b>
-				<br/>
-				${html}
-			`;
-		}
-		// if feature is not highlighted
-		else {
-			this._div.innerHTML = "Hover over a country";
-		}
-	};
-
-	info_panel.addTo(map);
-}
-
-function getStateInfo(name) {
-	// for (let i = 1; i < csvData.length; i++) {
-	// 	var stateRow;
-	// 	stateRow = csvData[i].data.find((row) => row.State === name);
-	// 	if (!stateRow) {
-	// 		stateRow = csvData[i].data.find((row) => row.Jurisdiction === name);
-	// 	}
-
-	// console.log(stateRow);
-	// }
-
-	const stateAEPs = csvData[1].data.find((row) => row.State === name);
-	// console.log(stateAEPs);
-	var html = "";
-	for (let j in stateAEPs) {
-		if (j !== "State") {
-			html += `${j}: ${stateAEPs[j]}<br/>`;
-			// console.log(j);
-			// console.log(stateAEPs[j]);
-		}
-	}
-	// console.log(html);
-
-	return html;
 }
 
 function createArtsEduPolicyLayers() {
@@ -180,68 +115,6 @@ function createArtsEduPolicyLayers() {
 		);
 		controls.addOverlay(artsEducationPolicyLayers[i], artsEducationPolicyTitles[i]);
 	}
-}
-
-function onEachFeature(feature, layer, layerType, index) {
-	layer.on({
-		mouseover: highlightFeature,
-		mouseout: (e) => resetHighlight(e, layerType, index),
-		click: zoomToFeature,
-	});
-}
-
-function highlightFeature(e) {
-	var layer = e.target;
-
-	// style to use on mouse over
-	if (layer.options.fillOpacity === 0) {
-		layer.setStyle({
-			weight: 2,
-		});
-	} else {
-		layer.setStyle({
-			weight: 2,
-			fillOpacity: 0.5,
-		});
-	}
-
-	if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-		layer.bringToFront();
-	}
-
-	info_panel.update(layer.feature.properties);
-}
-
-function resetHighlight(e, layerType, index) {
-	// geojson_layer.resetStyle(e.target);
-	// e.target.resetStyle();
-	// scoresLayers.forEach(function (layerGroup) {
-	// 	layerGroup.eachLayer(function (layer) {
-	// 		if (layer instanceof L.GeoJSON) {
-	// 			layer.resetStyle();
-	// 		}
-	// 	});
-	// });
-	if (layerType === "AEP") {
-		// console.log(e.target);
-		// artsEducationPolicyLayers[index].eachLayer(function (layer) {
-		// 	layer.resetStyle()
-		// })
-		artsEducationPolicyLayers[index].resetStyle(e.target);
-	} else if (layerType === "Score") {
-		// scoresLayers[index].resetStyle(e.target);
-		scoresLayers[index].eachLayer(function (layer) {
-			if (layer instanceof L.GeoJSON) {
-				// layer.resetStyle(e.target);
-				layer.setStyle({ fillOpacity: 0, weight: 0.3 });
-			}
-		});
-	}
-	info_panel.update();
-}
-
-function zoomToFeature(e) {
-	map.fitBounds(e.target.getBounds());
 }
 
 function createScoresLayers() {
@@ -289,6 +162,54 @@ function createScoresLayers() {
 
 		controls.addOverlay(scoresLayers[i], scoresLayersTitles[i]);
 	}
+}
+
+function onEachFeature(feature, layer, layerType, index) {
+	layer.on({
+		mouseover: highlightFeature,
+		mouseout: (e) => resetHighlight(e, layerType, index),
+		click: zoomToFeature,
+	});
+}
+
+function highlightFeature(e) {
+	var layer = e.target;
+
+	//* style to use on mouse over
+	//* if we want to keep this state as a clear color,
+	if (layer.options.fillOpacity === 0) {
+		layer.setStyle({
+			weight: 2,
+		});
+	} else {
+		layer.setStyle({
+			weight: 2,
+			fillOpacity: 0.5,
+		});
+	}
+
+	if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+		layer.bringToFront();
+	}
+
+	infoPanel.update(layer.feature.properties);
+}
+
+function resetHighlight(e, layerType, index) {
+	if (layerType === "AEP") {
+		artsEducationPolicyLayers[index].resetStyle(e.target);
+	} else if (layerType === "Score") {
+		scoresLayers[index].eachLayer(function (layer) {
+			if (layer instanceof L.GeoJSON) {
+				layer.setStyle({ fillOpacity: 0, weight: 0.3 });
+			}
+		});
+	}
+	infoPanel.update();
+}
+
+function zoomToFeature(e) {
+	map.fitBounds(e.target.getBounds());
 }
 
 function setExpandableSidebarContent() {
@@ -357,6 +278,33 @@ function updateCurrentCorrelation() {
 			$("#correlation-stats").html(`<h4>${correlation.toFixed(5)}</h4>`);
 		}
 	}
+}
+
+function createInfoPanel() {
+	infoPanel.onAdd = function (_) {
+		this._div = L.DomUtil.create("div", "info"); //* create a div with a class "info"
+		this.update();
+		return this._div;
+	};
+
+	//* method that we will use to update the control based on feature properties passed
+	infoPanel.update = function (properties) {
+		//* if feature is highlighted
+		if (properties) {
+			html = getStateInfoHTMLForPanel(properties.NAME);
+			this._div.innerHTML = /*html*/ `
+				<b>${properties.NAME}</b>
+				<br/>
+				${html}
+			`;
+		}
+		//* if feature is not highlighted
+		else {
+			this._div.innerHTML = "Hover over a country";
+		}
+	};
+
+	infoPanel.addTo(map);
 }
 
 function getNewLegendContent() {
@@ -501,6 +449,19 @@ function getCorrelationMatrix() {
 	fetch("data/correlation-matrix.json").then(async (response) => {
 		layersCorrelationMatrix = await response.json();
 	});
+}
+
+function getStateInfoHTMLForPanel(name) {
+	const stateAEPs = csvData[1].data.find((row) => row.State === name);
+
+	var html = "";
+	for (let j in stateAEPs) {
+		if (j !== "State") {
+			html += `${j}: ${stateAEPs[j]}<br/>`;
+		}
+	}
+
+	return html;
 }
 
 function getStateScore(state, csvPathsIndex) {
