@@ -6,6 +6,9 @@ function createLayers() {
 }
 
 function createArtsEduPolicyLayers() {
+	map.createPane("AEPPane");
+	map.getPane("AEPPane").style.zIndex = 300;
+
 	for (let i = 0; i < 10; i++) {
 		artsEducationPolicyLayers.push(
 			L.geoJson(statesPolygonsJSON, {
@@ -14,6 +17,7 @@ function createArtsEduPolicyLayers() {
 						? getArtsEducationPolicyStyleMono(feature, i + 1)
 						: getArtsEducationPolicyStyle(feature, i + 1),
 				onEachFeature: (feature, layer) => onEachFeature(feature, layer, "AEP", i),
+				pane: "AEPPane",
 			})
 		);
 		controls.addOverlay(artsEducationPolicyLayers[i], artsEducationPolicyTitles[i]);
@@ -56,13 +60,17 @@ function createScoresLayers() {
 
 	for (let i = 0; i < 4; i++) {
 		const index = i;
+
+		//* so that scores color layers are always below AEP layers. This is so the on hover color change works properly
+		map.createPane("scoresColorsPane");
+		map.getPane("scoresColorsPane").style.zIndex = 200;
+
 		const scoresColorLayer = L.geoJson(statesPolygonsJSON, {
 			style: (feature) =>
 				getScoresStyle(feature, index + 2, scoresLayerObjects[index].min, scoresLayerObjects[index].max),
 			onEachFeature: (feature, layer) => onEachFeature(feature, layer, "Score", i),
+			pane: "scoresColorsPane",
 		});
-		//* so that scores color layers are always below AEP layers. This is so the on hover color change works properly
-		scoresColorLayer.setZIndex(-1);
 
 		scoresLayers.push(L.layerGroup([scoresLayerObjects[i].scoresNumberLayer, scoresColorLayer]));
 
@@ -74,7 +82,6 @@ function onEachFeature(feature, layer, layerType, index) {
 	layer.on({
 		mouseover: highlightFeature,
 		mouseout: (e) => resetHighlight(e, layerType, index),
-		click: zoomToFeature,
 	});
 }
 
@@ -118,8 +125,4 @@ function resetHighlight(e, layerType, index) {
 		}
 	}
 	infoPanel.update();
-}
-
-function zoomToFeature(e) {
-	map.fitBounds(e.target.getBounds());
 }
