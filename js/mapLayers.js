@@ -3,7 +3,6 @@ function createLayers() {
 	createArtsEduPolicyLayers();
 	createScoresLayers();
 	setExpandableSidebarContent();
-	createInfoPanel();
 }
 
 function createArtsEduPolicyLayers() {

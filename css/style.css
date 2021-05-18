@@ -97,6 +97,28 @@ body {
 	font-weight: bold;
 }
 
+.info {
+	min-width: 250px;
+	min-height: 50px;
+	padding: 6px 8px;
+	border-radius: 5px;
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+
+	background: white;
+	background: rgba(255, 255, 255, 0.8);
+
+	font: 14px/16px Arial, Helvetica, sans-serif;
+}
+
+.info h4 {
+	margin: 0 0 5px;
+	color: #777;
+}
+
+.leaflet-control-layers {
+	display: none;
+}
+
 /* *************** Sidebars - Shared */
 
 .collapsible {
@@ -193,10 +215,10 @@ body {
 
 	transition: 0.5s;
 
-	width: 16em;
+	width: 18em;
 	height: auto;
 	padding-top: 50px; /* Place content 60px from the top */
-	margin-right: -16em;
+	margin-right: -18em;
 
 	background-color: var(--light-blue);
 }

@@ -24,7 +24,15 @@
 
 		<script>
 			var expanded = false;
-			const expandWidth = "16em";
+			const expandWidth = "18em";
+
+			$(function () {
+				initializeExpandableSidebar();
+			});
+
+			function initializeExpandableSidebar() {
+				toggleSidebar();
+			}
 
 			function toggleSidebar() {
 				if (expanded) {
@@ -176,7 +184,9 @@
 		<div id="expandable-sidebar">
 			<div id="expandable-sidebar-content">
 				<h3>Correlation</h3>
-				<div id="correlation-stats"></div>
+				<div id="correlation-stats">
+					<h4>Please select two layers to view correlation data.</h4>
+				</div>
 
 				<h3>Layer Controls</h3>
 				<br />

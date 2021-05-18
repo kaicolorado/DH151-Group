@@ -15,8 +15,6 @@ function updateCurrentCorrelation() {
 }
 
 function setExpandableSidebarContent() {
-	$("#correlation-stats").html(`<h4>Please select two layers to view correlation data.</h4>`);
-
 	artsEducationPolicyLayers.forEach(function (_, index) {
 		$("#arts-education-policy-layers").append(/*html*/ `
 			<div class="layer-control-item">

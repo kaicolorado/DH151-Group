@@ -57,6 +57,7 @@ let infoPanel = L.control();
 
 $(function () {
 	createMap();
+	createInfoPanel();
 	getStatePolygons();
 	getStateCenters();
 	getCorrelationMatrix();
