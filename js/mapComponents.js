@@ -85,21 +85,6 @@ function createInfoPanel() {
 		if (properties) {
 			stateInfo = getStateInfo(properties.NAME);
 
-			// var htmlAEPYes = "";
-			// htmlAEPYes += /*html*/ `<h4>Arts Policies Implemented</h4>`;
-			// var htmlAEPNo = "";
-			// htmlAEPNo += /*html*/ `<h4>Arts Policies Not Implemented</h4>`;
-
-			// stateInfo.AEPs.forEach(function (implemented, index) {
-			// 	if (implemented === "Yes") {
-			// 		htmlAEPYes += /*html*/ `<li>${artsEducationPolicyTitles[index]}</li>`;
-			// 	} else {
-			// 		htmlAEPNo += /*html*/ `<li>${artsEducationPolicyTitles[index]}</li>`;
-			// 	}
-			// });
-
-			// var html = htmlAEPYes + htmlAEPNo;
-
 			var html = "";
 
 			html += `<h3>Arts Policies</h3>`;
