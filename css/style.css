@@ -2,14 +2,14 @@
 
 body,
 html {
-	margin: 0;
-	height: 100%;
 	width: 100%;
+	height: 100%;
+	margin: 0;
 }
 
 body {
-	display: flex;
 	flex-direction: column;
+	display: flex;
 }
 
 .content {
@@ -23,27 +23,33 @@ body {
 }
 
 #sidebar-and-content {
+	flex-grow: 1;
+
 	display: grid;
 	grid-template-columns: 18em 1fr;
 	grid-template-areas: "sidebar content";
-	flex-grow: 1;
-	transition: margin-right 0.5s;
+
 	overflow: hidden;
+
+	transition: margin-right 0.5s;
 }
 
 /* *************** Map */
 
 #map {
-	height: 100%;
 	z-index: 0;
+	height: 100%;
 }
 
 .activated-layers-legend {
 	position: relative;
-	background: rgba(214, 214, 214, 0.6);
+
 	padding: 1rem;
 	padding-top: 0.6em;
 	border-radius: 1em;
+
+	background: rgba(214, 214, 214, 0.6);
+
 	line-height: 0.5;
 }
 
@@ -52,52 +58,63 @@ body {
 }
 
 .legend-layer-info {
-	display: flex;
 	align-items: center;
+	display: flex;
 }
 
 .activated-layers-legend .color-box {
+	display: grid;
+
 	width: fit-content;
 	height: fit-content;
-	display: grid;
-	background-color: rgba(255, 255, 255, 0);
 	margin-right: 0.5em;
+
+	background-color: rgba(255, 255, 255, 0);
 }
 
 .color-box-single {
 	grid-area: 1/1;
+
+	display: inline-block;
+	opacity: 40%;
+
 	width: 10px;
 	height: 10px;
 	padding: 0.2em;
-	display: inline-block;
-	opacity: 40%;
 }
 
 .score-overlay {
+	vertical-align: middle;
+
 	width: fit-content;
 	height: fit-content;
+
+	cursor: grab !important;
 	background-color: rgba(255, 255, 255, 0);
+
 	text-align: center;
-	vertical-align: middle;
 	font-size: large;
 	font-weight: bold;
-	cursor: grab !important;
 }
 
 /* *************** Sidebars - Shared */
 
 .collapsible {
 	position: relative;
-	background-color: rgb(77, 187, 255);
-	cursor: pointer;
-	padding: 14px;
-	border: none;
-	text-align: left;
-	outline: none;
+
 	display: flex;
 	align-items: center;
+
 	width: 100%;
+	padding: 14px;
+	outline: none;
+	border: none;
 	border-radius: 5px;
+
+	cursor: pointer;
+	background-color: rgb(77, 187, 255);
+
+	text-align: left;
 }
 
 .collapsible-active,
@@ -108,37 +125,39 @@ body {
 .collapsible-content {
 	vertical-align: middle;
 	overflow: hidden;
-	max-height: 0;
 	transition: max-height 0.2s ease-out;
+	max-height: 0;
 }
 
 #expand-list-icon {
+	transform: rotate(0deg);
 	/* filter: invert(100%); make icon color white instead of black */
+
+	transition: transform 0.2s;
+
 	width: 2em;
 	height: 2em;
 	margin-left: auto;
-	transform: rotate(0deg);
-	transition: transform 0.2s;
 }
 
 /* *************** Left Sidebar */
 
 #left-sidebar {
 	grid-area: sidebar;
+	overflow: auto;
 	padding: 10px;
 	background-color: var(--light-blue);
-	overflow: auto;
 }
 
 #left-sidebar .collapsible {
-	font-size: 15px;
 	transition: border-radius 0.7s;
+	font-size: 15px;
 }
 
 #left-sidebar .collapsible-active {
+	transition: border-radius 0.1s;
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
-	transition: border-radius 0.1s;
 }
 
 #left-sidebar .collapsible-content {
@@ -152,57 +171,66 @@ body {
 }
 
 #left-sidebar .collapsible-content h4 {
-	margin-bottom: 0;
 	padding-bottom: 8px;
+	margin-bottom: 0;
 }
 
 #left-sidebar .collapsible-content p {
-	margin-top: 0;
 	padding-bottom: 8px;
+	margin-top: 0;
 }
 
 /* *************** Expandable Sidebar */
 
 #expandable-sidebar {
-	margin-right: -16em;
-	height: auto;
-	width: 16em;
 	position: fixed;
-	z-index: 1;
 	top: 0;
 	right: 0;
 	bottom: 0;
-	background-color: var(--light-blue);
+	z-index: 1;
+
 	overflow-x: hidden; /* Disable horizontal scroll */
-	padding-top: 50px; /* Place content 60px from the top */
+
 	transition: 0.5s;
+
+	width: 16em;
+	height: auto;
+	padding-top: 50px; /* Place content 60px from the top */
+	margin-right: -16em;
+
+	background-color: var(--light-blue);
 }
 
 #expand-button-div {
-	transition: margin-right 0.5s; /* If you want a transition effect */
 	position: fixed;
-	z-index: 2;
-	height: fit-content;
-	margin: auto;
-	margin-right: 0;
 	top: 0;
 	bottom: 0;
 	right: 0;
+	z-index: 2;
+
+	transition: margin-right 0.5s; /* If you want a transition effect */
+
+	height: fit-content;
+	margin: auto;
+	margin-right: 0;
 }
 
 /* The button used to open the sidebar */
 #expand-button {
-	cursor: pointer;
-	background-color: var(--light-blue);
-	padding: 10px 10px;
-	border: none;
-	outline: none;
-	display: grid;
 	place-items: center;
+
+	display: grid;
 	grid-template-areas: "icon";
+
+	padding: 10px 10px;
+	outline: none;
+	border: none;
 	border-top-left-radius: 8px;
 	border-bottom-left-radius: 8px;
 	/* box-shadow: 1px 0px 0 rgb(158, 216, 252); */
+
+	cursor: pointer;
+	background-color: var(--light-blue);
 }
 
 #expand-button:hover {
@@ -210,12 +238,15 @@ body {
 }
 
 #expand-sidebar-icon {
+	grid-area: icon;
+
 	filter: invert(100%); /* make icon color white instead of black */
+	transform: rotate(0deg);
+
+	transition: transform 0.2s;
+
 	width: 2em;
 	height: 2em;
-	grid-area: icon;
-	transform: rotate(0deg);
-	transition: transform 0.2s;
 }
 
 #expandable-sidebar-content {
@@ -224,8 +255,8 @@ body {
 }
 
 #expandable-sidebar .collapsible {
-	font-size: 16px;
 	margin-bottom: 8px;
+	font-size: 16px;
 }
 
 #expandable-sidebar .collapsible h4 {
@@ -233,9 +264,9 @@ body {
 }
 
 #correlation-stats {
+	display: flex;
 	height: 60px;
 	padding-bottom: 1em;
-	display: flex;
 }
 
 #expandable-sidebar-content h3 {
@@ -243,13 +274,13 @@ body {
 }
 
 #correlation-stats h4 {
-	margin: 0;
 	align-self: center;
+	margin: 0;
 }
 
 .layer-control-item {
-	display: flex;
 	position: relative;
+	display: flex;
 	padding-bottom: 1em;
 }
 
@@ -270,29 +301,38 @@ body {
 
 .slider {
 	position: relative;
-	cursor: pointer;
 	top: 50%;
-	transform: translateY(-50%);
 	float: left;
-	background-color: #ccc;
+
+	transform: translateY(-50%);
+
 	-webkit-transition: 0.4s;
 	transition: 0.4s;
+
 	width: 60px;
 	height: 34px;
+
+	cursor: pointer;
+	background-color: #ccc;
 }
 
 .slider:before {
-	position: absolute;
 	content: "";
-	height: 26px;
+
+	position: absolute;
 	top: 50%;
-	margin: 0;
+
 	transform: translateY(-50%);
-	margin-left: 4px;
-	width: 26px;
-	background-color: white;
+
 	-webkit-transition: 0.4s;
 	transition: 0.4s;
+
+	width: 26px;
+	height: 26px;
+	margin: 0;
+	margin-left: 4px;
+
+	background-color: white;
 }
 
 input:checked + .slider {
@@ -304,9 +344,9 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
+	transform: translateX(26px) translateY(-50%);
 	-webkit-transform: translateX(26px) translateY(-50%);
 	-ms-transform: translateX(26px) translateY(-50%);
-	transform: translateX(26px) translateY(-50%);
 }
 
 .slider.round {
