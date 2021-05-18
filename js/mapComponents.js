@@ -83,10 +83,45 @@ function createInfoPanel() {
 	infoPanel.update = function (properties) {
 		//* if feature is highlighted
 		if (properties) {
-			html = getStateInfoHTMLForPanel(properties.NAME);
-			this._div.innerHTML = /*html*/ `
-				<b>${properties.NAME}</b>
-				<br/>
+			stateInfo = getStateInfo(properties.NAME);
+
+			// var htmlAEPYes = "";
+			// htmlAEPYes += /*html*/ `<h4>Arts Policies Implemented</h4>`;
+			// var htmlAEPNo = "";
+			// htmlAEPNo += /*html*/ `<h4>Arts Policies Not Implemented</h4>`;
+
+			// stateInfo.AEPs.forEach(function (implemented, index) {
+			// 	if (implemented === "Yes") {
+			// 		htmlAEPYes += /*html*/ `<li>${artsEducationPolicyTitles[index]}</li>`;
+			// 	} else {
+			// 		htmlAEPNo += /*html*/ `<li>${artsEducationPolicyTitles[index]}</li>`;
+			// 	}
+			// });
+
+			// var html = htmlAEPYes + htmlAEPNo;
+
+			var html = "";
+
+			html += `<h3>Arts Policies</h3>`;
+			html += `<ul id="arts-policies-list">`;
+			stateInfo.AEPs.forEach(function (implemented, index) {
+				if (implemented === "Yes") {
+					html += `<li>AEP${index + 1}&ensp;&#9989;</li>`;
+				} else {
+					html += `<li>AEP${index + 1}&ensp;&#10060;</li>`;
+				}
+			});
+			html += `</ul>`;
+
+			html += `<h3>Standardized Scores</h3>`;
+			html += `<ul id="scores-list">`;
+			for (const key in stateInfo.scores) {
+				html += `<li>${key}: <strong>${stateInfo.scores[key]}</strong>`;
+			}
+			html += `</ul>`;
+
+			this._div.innerHTML = `
+				<h2>${properties.NAME}</h2>
 				${html}
 			`;
 		}

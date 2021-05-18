@@ -60,15 +60,27 @@ function getStateScore(state, csvPathsIndex) {
 	return stateScore;
 }
 
-function getStateInfoHTMLForPanel(name) {
-	const stateAEPs = csvData[1].data.find((row) => row.State === name);
+function getStateInfo(name) {
+	var stateInfo;
 
-	var html = "";
-	for (let j in stateAEPs) {
-		if (j !== "State") {
-			html += `${j}: ${stateAEPs[j]}<br/>`;
+	const stateAEPRow = csvData[1].data.find((row) => row.State === name);
+
+	var stateAEPs = [];
+
+	Object.keys(stateAEPRow).forEach(function (key) {
+		if (key != "State") {
+			stateAEPs.push(stateAEPRow[key]);
 		}
-	}
+	});
 
-	return html;
+	const stateScores = {
+		"Grade 4 - Math - 2019": csvData[2].data.find((row) => row.Jurisdiction === name)["Score (MN)"],
+		"Grade 8 - Math - 2019": csvData[3].data.find((row) => row.Jurisdiction === name)["Score (MN)"],
+		"Grade 4 - Reading - 2019": csvData[4].data.find((row) => row.Jurisdiction === name)["Score (MN)"],
+		"Grade 8 - Reading - 2019": csvData[5].data.find((row) => row.Jurisdiction === name)["Score (MN)"],
+	};
+
+	stateInfo = { AEPs: stateAEPs, scores: stateScores };
+
+	return stateInfo;
 }
