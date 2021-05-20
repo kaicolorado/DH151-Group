@@ -1,5 +1,13 @@
 // TODO: use https://c0arw235.caspio.com/dp/b7f93000869e5c0fbadf42efabbc,  https://c0arw235.caspio.com/dp/b7f9300090f4ba51c9144867b01f, https://c0arw235.caspio.com/dp/b7f9300062f044d142eb469b83ba?state=California, etc. in map to give more information about each policy
 
+/* ----------------------------- Choices to Make ---------------------------- */
+
+//* change b/w 1 and 0 based on whether you want the Arts Edu policy layers to be single colored or not
+const useMonoColorsForArtsEduPolicyLayers = 1;
+
+//* change b/w 1 and 0 based on whether you want to use ClassyBrew colors or custom heatmap colors
+const useClassyBrewColors = 0;
+
 /* ---------------------------- Global Variables ---------------------------- */
 
 const csvPaths = [
@@ -31,8 +39,13 @@ const scoresLayersTitles = [
 	"Standardized Performances - Grade 8 - Reading - 2019",
 ];
 
-//* change b/w 1 and 0 based on whether you want the Arts Edu policy layers to be single colored or not
-const useMonoColorsForArtsEduPolicyLayers = 1;
+//* enumeration of all scores layers with their csvPaths index as the value
+const scoresEnum = {
+	Math_G4_2019: 2,
+	Math_G8_2019: 3,
+	Reading_G4_2019: 4,
+	Reading_G8_2019: 5,
+};
 
 var map;
 const controls = L.control.layers();
@@ -43,8 +56,9 @@ const scoresLayers = [];
 
 var statesPolygonsJSON;
 var statesCentersJSON;
-
 var layersCorrelationMatrix;
+
+var scoresClassyBrew = {};
 
 const csvData = new Array(csvPaths.length);
 
@@ -56,10 +70,10 @@ let infoPanel = L.control();
 /* ------------------------------- Initialize ------------------------------- */
 
 $(function () {
+	readCSVs();
 	createMap();
 	createInfoPanel();
 	getStatePolygons();
 	getStateCenters();
 	getCorrelationMatrix();
-	readCSVs();
 });

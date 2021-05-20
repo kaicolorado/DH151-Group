@@ -1,5 +1,6 @@
 //* called after all CSV's have been parsed
 function createLayers() {
+	initializeClassyBrew();
 	createArtsEduPolicyLayers();
 	createScoresLayers();
 	setExpandableSidebarContent();
@@ -25,14 +26,11 @@ function createArtsEduPolicyLayers() {
 }
 
 function createScoresLayers() {
-	const scoresKey = Object.keys(csvData[2].data[0])[1];
-
 	const scoresLayerObjects = [];
 	for (let i = 0; i < 4; i++) {
 		const scoresNumberLayer = L.featureGroup();
 
-		const scores = csvData[i + 2].data.map((val) => val[scoresKey]);
-		scores.pop(); //* removes last element, Puerto Rico (b/c not a state)
+		const scores = getScores(i + 2);
 
 		const min = Math.min(...scores);
 		const max = Math.max(...scores);

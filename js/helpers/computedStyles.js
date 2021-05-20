@@ -1,3 +1,22 @@
+/* ------------------------------- ClassyBrew ------------------------------- */
+
+function initializeClassyBrew() {
+	for (const scores in scoresEnum) {
+		scoresClassyBrew[scores] = new classyBrew();
+	}
+
+	//* score e.g.: Math_G4_2019, Math_G8_2019, Reading_G4_2019, Reading_G8_2019
+	for (const [score, scoresCB] of Object.entries(scoresClassyBrew)) {
+		const csvIndex = scoresEnum[score];
+		const scores = getScores(csvIndex);
+
+		scoresCB.setSeries(scores);
+		scoresCB.setNumClasses(5);
+		scoresCB.setColorCode("RdYlGn");
+		scoresCB.classify("quantiles");
+	}
+}
+
 /* ---------------------- Arts Education Policy Layers ---------------------- */
 
 function getArtsEducationPolicyStyle(feature, index) {
@@ -80,21 +99,27 @@ function updateScoresLayersStyle() {
 	}
 }
 
-// TODO: use ClassyBrew to get color instead
 function getScoresStyle(feature, csvPathsIndex, min, max) {
 	const stateData = csvData[csvPathsIndex].data.find((row) => row.Jurisdiction === feature.properties.NAME);
 
 	if (stateData) {
-		var scoresKey = Object.keys(csvData[csvPathsIndex].data[0])[1];
+		const scoresKey = Object.keys(csvData[csvPathsIndex].data[0])[1];
 		const stateScore = stateData[scoresKey];
 
-		const scaledVal = (stateScore - min) / (max - min);
-		const colorHSL = getHeatmapColorFromValue(scaledVal);
-		const colorHex = hslToHex(colorHSL.hue, colorHSL.saturation, colorHSL.luminance);
+		var fillColor;
+		if (useClassyBrewColors) {
+			const enumKey = Object.keys(scoresEnum).find((key) => scoresEnum[key] === csvPathsIndex);
+			fillColor = coresClassyBrew[enumKey].getColorInRange(stateScore);
+		} else {
+			const scaledVal = (stateScore - min) / (max - min);
+			const colorHSL = getHeatmapColorFromValue(scaledVal);
+			const colorHex = hslToHex(colorHSL.hue, colorHSL.saturation, colorHSL.luminance);
+			fillColor = colorHex;
+		}
 
 		return {
-			fillColor: colorHex,
-			fillOpacity: 0.2,
+			fillColor: fillColor,
+			fillOpacity: 0.4,
 			color: "black",
 			weight: 0.3,
 		};

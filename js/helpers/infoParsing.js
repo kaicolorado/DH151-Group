@@ -84,3 +84,9 @@ function getStateInfo(name) {
 
 	return stateInfo;
 }
+
+function getScores(csvIndex) {
+	const scores = csvData[csvIndex].data.map((val) => val["Score (MN)"]);
+	scores.pop(); //* removes last element, Puerto Rico (b/c not a state)
+	return scores;
+}
