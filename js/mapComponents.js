@@ -112,7 +112,12 @@ function createInfoPanel() {
 		}
 		//* if feature is not highlighted
 		else {
-			this._div.innerHTML = "Hover over a country";
+			this._div.innerHTML = /*html*/ `
+				<p>Hover over a state</p>
+				<p style="font-size: 11pt">
+					(with at least one layer active)
+				</p>
+			`;
 		}
 	};
 
