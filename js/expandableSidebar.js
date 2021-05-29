@@ -90,10 +90,39 @@ function initializeNAEPScoresChartData() {
 	var yearLabelsSet = new Set();
 	for (stateName of stateNames) {
 		NAEPScores = getYearlyNAEPScoresOfState(stateName);
-		// NAEPScoresAllStatesSeries[stateName] = getYearlyNAEPScoresOfState(stateName);
 		var series = [];
 		for (const [name, scores] of Object.entries(NAEPScores)) {
 			series.push({ name: NAEPNameEnum[name], data: Object.values(scores) });
+			Object.keys(scores).forEach((year) => yearLabelsSet.add(year));
+		}
+
+		NAEPScoresAllStatesSeries[stateName] = series;
+	}
+
+	NAEPScoresChartYearLabels = Array.from(yearLabelsSet);
+	NAEPScoresChartYearLabels.sort();
+}
+
+function initializeNAEPScoresChartDataChartJS() {
+	const stateNames = statesCentersJSON.map((state) => state.state);
+
+	var yearLabelsSet = new Set();
+	for (stateName of stateNames) {
+		NAEPScores = getYearlyNAEPScoresOfState(stateName);
+		var series = [];
+		for (const [name, scores] of Object.entries(NAEPScores)) {
+			series.push({
+				label: NAEPNameEnum[name],
+				data: Object.values(scores),
+				borderColor: getLineColor(name),
+				backgroundColor: getLineColor(name),
+				tension: 0.6,
+				borderWidth: 5,
+				pointBorderWidth: 2,
+				segment: {
+					borderColor: getLineColor(name),
+				},
+			});
 			Object.keys(scores).forEach((year) => yearLabelsSet.add(year));
 		}
 
@@ -184,10 +213,57 @@ function createNAEPScoresChart(state) {
 		},
 	};
 
-	const startTime = performance.now();
 	var chart = new ApexCharts(document.querySelector("#naep-scores-chart"), options);
 	chart.render();
+}
 
-	const duration = performance.now() - startTime;
-	console.log(`someMethodIThinkMightBeSlow took ${duration}ms`);
+function createNAEPScoresChartChartJS(state) {
+	$("#chartJS").remove();
+	$("#naep-scores-chart").append('<canvas id="chartJS"></canvas>');
+	var chartCanvas = $("#chartJS");
+
+	const config = {
+		type: "line",
+		data: {
+			labels: NAEPScoresChartYearLabels,
+			datasets: NAEPScoresAllStatesSeries[state],
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			animation: false,
+			interaction: {
+				intersect: false,
+				mode: "index",
+			},
+			plugins: {
+				legend: {
+					position: "top",
+				},
+				title: {
+					display: true,
+					text: `${state}'s National Assessment Scores`,
+				},
+			},
+			scales: {
+				x: {
+					title: {
+						display: true,
+						text: "Year",
+					},
+					grid: {
+						display: false,
+					},
+				},
+				y: {
+					title: {
+						display: true,
+						text: "Score",
+					},
+				},
+			},
+		},
+	};
+
+	var chart = new Chart(chartCanvas, config);
 }

@@ -1,10 +1,12 @@
+var selectedState = null;
+
 //* called after all CSV's have been parsed
 function createLayers() {
 	initializeClassyBrew();
 	createArtsEduPolicyLayers();
 	createScoresLayers();
 	setExpandableSidebarContent();
-	initializeNAEPScoresChartData();
+	initializeNAEPScoresChartDataChartJS();
 }
 
 function createArtsEduPolicyLayers() {
@@ -79,13 +81,16 @@ function createScoresLayers() {
 
 function onEachFeature(feature, layer, layerType, index) {
 	layer.on({
-		mouseover: highlightFeature,
-		mouseout: (e) => resetHighlight(e, layerType, index),
+		mouseover: (e) => highlightFeature(e.target, "mouseover"),
+		mouseout: (e) => resetHighlight(e.target, layerType, index, "mouseout"),
+		click: (e) => selectFeature(e.target, layerType, index),
 	});
 }
 
-function highlightFeature(e) {
-	var layer = e.target;
+function highlightFeature(layer, caller = null) {
+	if (selectedState && caller === "mouseover") {
+		return;
+	}
 
 	//* style to use on mouse over
 	//* if we want to keep this state as a clear color,
@@ -105,24 +110,53 @@ function highlightFeature(e) {
 	}
 
 	infoPanel.update(layer.feature.properties);
-	createNAEPScoresChart(layer.feature.properties.NAME);
+	createNAEPScoresChartChartJS(layer.feature.properties.NAME);
 }
 
-function resetHighlight(e, layerType, index) {
+function resetHighlight(layer, layerType, index, caller = null) {
+	if (selectedState && caller === "mouseout") {
+		return;
+	}
+
 	if (layerType === "AEP") {
-		artsEducationPolicyLayers[index].resetStyle(e.target);
+		artsEducationPolicyLayers[index].resetStyle(layer);
 	} else if (layerType === "Score") {
 		if (getActiveOverlayTitlesArtsEduPolicies().length > 0) {
-			scoresLayers[index].eachLayer(function (layer) {
-				layer.setStyle({ fillOpacity: 0, weight: 0.3 });
+			scoresLayers[index].eachLayer(function (scoresLayer) {
+				scoresLayer.setStyle({ fillOpacity: 0, weight: 0.3 });
 			});
 		} else {
-			scoresLayers[index].eachLayer(function (layer) {
-				if (layer instanceof L.GeoJSON) {
-					layer.resetStyle(e.target);
+			scoresLayers[index].eachLayer(function (scoresLayer) {
+				if (scoresLayer instanceof L.GeoJSON) {
+					scoresLayer.resetStyle(layer);
 				}
 			});
 		}
 	}
 	infoPanel.update();
+}
+
+function selectFeature(clickedStateLayer, layerType, index) {
+	if (selectedState) {
+		resetHighlight(selectedState.layer, selectedState.layerType, selectedState.index);
+		selectedState = null;
+	} else {
+		highlightFeature(clickedStateLayer);
+		selectedState = { layer: clickedStateLayer, layerType: layerType, index: index };
+	}
+
+	// if (selectedState) {
+	// 	if (selectedState.layer === clickedStateLayer) {
+	// 		resetHighlight(clickedStateLayer, layerType, index);
+	// 		selectedState = null;
+	// 	} else {
+	// 		resetHighlight(selectedState.layer, selectedState.layerType, selectedState.index);
+	// 		// highlightFeature(clickedStateLayer);
+	// 		// selectedState = { layer: clickedStateLayer, layerType: layerType, index: index };
+	// 		selectedState = null;
+	// 	}
+	// } else {
+	// 	highlightFeature(clickedStateLayer);
+	// 	selectedState = { layer: clickedStateLayer, layerType: layerType, index: index };
+	// }
 }

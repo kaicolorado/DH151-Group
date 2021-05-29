@@ -28,6 +28,9 @@
 		<!-- apex charts -->
 		<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+		<!-- chartjs -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.0/chart.min.js"></script>
+
 		<script>
 			var expanded = false;
 			const expandWidth = "22em";
@@ -102,10 +105,14 @@
 			<div id="left-sidebar">
 				<div class="sidebar-title"><h1>Welcome!</h1></div>
 				<div class="sidebar-content">
-					<p>To interact with the map, begin selecting filters.</p>
+					<p>To interact with the map, begin selecting overlays from the right sidebar.</p>
 					<p>
-						As you select policies, states will be shaded accordingly. Use the legend in the bottom right of
-						the map to interpret the shading.
+						Once you turn on overlays, states will be shaded accordingly. Use the legend in the bottom right
+						of the map to interpret the shading.
+					</p>
+					<p>
+						To see more information about a state, hover over it or click on it to be able to interact with
+						the chart. Click the state again or click outside the state to deselect it.
 					</p>
 
 					<h2>What it means</h2>

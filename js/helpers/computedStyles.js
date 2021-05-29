@@ -144,3 +144,20 @@ function hslToHex(h, s, l) {
 	};
 	return `#${f(0)}${f(8)}${f(4)}`;
 }
+
+/* ---------------------------- NAEP Scores Chart --------------------------- */
+
+function getLineColor(datasetName) {
+	switch (datasetName) {
+		case Object.keys(NAEPNameEnum)[0]:
+			return "red";
+		case Object.keys(NAEPNameEnum)[1]:
+			return "orange";
+		case Object.keys(NAEPNameEnum)[2]:
+			return "blue";
+		case Object.keys(NAEPNameEnum)[3]:
+			return "green";
+		default:
+			break;
+	}
+}

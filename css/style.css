@@ -236,7 +236,7 @@ body {
 
 	width: 22em;
 	height: auto;
-	padding-top: 50px; /* Place content 60px from the top */
+	padding-top: 20px; /* Place content 60px from the top */
 	margin-right: -22em;
 
 	background-color: var(--light-blue);
@@ -316,6 +316,11 @@ body {
 
 #naep-scores-chart {
 	background-color: white;
+	height: 350px;
+	padding: 10px;
+	border-radius: 10px;
+	margin-bottom: 8px;
+	margin-top: 0px;
 }
 
 #correlation-stats h4 {
