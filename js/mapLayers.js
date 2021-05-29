@@ -104,6 +104,7 @@ function highlightFeature(e) {
 	}
 
 	infoPanel.update(layer.feature.properties);
+	createNAEPScoresChart(layer.feature.properties.NAME);
 }
 
 function resetHighlight(e, layerType, index) {

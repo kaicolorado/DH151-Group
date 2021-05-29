@@ -63,3 +63,100 @@ function setExpandableSidebarContent() {
 		}
 	});
 }
+
+function createNAEPScoresChart(state) {
+	$("#naep-scores-chart").empty();
+
+	NAEPScores = getYearlyNAEPScoresOfState(state);
+
+	var series = [];
+	var yearLabelsSet = new Set();
+	for (const [name, scores] of Object.entries(NAEPScores)) {
+		series.push({ name: NAEPNameEnum[name], data: Object.values(scores) });
+		Object.keys(scores).forEach((year) => yearLabelsSet.add(year));
+	}
+
+	yearLabels = Array.from(yearLabelsSet);
+	yearLabels.sort();
+
+	var options = {
+		series: series,
+		chart: {
+			animations: {
+				enabled: false,
+				easing: "easeinout",
+				speed: 400,
+				animateGradually: {
+					enabled: false,
+					delay: 150,
+				},
+				dynamicAnimation: {
+					enabled: true,
+					speed: 350,
+				},
+			},
+			height: 350,
+			type: "line",
+			// dropShadow: {
+			// 	enabled: true,
+			// 	color: "#000",
+			// 	top: 18,
+			// 	left: 7,
+			// 	blur: 10,
+			// 	opacity: 0.2,
+			// },
+			toolbar: {
+				show: false,
+			},
+			zoom: {
+				enabled: false,
+			},
+		},
+		// colors: ["#77B6EA", "#545454"],
+		// dataLabels: {
+		// 	enabled: true,
+		// },
+		stroke: {
+			curve: "smooth",
+		},
+		title: {
+			text: `${state}'s National Assessment Scores`,
+			align: "center",
+			// margin: 40,
+		},
+		// grid: {
+		// 	borderColor: "#e7e7e7",
+		// 	row: {
+		// 		colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+		// 		opacity: 0.5,
+		// 	},
+		// },
+		markers: {
+			size: 1,
+		},
+		xaxis: {
+			categories: yearLabels,
+			labels: {
+				maxHeight: 50,
+			},
+			title: {
+				text: "Year",
+			},
+		},
+		yaxis: {
+			title: {
+				text: "Score",
+			},
+			forceNiceScale: true,
+			decimalsInFloat: 0,
+		},
+		legend: {
+			position: "top",
+			horizontalAlign: "left",
+			floating: false,
+		},
+	};
+
+	var chart = new ApexCharts(document.querySelector("#naep-scores-chart"), options);
+	chart.render();
+}

@@ -234,10 +234,10 @@ body {
 
 	transition: 0.5s;
 
-	width: 18em;
+	width: 22em;
 	height: auto;
 	padding-top: 50px; /* Place content 60px from the top */
-	margin-right: -18em;
+	margin-right: -22em;
 
 	background-color: var(--light-blue);
 }
@@ -312,6 +312,10 @@ body {
 
 #expandable-sidebar-content h3 {
 	margin: 0;
+}
+
+#naep-scores-chart {
+	background-color: white;
 }
 
 #correlation-stats h4 {

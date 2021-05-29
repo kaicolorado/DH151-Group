@@ -90,3 +90,37 @@ function getScores(csvIndex) {
 	scores.pop(); //* removes last element, Puerto Rico (b/c not a state)
 	return scores;
 }
+
+function getYearlyNAEPScoresOfState(state) {
+	var NAEPScores = {};
+
+	for (const datasetName in NAEP_CSVIndexEnum) {
+		index = NAEP_CSVIndexEnum[datasetName];
+
+		//* [0] b/c we know there's only one row per state and want to unwrap it from the array
+		const { State, ...scores } = csvData[index].data.filter((row) => row["State"] == state)[0];
+
+		//* delete state's name from the row of data b/c we don't need it.
+		NAEPScores[datasetName] = scores;
+	}
+
+	//* get a set of all years from the four different datasets. This is because the datasets don't have all the same years
+	var yearLabelsSet = new Set();
+	for (const [name, scores] of Object.entries(NAEPScores)) {
+		Object.keys(scores).forEach((year) => yearLabelsSet.add(year));
+	}
+	yearLabels = Array.from(yearLabelsSet);
+	yearLabels.sort();
+
+	var newNAEPScores = {};
+	for (const [name, scores] of Object.entries(NAEPScores)) {
+		const newScores = {};
+		for (year of yearLabels) {
+			if (scores[year]) newScores[year] = scores[year];
+			else newScores[year] = null;
+		}
+		newNAEPScores[name] = newScores;
+	}
+
+	return newNAEPScores;
+}

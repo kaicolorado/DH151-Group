@@ -25,9 +25,12 @@
 		<!-- classybrew for dynamic choropleth coloring -->
 		<script src="js/libraries/classybrew.js"></script>
 
+		<!-- apex charts -->
+		<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 		<script>
 			var expanded = false;
-			const expandWidth = "18em";
+			const expandWidth = "22em";
 
 			$(function () {
 				initializeExpandableSidebar();
@@ -186,6 +189,8 @@
 
 		<div id="expandable-sidebar">
 			<div id="expandable-sidebar-content">
+				<div class="apex-chart" id="naep-scores-chart"></div>
+
 				<h3>Correlation</h3>
 				<div id="correlation-stats">
 					<h4>Please select two layers to view correlation data.</h4>

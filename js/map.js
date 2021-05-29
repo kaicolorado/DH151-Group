@@ -17,6 +17,10 @@ const csvPaths = [
 	csvPath_SP_G8_Math_2019,
 	csvPath_SP_G4_Reading_2019,
 	csvPath_SP_G8_Reading_2019,
+	csvPath_NAEP_G4_Math,
+	csvPath_NAEP_G8_Math,
+	csvPath_NAEP_G4_Reading,
+	csvPath_NAEP_G8_Reading,
 ];
 
 const artsEducationPolicyTitles = [
@@ -45,6 +49,20 @@ const scoresEnum = {
 	Math_G8_2019: 3,
 	Reading_G4_2019: 4,
 	Reading_G8_2019: 5,
+};
+
+const NAEP_CSVIndexEnum = {
+	Math_G4: 6,
+	Math_G8: 7,
+	Reading_G4: 8,
+	Reading_G8: 9,
+};
+
+const NAEPNameEnum = {
+	Math_G4: "Math - Grade 4",
+	Math_G8: "Math - Grade 8",
+	Reading_G4: "Reading - Grade 4",
+	Reading_G8: "Reading - Grade 8",
 };
 
 var map;
