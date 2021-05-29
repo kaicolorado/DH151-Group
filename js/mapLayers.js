@@ -4,6 +4,7 @@ function createLayers() {
 	createArtsEduPolicyLayers();
 	createScoresLayers();
 	setExpandableSidebarContent();
+	initializeNAEPScoresChartData();
 }
 
 function createArtsEduPolicyLayers() {

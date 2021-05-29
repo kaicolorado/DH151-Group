@@ -1,3 +1,6 @@
+var NAEPScoresAllStatesSeries = [];
+var NAEPScoresChartYearLabels = [];
+
 function updateCurrentCorrelation() {
 	//* get current index (from list of toggleable layers in the top right of the map) of the layer that was passed to this function
 	const activeOverlayIndices = getActiveOverlayIndices();
@@ -64,23 +67,47 @@ function setExpandableSidebarContent() {
 	});
 }
 
-function createNAEPScoresChart(state) {
-	$("#naep-scores-chart").empty();
+/**
+ * NAEPScoresAllStatesSeries {
+ * 		California: [
+ * 			{
+ * 				name: Math_G4,
+ * 				data: [276, 255, ...]
+ * 			},
+ * 			{
+ * 				name: Math_G8,
+ * 				data: [244, 255, ...]
+ * 			},
+ * 			...
+ * 		],
+ * 		Alabama: [...]
+ * 		...
+ * }
+ */
+function initializeNAEPScoresChartData() {
+	const stateNames = statesCentersJSON.map((state) => state.state);
 
-	NAEPScores = getYearlyNAEPScoresOfState(state);
-
-	var series = [];
 	var yearLabelsSet = new Set();
-	for (const [name, scores] of Object.entries(NAEPScores)) {
-		series.push({ name: NAEPNameEnum[name], data: Object.values(scores) });
-		Object.keys(scores).forEach((year) => yearLabelsSet.add(year));
+	for (stateName of stateNames) {
+		NAEPScores = getYearlyNAEPScoresOfState(stateName);
+		// NAEPScoresAllStatesSeries[stateName] = getYearlyNAEPScoresOfState(stateName);
+		var series = [];
+		for (const [name, scores] of Object.entries(NAEPScores)) {
+			series.push({ name: NAEPNameEnum[name], data: Object.values(scores) });
+			Object.keys(scores).forEach((year) => yearLabelsSet.add(year));
+		}
+
+		NAEPScoresAllStatesSeries[stateName] = series;
 	}
 
-	yearLabels = Array.from(yearLabelsSet);
-	yearLabels.sort();
+	NAEPScoresChartYearLabels = Array.from(yearLabelsSet);
+	NAEPScoresChartYearLabels.sort();
+}
 
+function createNAEPScoresChart(state) {
+	$("#naep-scores-chart").empty();
 	var options = {
-		series: series,
+		series: NAEPScoresAllStatesSeries[state],
 		chart: {
 			animations: {
 				enabled: false,
@@ -132,10 +159,10 @@ function createNAEPScoresChart(state) {
 		// 	},
 		// },
 		markers: {
-			size: 1,
+			size: 0,
 		},
 		xaxis: {
-			categories: yearLabels,
+			categories: NAEPScoresChartYearLabels,
 			labels: {
 				maxHeight: 50,
 			},
@@ -157,6 +184,10 @@ function createNAEPScoresChart(state) {
 		},
 	};
 
+	const startTime = performance.now();
 	var chart = new ApexCharts(document.querySelector("#naep-scores-chart"), options);
 	chart.render();
+
+	const duration = performance.now() - startTime;
+	console.log(`someMethodIThinkMightBeSlow took ${duration}ms`);
 }
