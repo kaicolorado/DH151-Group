@@ -239,6 +239,9 @@ function createNAEPScoresChartChartJS(state) {
 			plugins: {
 				legend: {
 					position: "top",
+					labels: {
+						boxWidth: 13,
+					},
 				},
 				title: {
 					display: true,

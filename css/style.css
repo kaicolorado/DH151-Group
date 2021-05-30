@@ -313,7 +313,7 @@ body {
 }
 
 #chart-js {
-	min-height: 350px;
+	min-height: 350px !important;
 	margin: 10px;
 }
 
