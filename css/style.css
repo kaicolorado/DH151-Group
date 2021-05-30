@@ -146,6 +146,8 @@ body {
 	display: flex;
 	align-items: center;
 
+	transition: border-radius 0.7s;
+
 	width: 100%;
 	padding: 14px;
 	outline: none;
@@ -163,11 +165,28 @@ body {
 	background-color: rgb(166, 219, 252);
 }
 
+.collapsible-active {
+	transition: border-radius 0.1s;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
 .collapsible-content {
 	vertical-align: middle;
+
 	overflow: hidden;
+
 	transition: max-height 0.2s ease-out;
+
 	max-height: 0;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-bottom: 8px;
+	border-radius: 0 0 10px 10px;
+
+	background-color: rgb(166, 219, 252);
+
+	word-wrap: break-word;
 }
 
 #expand-list-icon {
@@ -188,27 +207,6 @@ body {
 	overflow: auto;
 	padding: 10px;
 	background-color: var(--light-blue);
-}
-
-#left-sidebar .collapsible {
-	transition: border-radius 0.7s;
-	font-size: 15px;
-}
-
-#left-sidebar .collapsible-active {
-	transition: border-radius 0.1s;
-	border-bottom-left-radius: 0;
-	border-bottom-right-radius: 0;
-}
-
-#left-sidebar .collapsible-content {
-	background-color: rgb(166, 219, 252);
-}
-
-#left-sidebar .collapsible-content h4,
-#left-sidebar .collapsible-content p {
-	padding-left: 8px;
-	padding-right: 8px;
 }
 
 #left-sidebar .collapsible-content h4 {
@@ -296,18 +294,11 @@ body {
 }
 
 #expandable-sidebar .collapsible {
-	margin-bottom: 8px;
 	font-size: 16px;
 }
 
 #expandable-sidebar .collapsible h4 {
 	margin: 0;
-}
-
-#correlation-stats {
-	display: flex;
-	height: 60px;
-	padding-bottom: 1em;
 }
 
 #expandable-sidebar-content h3 {
@@ -324,6 +315,12 @@ body {
 #chart-js {
 	min-height: 350px;
 	margin: 10px;
+}
+
+#correlation-stats {
+	display: flex;
+	height: 60px;
+	padding-bottom: 1em;
 }
 
 #correlation-stats h4 {
