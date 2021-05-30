@@ -134,7 +134,7 @@ function initializeNAEPScoresChartDataChartJS() {
 }
 
 function createNAEPScoresChart(state) {
-	$("#naep-scores-chart").empty();
+	$("#scores-chart").empty();
 	var options = {
 		series: NAEPScoresAllStatesSeries[state],
 		chart: {
@@ -213,14 +213,14 @@ function createNAEPScoresChart(state) {
 		},
 	};
 
-	var chart = new ApexCharts(document.querySelector("#naep-scores-chart"), options);
+	var chart = new ApexCharts(document.querySelector("#scores-chart"), options);
 	chart.render();
 }
 
 function createNAEPScoresChartChartJS(state) {
-	$("#chartJS").remove();
-	$("#naep-scores-chart").append('<canvas id="chartJS"></canvas>');
-	var chartCanvas = $("#chartJS");
+	$("#chart-js").remove();
+	$("#scores-chart").append('<canvas id="chart-js"></canvas>');
+	var chartCanvas = $("#chart-js");
 
 	const config = {
 		type: "line",

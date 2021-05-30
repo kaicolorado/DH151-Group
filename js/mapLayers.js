@@ -134,6 +134,7 @@ function resetHighlight(layer, layerType, index, caller = null) {
 		}
 	}
 	infoPanel.update();
+	$("#chart-js").remove();
 }
 
 function selectFeature(clickedStateLayer, layerType, index) {
