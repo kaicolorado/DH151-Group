@@ -42,20 +42,25 @@ function createScoresLayers() {
 	}
 
 	statesCentersJSON.forEach(function (state, _) {
-		function getMarker(score) {
+		for (let i = 0; i < 4; i++) {
+			const score = parseInt(getStateScore(state.state, i + 2));
+			const min = scoresLayerObjects[i].min;
+			const max = scoresLayerObjects[i].max;
+			const marker = getMarker(score, min, max);
+			scoresLayerObjects[i].scoresNumberLayer.addLayer(marker);
+		}
+		function getMarker(score, min, max) {
 			return L.marker([state.latitude, state.longitude], {
 				icon: L.divIcon({
 					iconSize: null,
 					className: "score-overlay",
-					html: `<div>${score}</div>`,
+					html: /*html*/ `
+						<div>
+							${score === max ? bestStateIcon : score === min ? worstStateIcon : ""} ${score}
+						</div>`,
 				}),
+				interactive: false, //* so that you can click the underlying polygon when clicking on the number icon
 			});
-		}
-
-		for (let i = 0; i < 4; i++) {
-			const score = getStateScore(state.state, i + 2);
-			const marker = getMarker(score);
-			scoresLayerObjects[i].scoresNumberLayer.addLayer(marker);
 		}
 	});
 

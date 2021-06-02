@@ -30,8 +30,7 @@ function getNewLegendContent() {
 						</div>
 						<p>${i} ${i === 1 ? "Art Policy" : "Art Policies"} Implemented</p>
 					</div>
-					<br>
-				`;
+					<br>`;
 			}
 		} else {
 			activeOverlayTitlesArtsEduPolicies.forEach(function (activeOverlayTitle) {
@@ -41,16 +40,14 @@ function getNewLegendContent() {
 				const colorBoxHTML = /*html*/ `
 					<div class="color-box">
 						<div class="color-box-single" style="background-color: ${getArtsEducationPolicyColor(originalIndex + 1)};"></div>
-					</div>
-				`;
+					</div>`;
 
 				newLegendContent += /*html*/ `
 					<div class="legend-layer-info">
 						${colorBoxHTML}
 						<p>${title}</p>
 					</div>
-					<br>
-				`;
+					<br>`;
 			});
 		}
 
@@ -62,9 +59,16 @@ function getNewLegendContent() {
 					<div class="legend-layer-info">
 						<p>${title}</p>
 					</div>
-					<br>
-				`;
+					<br>`;
 		});
+
+		if (activeOverlayTitlesScores.length > 0) {
+			newLegendContent += /*html*/ `
+				<div class="legend-layer-info" style="display: flex">
+					<p style="flex: 1">${bestStateIcon}: Best State</p>
+					<p style="flex: 1">${worstStateIcon}: Worst State</p>
+				</div>`;
+		}
 	}
 
 	return newLegendContent;
@@ -107,8 +111,7 @@ function createInfoPanel() {
 
 			this._div.innerHTML = `
 				<h2>${properties.NAME}</h2>
-				${html}
-			`;
+				${html}`;
 		}
 		//* if feature is not highlighted
 		else {
@@ -116,8 +119,7 @@ function createInfoPanel() {
 				<p>Hover over or click a state</p>
 				<p style="font-size: 11pt">
 					(with at least one layer active)
-				</p>
-			`;
+				</p>`;
 		}
 	};
 

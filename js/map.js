@@ -9,6 +9,9 @@ const useMonoColorsForArtsEduPolicyLayers = 1;
 const useClassyBrewColors = 0;
 const useD3Colors = 1;
 
+const bestStateIcon = "&#9733;"; //* ★
+const worstStateIcon = "&#9785;"; //* ☹
+
 /* ---------------------------- Global Variables ---------------------------- */
 
 const csvPaths = [
@@ -82,9 +85,6 @@ var scoresClassyBrew = {};
 const csvData = new Array(csvPaths.length);
 
 let infoPanel = L.control();
-
-// REVIEW: we can either modify the colors of a single layer based on what layers the user selects,
-//         or overlay multiple layers, one for each feature.
 
 /* ------------------------------- Initialize ------------------------------- */
 
