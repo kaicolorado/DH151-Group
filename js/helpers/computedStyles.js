@@ -48,11 +48,36 @@ function getArtsEducationPolicySummaryStyle(feature, index) {
 		const numOfPoliciesImplemented = parseInt(stateData["Total Policies Implemented"]);
 		// const percentageOfPoliciesImplemented = stateData["% of Policies Implemented"];
 		const percentageOfPoliciesImplemented = numOfPoliciesImplemented * 0.1;
+		// const scaledVal = (percentageOfPoliciesImplemented - 0) / (0.7 - 0);
 
-		const color = d3.interpolatePlasma(percentageOfPoliciesImplemented); //* can choose any palette from https://github.com/d3/d3-scale-chromatic
+		// const flipped = 1 - percentageOfPoliciesImplemented;
+
+		const colorRGB = d3.interpolateBlues(percentageOfPoliciesImplemented); //* can choose any palette from https://github.com/d3/d3-scale-chromatic
+
+		const colorArr = colorRGB.match(/\d+/g);
+		// var redValue = parseInt(colorArr[0]);
+		// var greenValue = parseInt(colorArr[1]);
+		// var blueValue = parseInt(colorArr[2]);
+		// redValue -= 100;
+		// greenValue -= 20;
+		// blueValue += 20;
+		// redValue = redValue.toString();
+		// greenValue = greenValue.toString();
+		// blueValue = blueValue.toString();
+		// colorArr[0] = redValue;
+		// colorArr[1] = greenValue;
+		// colorArr[2] = blueValue;
+		// const newColorRGB = `rgb(${colorArr[0]}, ${colorArr[1]}, ${colorArr[2]})`;
+
+		// const newColorRGB = saturateByTenth(colorRGB);
+		const hsv = RGBtoHSV(colorArr);
+		hsv[1] *= 1.2;
+		hsv[2] *= 1.4;
+		const rgb = HSVtoRGB(hsv);
+		const newColorRGB = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 
 		return {
-			fillColor: color,
+			fillColor: newColorRGB,
 			fillOpacity: 0.2,
 			color: "black",
 			weight: 0.3,
@@ -206,3 +231,79 @@ function getLineColor(datasetName) {
 			break;
 	}
 }
+
+RGBtoHSV = function (color) {
+	var r, g, b, h, s, v;
+	r = color[0];
+	g = color[1];
+	b = color[2];
+	min = Math.min(r, g, b);
+	max = Math.max(r, g, b);
+
+	v = max;
+	delta = max - min;
+	if (max != 0) s = delta / max;
+	else {
+		s = 0;
+		h = -1;
+		return [h, s, undefined];
+	}
+	if (r === max) h = (g - b) / delta;
+	else if (g === max) h = 2 + (b - r) / delta;
+	else h = 4 + (r - g) / delta;
+	h *= 60;
+	if (h < 0) h += 360;
+	if (isNaN(h)) h = 0;
+	return [h, s, v];
+};
+
+HSVtoRGB = function (color) {
+	var i;
+	var h, s, v, r, g, b;
+	h = color[0];
+	s = color[1];
+	v = color[2];
+	if (s === 0) {
+		r = g = b = v;
+		return [r, g, b];
+	}
+	h /= 60;
+	i = Math.floor(h);
+	f = h - i;
+	p = v * (1 - s);
+	q = v * (1 - s * f);
+	t = v * (1 - s * (1 - f));
+	switch (i) {
+		case 0:
+			r = v;
+			g = t;
+			b = p;
+			break;
+		case 1:
+			r = q;
+			g = v;
+			b = p;
+			break;
+		case 2:
+			r = p;
+			g = v;
+			b = t;
+			break;
+		case 3:
+			r = p;
+			g = q;
+			b = v;
+			break;
+		case 4:
+			r = t;
+			g = p;
+			b = v;
+			break;
+		default:
+			r = v;
+			g = p;
+			b = q;
+			break;
+	}
+	return [r, g, b];
+};
