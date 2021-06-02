@@ -110,6 +110,12 @@ function getCustomMetricAvgd() {
 	return customMetricAvgd;
 }
 
+function getStateCustomMetric(state) {
+	const stateData = csvData[10].data.find((row) => row.State === state);
+	const stateCustomMetric = stateData["Custom Metric"];
+	return stateCustomMetric;
+}
+
 function getYearlyNAEPScoresOfState(state) {
 	var NAEPScores = {};
 

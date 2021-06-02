@@ -17,10 +17,23 @@ function createCustomMetricLayer() {
 	const min = Math.min(...customMetric);
 	const max = Math.max(...customMetric);
 
-	customMetricLayer = L.geoJson(statesPolygonsJSON, {
+	const customMetricNumberLayer = L.featureGroup();
+	statesCentersJSON.forEach(function (state, _) {
+		const customMetric = parseInt(getStateCustomMetric(state.state));
+		const marker = getMarker(state, customMetric, parseInt(min), parseInt(max));
+		customMetricNumberLayer.addLayer(marker);
+	});
+
+	map.createPane("customMetricColorPane");
+	map.getPane("customMetricColorPane").style.zIndex = 200;
+
+	const customMetricColorLayer = L.geoJson(statesPolygonsJSON, {
 		style: (feature) => getCustomMetricStyle(feature, min, max),
 		onEachFeature: (feature, layer) => onEachFeature(feature, layer, "CUS"),
+		pane: "customMetricColorPane",
 	});
+
+	customMetricLayer = L.layerGroup([customMetricNumberLayer, customMetricColorLayer]);
 	controls.addOverlay(customMetricLayer, "Custom Metric");
 }
 
@@ -68,23 +81,10 @@ function createScoresLayers() {
 	statesCentersJSON.forEach(function (state, _) {
 		for (let i = 0; i < 4; i++) {
 			const score = parseInt(getStateScore(state.state, i + 2));
-			const min = scoresLayerObjects[i].min;
-			const max = scoresLayerObjects[i].max;
-			const marker = getMarker(score, min, max);
+			const min = parseInt(scoresLayerObjects[i].min);
+			const max = parseInt(scoresLayerObjects[i].max);
+			const marker = getMarker(state, score, min, max);
 			scoresLayerObjects[i].scoresNumberLayer.addLayer(marker);
-		}
-		function getMarker(score, min, max) {
-			return L.marker([state.latitude, state.longitude], {
-				icon: L.divIcon({
-					iconSize: null,
-					className: "score-overlay",
-					html: /*html*/ `
-						<div>
-							${score === max ? bestStateIcon : score === min ? worstStateIcon : ""} ${score}
-						</div>`,
-				}),
-				interactive: false, //* so that you can click the underlying polygon when clicking on the number icon
-			});
 		}
 	});
 
@@ -106,6 +106,20 @@ function createScoresLayers() {
 
 		controls.addOverlay(scoresLayers[i], scoresLayersTitles[i]);
 	}
+}
+
+function getMarker(stateCenter, score, min, max) {
+	return L.marker([stateCenter.latitude, stateCenter.longitude], {
+		icon: L.divIcon({
+			iconSize: null,
+			className: "score-overlay",
+			html: /*html*/ `
+						<div>
+							${score === max ? bestStateIcon : score === min ? worstStateIcon : ""} ${score}
+						</div>`,
+		}),
+		interactive: false, //* so that you can click the underlying polygon when clicking on the number icon
+	});
 }
 
 function onEachFeature(feature, layer, layerType, index = null) {
@@ -162,7 +176,11 @@ function resetHighlight(layer, layerType, index, caller = null) {
 			});
 		}
 	} else if (layerType === "CUS") {
-		customMetricLayer.resetStyle(layer);
+		customMetricLayer.eachLayer(function (customMetricLayer) {
+			if (getActiveOverlayTitlesArtsEduPolicies().length > 0) {
+				customMetricLayer.setStyle({ fillOpacity: 0, weight: 0.3 });
+			} else if (customMetricLayer instanceof L.GeoJSON) customMetricLayer.resetStyle(layer);
+		});
 	}
 	infoPanel.update();
 	$("#chart-js").remove();
