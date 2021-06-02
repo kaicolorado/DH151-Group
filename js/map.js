@@ -25,6 +25,7 @@ const csvPaths = [
 	csvPath_NAEP_G8_Math,
 	csvPath_NAEP_G4_Reading,
 	csvPath_NAEP_G8_Reading,
+	csvPath_Custom_Metric,
 ];
 
 const artsEducationPolicyTitles = [
@@ -74,6 +75,7 @@ var map;
 const controls = L.control.layers();
 const legend = new L.Legend();
 
+var customMetricLayer;
 const artsEducationPolicyLayers = [];
 const scoresLayers = [];
 

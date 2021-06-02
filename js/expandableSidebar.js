@@ -18,6 +18,16 @@ function updateCurrentCorrelation() {
 }
 
 function setExpandableSidebarContent() {
+	//* below not needed b/c set in index.html
+	// $("#custom-metric-layer").html(`
+	// 	<div class="layer-control-item" id="custom-metric">
+	// 		<label class="switch">
+	// 			<input type="checkbox"">
+	// 			<span class="slider round"></span>
+	// 			<div class="layer-control-item-text"><p>Custom Metric</p></div>
+	// 		</label>
+	// 	</div>`);
+
 	$("#arts-education-policy-layers").append(/*html*/ `<div class="layer-control-item" id="aep-summary">
 			<label class="switch">
 				<input type="checkbox" data-layerindex="${0}">
@@ -49,6 +59,16 @@ function setExpandableSidebarContent() {
 				</label>
 			</div>
 		`);
+	});
+
+	$('#custom-metric-layer .layer-control-item input[type="checkbox"]').on("change", function () {
+		var checkbox = $(this);
+
+		if (checkbox.is(":checked")) {
+			map.addLayer(customMetricLayer);
+		} else {
+			map.removeLayer(customMetricLayer);
+		}
 	});
 
 	$('#arts-education-policy-layers .layer-control-item input[type="checkbox"]').on("change", function () {

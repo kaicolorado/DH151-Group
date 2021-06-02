@@ -3,10 +3,25 @@ var selectedState = null;
 //* called after all CSV's have been parsed
 function createLayers() {
 	initializeClassyBrew();
+	createCustomMetricLayer();
 	createArtsEduPolicyLayers();
 	createScoresLayers();
 	setExpandableSidebarContent();
 	initializeNAEPScoresChartDataChartJS();
+}
+
+//* custom metric: % of Arts Edu Policies Implemented * All 2019 scores added up
+//* custom metric avg'd: % of Arts Edu Policies Implemented * (All 2019 scores added up / 4)
+function createCustomMetricLayer() {
+	const customMetric = getCustomMetric();
+	const min = Math.min(...customMetric);
+	const max = Math.max(...customMetric);
+
+	customMetricLayer = L.geoJson(statesPolygonsJSON, {
+		style: (feature) => getCustomMetricStyle(feature, min, max),
+		onEachFeature: (feature, layer) => onEachFeature(feature, layer, "CUS"),
+	});
+	controls.addOverlay(customMetricLayer, "Custom Metric");
 }
 
 function createArtsEduPolicyLayers() {
@@ -93,7 +108,7 @@ function createScoresLayers() {
 	}
 }
 
-function onEachFeature(feature, layer, layerType, index) {
+function onEachFeature(feature, layer, layerType, index = null) {
 	layer.on({
 		mouseover: (e) => highlightFeature(e.target, "mouseover"),
 		mouseout: (e) => resetHighlight(e.target, layerType, index, "mouseout"),
@@ -124,7 +139,7 @@ function highlightFeature(layer, caller = null) {
 	}
 
 	infoPanel.update(layer.feature.properties);
-	createNAEPScoresChartChartJS(layer.feature.properties.NAME);
+	createNAEPScoresChartChartJS(layer.feature.properties.NAME); //TODO: causes lag, maybe only show chart if use clicks state
 }
 
 function resetHighlight(layer, layerType, index, caller = null) {
@@ -146,6 +161,8 @@ function resetHighlight(layer, layerType, index, caller = null) {
 				}
 			});
 		}
+	} else if (layerType === "CUS") {
+		customMetricLayer.resetStyle(layer);
 	}
 	infoPanel.update();
 	$("#chart-js").remove();

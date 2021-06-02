@@ -79,7 +79,9 @@ function getStateInfo(name) {
 		"Grade 8 - Reading - 2019": csvData[5].data.find((row) => row.Jurisdiction === name)["Score (MN)"],
 	};
 
-	stateInfo = { AEPs: stateAEPs, scores: stateScores };
+	const stateCustomMetric = csvData[10].data.find((row) => row.State === name);
+
+	stateInfo = { AEPs: stateAEPs, scores: stateScores, customMetric: stateCustomMetric };
 
 	return stateInfo;
 }
@@ -96,6 +98,16 @@ function getArtsEduPolicyPercentages() {
 	//* e.g. 0.1, 0.4, 1
 	const percentages = csvData[1].data.map((val) => parseFloat(val["% of Policies Implemented"]));
 	return percentages;
+}
+
+function getCustomMetric() {
+	const customMetric = csvData[10].data.map((val) => parseFloat(val["Custom Metric"]));
+	return customMetric;
+}
+
+function getCustomMetricAvgd() {
+	const customMetricAvgd = csvData[10].data.map((val) => parseFloat(val["Custom Metric Avg'd"]));
+	return customMetricAvgd;
 }
 
 function getYearlyNAEPScoresOfState(state) {

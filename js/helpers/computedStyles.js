@@ -19,6 +19,27 @@ function initializeClassyBrew() {
 	}
 }
 
+/* ------------------------------ Custom Layer ------------------------------ */
+
+function getCustomMetricStyle(feature, min, max) {
+	const stateData = csvData[10].data.find((row) => row.State === feature.properties.NAME);
+
+	if (stateData) {
+		const customMetric = parseFloat(stateData["Custom Metric"]);
+		// const customMetricAvgd = parseFloat(stateData["Custom Metric Avg'd"]);
+		const scaledVal = (customMetric - min) / (max - min);
+
+		const color = d3.interpolatePlasma(scaledVal);
+
+		return {
+			fillColor: color,
+			fillOpacity: 0.2,
+			color: "black",
+			weight: 0.3,
+		};
+	}
+}
+
 /* ---------------------- Arts Education Policy Layers ---------------------- */
 
 function getArtsEducationPolicySummaryStyle(feature, index) {
@@ -28,10 +49,10 @@ function getArtsEducationPolicySummaryStyle(feature, index) {
 		// const percentageOfPoliciesImplemented = stateData["% of Policies Implemented"];
 		const percentageOfPoliciesImplemented = numOfPoliciesImplemented * 0.1;
 
-		const colorRGB = d3.interpolatePlasma(percentageOfPoliciesImplemented); //* can choose any palette from https://github.com/d3/d3-scale-chromatic
+		const color = d3.interpolatePlasma(percentageOfPoliciesImplemented); //* can choose any palette from https://github.com/d3/d3-scale-chromatic
 
 		return {
-			fillColor: colorRGB,
+			fillColor: color,
 			fillOpacity: 0.2,
 			color: "black",
 			weight: 0.3,

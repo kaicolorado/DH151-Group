@@ -13,10 +13,20 @@ function getNewLegendContent() {
 		// TODO: if active layer is one of the score ones, we want to have 2 legend entries. One that shows low color and another that shows high
 		// TODO: OR - just have 2 squares next to one entry and put (Low-High) in parentheses
 
-		const activeOverlayTitlesArtsEduPolicies = getActiveOverlayTitlesArtsEduPolicies();
-		const activeTitles = activeOverlayTitlesArtsEduPolicies.map((titleObj) => Object.keys(titleObj)[0]);
+		const activeTitles = activeOverlayTitles.map((titleObj) => Object.keys(titleObj)[0]);
 
-		if (activeTitles.includes(artsEducationPolicyTitles[0])) {
+		if (activeTitles.includes("Custom Metric")) {
+			newLegendContent += /*html*/ `
+				<div class="legend-layer-info">
+					<p>Custom Metric</p>
+				</div>
+				<br>`;
+		}
+
+		const activeOverlayTitlesArtsEduPolicies = getActiveOverlayTitlesArtsEduPolicies();
+		const activeArtsEduTitles = activeOverlayTitlesArtsEduPolicies.map((titleObj) => Object.keys(titleObj)[0]);
+
+		if (activeArtsEduTitles.includes(artsEducationPolicyTitles[0])) {
 			newLegendContent += /*html*/ `
 				<div class="legend-layer-info">
 					<p>${artsEducationPolicyTitles[0]}</p>
@@ -26,7 +36,7 @@ function getNewLegendContent() {
 
 		if (useMonoColorsForArtsEduPolicyLayers) {
 			var activeOverlayTitlesArtsEduPoliciesLength = activeOverlayTitlesArtsEduPolicies.length;
-			if (activeTitles.includes(artsEducationPolicyTitles[0])) activeOverlayTitlesArtsEduPoliciesLength--; //* hack. if summary layer is active,
+			if (activeArtsEduTitles.includes(artsEducationPolicyTitles[0])) activeOverlayTitlesArtsEduPoliciesLength--; //* hack. if summary layer is active,
 
 			for (let i = 1; i <= activeOverlayTitlesArtsEduPoliciesLength; i++) {
 				let colorBoxSingle = /*html*/ `<div class="color-box-single" style="background-color: #007aff;"></div>`;
@@ -103,6 +113,11 @@ function createInfoPanel() {
 			stateInfo = getStateInfo(properties.NAME);
 
 			var html = "";
+
+			html += `<h3>Custom Metric</h3>`;
+			html += `<ul id="custom-metric-list">`;
+			html += `<li>${stateInfo.customMetric["Custom Metric"]}</li>`;
+			html += `</ul>`;
 
 			html += `<h3>Arts Policies</h3>`;
 			html += `<ul id="arts-policies-list">`;
