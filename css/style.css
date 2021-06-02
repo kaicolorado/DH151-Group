@@ -333,6 +333,10 @@ body {
 	padding-bottom: 1em;
 }
 
+.layer-control-item#aep-summary {
+	padding-bottom: 0;
+}
+
 .layer-control-item-text {
 	margin-left: 70px;
 }
@@ -404,6 +408,12 @@ input:checked + .slider:before {
 
 .slider.round:before {
 	border-radius: 50%;
+}
+
+hr.solid-divider {
+	border: none;
+	border-top: 3px solid var(--light-blue);
+	border-radius: 5px;
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */

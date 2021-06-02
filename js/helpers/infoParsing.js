@@ -40,8 +40,7 @@ function getActiveOverlayIndices() {
 function getActiveOverlayTitlesArtsEduPolicies() {
 	return getActiveOverlayTitles().filter((titleObject) => {
 		const title = Object.keys(titleObject)[0];
-		return title.includes("AEP");
-		// REVIEW: may need to change this in the future if we stop including 'AEP' in the title
+		return artsEducationPolicyTitles.includes(title);
 	});
 }
 
@@ -91,6 +90,12 @@ function getScores(csvIndex) {
 	scores.pop(); //* removes 'National public'
 	scores.pop(); //* removes DoDEA
 	return scores;
+}
+
+function getArtsEduPolicyPercentages() {
+	//* e.g. 0.1, 0.4, 1
+	const percentages = csvData[1].data.map((val) => parseFloat(val["% of Policies Implemented"]));
+	return percentages;
 }
 
 function getYearlyNAEPScoresOfState(state) {

@@ -14,9 +14,21 @@ function getNewLegendContent() {
 		// TODO: OR - just have 2 squares next to one entry and put (Low-High) in parentheses
 
 		const activeOverlayTitlesArtsEduPolicies = getActiveOverlayTitlesArtsEduPolicies();
+		const activeTitles = activeOverlayTitlesArtsEduPolicies.map((titleObj) => Object.keys(titleObj)[0]);
+
+		if (activeTitles.includes(artsEducationPolicyTitles[0])) {
+			newLegendContent += /*html*/ `
+				<div class="legend-layer-info">
+					<p>${artsEducationPolicyTitles[0]}</p>
+				</div>
+				<br>`;
+		}
 
 		if (useMonoColorsForArtsEduPolicyLayers) {
-			for (let i = 1; i <= activeOverlayTitlesArtsEduPolicies.length; i++) {
+			var activeOverlayTitlesArtsEduPoliciesLength = activeOverlayTitlesArtsEduPolicies.length;
+			if (activeTitles.includes(artsEducationPolicyTitles[0])) activeOverlayTitlesArtsEduPoliciesLength--; //* hack. if summary layer is active,
+
+			for (let i = 1; i <= activeOverlayTitlesArtsEduPoliciesLength; i++) {
 				let colorBoxSingle = /*html*/ `<div class="color-box-single" style="background-color: #007aff;"></div>`;
 
 				for (let j = 1; j < i; j++) {
@@ -33,6 +45,7 @@ function getNewLegendContent() {
 					<br>`;
 			}
 		} else {
+			//TODO: clause doesn't work with new summary layer. Fix if going to use.
 			activeOverlayTitlesArtsEduPolicies.forEach(function (activeOverlayTitle) {
 				const title = Object.keys(activeOverlayTitle)[0];
 				const originalIndex = Object.values(activeOverlayTitle)[0];
@@ -93,13 +106,14 @@ function createInfoPanel() {
 
 			html += `<h3>Arts Policies</h3>`;
 			html += `<ul id="arts-policies-list">`;
-			stateInfo.AEPs.forEach(function (implemented, index) {
-				if (implemented === "Yes") {
-					html += `<li>AEP${index + 1}&ensp;&#9989;</li>`;
+			for (let i = 0; i < 10; i++) {
+				//* 10 b/c first 10 columns are the indiv. policies
+				if (stateInfo.AEPs[i] === "Yes") {
+					html += `<li>AEP${i + 1}&ensp;&#9989;</li>`;
 				} else {
-					html += `<li>AEP${index + 1}&ensp;&#10060;</li>`;
+					html += `<li>AEP${i + 1}&ensp;&#10060;</li>`;
 				}
-			});
+			}
 			html += `</ul>`;
 
 			html += `<h3>Standardized Scores</h3>`;

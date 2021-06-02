@@ -1,23 +1,43 @@
 /* ------------------------------- ClassyBrew ------------------------------- */
 
 function initializeClassyBrew() {
-	for (const scores in scoresEnum) {
-		scoresClassyBrew[scores] = new classyBrew();
-	}
+	if (useClassyBrewColorsForScores) {
+		for (const scores in scoresEnum) {
+			scoresClassyBrew[scores] = new classyBrew();
+		}
 
-	//* score e.g.: Math_G4_2019, Math_G8_2019, Reading_G4_2019, Reading_G8_2019
-	for (const [score, scoresCB] of Object.entries(scoresClassyBrew)) {
-		const csvIndex = scoresEnum[score];
-		const scores = getScores(csvIndex);
+		//* score e.g.: Math_G4_2019, Math_G8_2019, Reading_G4_2019, Reading_G8_2019
+		for (const [score, scoresCB] of Object.entries(scoresClassyBrew)) {
+			const csvIndex = scoresEnum[score];
+			const scores = getScores(csvIndex);
 
-		scoresCB.setSeries(scores);
-		scoresCB.setNumClasses(5);
-		scoresCB.setColorCode("RdYlGn");
-		scoresCB.classify("quantiles");
+			scoresCB.setSeries(scores);
+			scoresCB.setNumClasses(5);
+			scoresCB.setColorCode("RdYlGn");
+			scoresCB.classify("quantiles");
+		}
 	}
 }
 
 /* ---------------------- Arts Education Policy Layers ---------------------- */
+
+function getArtsEducationPolicySummaryStyle(feature, index) {
+	const stateData = csvData[1].data.find((row) => row.State === feature.properties.NAME);
+	if (stateData) {
+		const numOfPoliciesImplemented = parseInt(stateData["Total Policies Implemented"]);
+		// const percentageOfPoliciesImplemented = stateData["% of Policies Implemented"];
+		const percentageOfPoliciesImplemented = numOfPoliciesImplemented * 0.1;
+
+		const colorRGB = d3.interpolatePlasma(percentageOfPoliciesImplemented); //* can choose any palette from https://github.com/d3/d3-scale-chromatic
+
+		return {
+			fillColor: colorRGB,
+			fillOpacity: 0.2,
+			color: "black",
+			weight: 0.3,
+		};
+	}
+}
 
 function getArtsEducationPolicyStyle(feature, index) {
 	//* get the state object who's name (e.g. 'Alabama') matches the state name we're mapping now
@@ -107,7 +127,7 @@ function getScoresStyle(feature, csvPathsIndex, min, max) {
 		const stateScore = stateData[scoresKey];
 
 		var fillColor;
-		if (useClassyBrewColors) {
+		if (useClassyBrewColorsForScores) {
 			const enumKey = Object.keys(scoresEnum).find((key) => scoresEnum[key] === csvPathsIndex);
 			fillColor = scoresClassyBrew[enumKey].getColorInRange(stateScore);
 		} else if (useD3Colors) {

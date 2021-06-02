@@ -13,6 +13,15 @@ function createArtsEduPolicyLayers() {
 	map.createPane("AEPPane");
 	map.getPane("AEPPane").style.zIndex = 300;
 
+	artsEducationPolicyLayers.push(
+		L.geoJson(statesPolygonsJSON, {
+			style: (feature) => getArtsEducationPolicySummaryStyle(feature),
+			onEachFeature: (feature, layer) => onEachFeature(feature, layer, "AEP", 0),
+			pane: "AEPPane",
+		})
+	);
+	controls.addOverlay(artsEducationPolicyLayers[0], artsEducationPolicyTitles[0]);
+
 	for (let i = 0; i < 10; i++) {
 		artsEducationPolicyLayers.push(
 			L.geoJson(statesPolygonsJSON, {
@@ -20,7 +29,7 @@ function createArtsEduPolicyLayers() {
 					useMonoColorsForArtsEduPolicyLayers
 						? getArtsEducationPolicyStyleMono(feature, i + 1)
 						: getArtsEducationPolicyStyle(feature, i + 1),
-				onEachFeature: (feature, layer) => onEachFeature(feature, layer, "AEP", i),
+				onEachFeature: (feature, layer) => onEachFeature(feature, layer, "AEP", i + 1), //* `i + 1` b/c of the summary layer
 				pane: "AEPPane",
 			})
 		);
@@ -150,19 +159,4 @@ function selectFeature(clickedStateLayer, layerType, index) {
 		highlightFeature(clickedStateLayer);
 		selectedState = { layer: clickedStateLayer, layerType: layerType, index: index };
 	}
-
-	// if (selectedState) {
-	// 	if (selectedState.layer === clickedStateLayer) {
-	// 		resetHighlight(clickedStateLayer, layerType, index);
-	// 		selectedState = null;
-	// 	} else {
-	// 		resetHighlight(selectedState.layer, selectedState.layerType, selectedState.index);
-	// 		// highlightFeature(clickedStateLayer);
-	// 		// selectedState = { layer: clickedStateLayer, layerType: layerType, index: index };
-	// 		selectedState = null;
-	// 	}
-	// } else {
-	// 	highlightFeature(clickedStateLayer);
-	// 	selectedState = { layer: clickedStateLayer, layerType: layerType, index: index };
-	// }
 }

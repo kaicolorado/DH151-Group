@@ -18,17 +18,26 @@ function updateCurrentCorrelation() {
 }
 
 function setExpandableSidebarContent() {
-	artsEducationPolicyLayers.forEach(function (_, index) {
+	$("#arts-education-policy-layers").append(/*html*/ `<div class="layer-control-item" id="aep-summary">
+			<label class="switch">
+				<input type="checkbox" data-layerindex="${0}">
+				<span class="slider round"></span>
+				<div class="layer-control-item-text"><p>${artsEducationPolicyTitles[0]}</p></div>
+			</label>
+		</div>
+		<hr class="solid-divider">`);
+
+	for (let i = 0; i < 10; i++) {
 		$("#arts-education-policy-layers").append(/*html*/ `
 			<div class="layer-control-item">
 				<label class="switch">
-					<input type="checkbox" data-layerindex="${index}">
+					<input type="checkbox" data-layerindex="${i + 1}">
 					<span class="slider round"></span>
-					<div class="layer-control-item-text"><p>${artsEducationPolicyTitles[index]}</p></div>
+					<div class="layer-control-item-text"><p>${artsEducationPolicyTitles[i + 1]}</p></div>
 				</label>
 			</div>
 		`);
-	});
+	}
 
 	scoresLayers.forEach(function (_, index) {
 		$("#scores-layers").append(/*html*/ `

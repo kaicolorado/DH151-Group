@@ -6,7 +6,7 @@
 const useMonoColorsForArtsEduPolicyLayers = 1;
 
 //* change b/w 1 and 0 based on whether you want to use ClassyBrew colors, d3 colors, or custom heatmap colors
-const useClassyBrewColors = 0;
+const useClassyBrewColorsForScores = 0;
 const useD3Colors = 1;
 
 const bestStateIcon = "&#9733;"; //* ★
@@ -28,6 +28,7 @@ const csvPaths = [
 ];
 
 const artsEducationPolicyTitles = [
+	"Summary: Total Arts Education Policies Implemented",
 	"AEP1: Arts as a Core Academic Subject",
 	"AEP2: Early Childhood Arts Ed Standards",
 	"AEP3: Elementary & Secondary Arts Ed Standards",
@@ -80,6 +81,7 @@ var statesPolygonsJSON;
 var statesCentersJSON;
 var layersCorrelationMatrix;
 
+var artsEduPoliciesSummaryClassyBrew;
 var scoresClassyBrew = {};
 
 const csvData = new Array(csvPaths.length);

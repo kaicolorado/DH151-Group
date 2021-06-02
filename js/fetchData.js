@@ -30,6 +30,7 @@ async function readCSVs() {
 				//* if the csvData array has no empty elements (meaning all csvPaths have been processed)
 				if (!csvData.includes(undefined)) {
 					//* run this function once all csv files have been loaded
+					console.log("Done!");
 					createLayers();
 				}
 			},
