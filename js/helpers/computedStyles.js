@@ -48,28 +48,10 @@ function getArtsEducationPolicySummaryStyle(feature, index) {
 		const numOfPoliciesImplemented = parseInt(stateData["Total Policies Implemented"]);
 		// const percentageOfPoliciesImplemented = stateData["% of Policies Implemented"];
 		const percentageOfPoliciesImplemented = numOfPoliciesImplemented * 0.1;
-		// const scaledVal = (percentageOfPoliciesImplemented - 0) / (0.7 - 0);
-
-		// const flipped = 1 - percentageOfPoliciesImplemented;
 
 		const colorRGB = d3.interpolateBlues(percentageOfPoliciesImplemented); //* can choose any palette from https://github.com/d3/d3-scale-chromatic
 
 		const colorArr = colorRGB.match(/\d+/g);
-		// var redValue = parseInt(colorArr[0]);
-		// var greenValue = parseInt(colorArr[1]);
-		// var blueValue = parseInt(colorArr[2]);
-		// redValue -= 100;
-		// greenValue -= 20;
-		// blueValue += 20;
-		// redValue = redValue.toString();
-		// greenValue = greenValue.toString();
-		// blueValue = blueValue.toString();
-		// colorArr[0] = redValue;
-		// colorArr[1] = greenValue;
-		// colorArr[2] = blueValue;
-		// const newColorRGB = `rgb(${colorArr[0]}, ${colorArr[1]}, ${colorArr[2]})`;
-
-		// const newColorRGB = saturateByTenth(colorRGB);
 		const hsv = RGBtoHSV(colorArr);
 		hsv[1] *= 1.2;
 		hsv[2] *= 1.4;
