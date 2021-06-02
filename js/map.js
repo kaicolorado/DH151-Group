@@ -5,8 +5,9 @@
 //* change b/w 1 and 0 based on whether you want the Arts Edu policy layers to be single colored or not
 const useMonoColorsForArtsEduPolicyLayers = 1;
 
-//* change b/w 1 and 0 based on whether you want to use ClassyBrew colors or custom heatmap colors
+//* change b/w 1 and 0 based on whether you want to use ClassyBrew colors, d3 colors, or custom heatmap colors
 const useClassyBrewColors = 0;
+const useD3Colors = 1;
 
 /* ---------------------------- Global Variables ---------------------------- */
 

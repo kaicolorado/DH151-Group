@@ -109,7 +109,11 @@ function getScoresStyle(feature, csvPathsIndex, min, max) {
 		var fillColor;
 		if (useClassyBrewColors) {
 			const enumKey = Object.keys(scoresEnum).find((key) => scoresEnum[key] === csvPathsIndex);
-			fillColor = coresClassyBrew[enumKey].getColorInRange(stateScore);
+			fillColor = scoresClassyBrew[enumKey].getColorInRange(stateScore);
+		} else if (useD3Colors) {
+			const scaledVal = (stateScore - min) / (max - min);
+			const colorRGB = d3.interpolatePlasma(scaledVal); //* can choose any palette from https://github.com/d3/d3-scale-chromatic
+			fillColor = colorRGB;
 		} else {
 			const scaledVal = (stateScore - min) / (max - min);
 			const colorHSL = getHeatmapColorFromValue(scaledVal);
