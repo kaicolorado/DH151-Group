@@ -318,13 +318,23 @@ body {
 
 #correlation-stats {
 	display: flex;
-	height: 60px;
+	height: 90px;
 	padding-bottom: 1em;
 }
 
-#correlation-stats h4 {
+#correlation-stats div {
 	align-self: center;
 	margin: 0;
+}
+
+#correlation-stats h4,
+#correlation-stats h5 {
+	align-self: center;
+	margin: 0;
+}
+
+#correlation-stats h4 {
+	margin-bottom: 5px;
 }
 
 .layer-control-item {
