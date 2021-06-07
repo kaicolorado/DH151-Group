@@ -23,9 +23,8 @@ body {
 	text-align: center;
 }
 
-.column1 h1,
+
 .column1 h2,
-.column2 h1,
 .column2 h2 {
 	font-weight: normal;
 }
@@ -39,10 +38,12 @@ body {
 
 .column1 {
 	grid-area: column1;
+	margin-left: 5%;
 }
 
 .column2 {
 	grid-area: column2;
+	margin-right: 5%;
 }
 
 .overview {
@@ -55,10 +56,6 @@ body {
 	word-wrap: break-word;
 }
 
-.overview h1,
-.overview h2 {
-	font-weight: normal;
-}
 
 .overview p,
 .overview li {
