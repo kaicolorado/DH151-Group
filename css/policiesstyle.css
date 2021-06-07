@@ -27,3 +27,37 @@ body {
 .overview li {
 	font-size: 20px;
 }
+
+.bullets{
+	font-size: 14px;
+	color: black;
+	text-align: justify;
+}
+
+.bullets b{
+	font-size:18px;
+}
+.bullets h1{
+	text-align: center;
+}
+
+.content{
+	display: grid;
+	grid-template-columns: 75% 1fr;
+}
+
+
+
+.linkList h1{
+	text-align: center;
+	
+}
+
+.linkList ul{
+	padding-left: 25%;
+	font-size: 14px;
+	color: black;
+	
+
+	
+}
