@@ -32,13 +32,15 @@ body {
 	font-size: 14px;
 	color: black;
 	text-align: justify;
+	margin-left: 10%;
+	margin-right:10%
 }
 
 .bullets b{
 	font-size:18px;
 }
 .bullets h1{
-	text-align: center;
+	text-align: left;
 }
 
 .content{
@@ -49,15 +51,11 @@ body {
 
 
 .linkList h1{
-	text-align: center;
+	text-align: left;
 	
 }
 
 .linkList ul{
-	padding-left: 25%;
 	font-size: 14px;
-	color: black;
-	
-
-	
+	color: black;	
 }
