@@ -28,34 +28,31 @@ body {
 	font-size: 20px;
 }
 
-.bullets{
-	font-size: 14px;
+.bullets {
+	font-size: 18px;
 	color: black;
 	text-align: justify;
 	margin-left: 10%;
-	margin-right:10%
+	margin-right: 10%;
 }
 
-.bullets b{
-	font-size:18px;
+.bullets b {
+	font-size: 22px;
 }
-.bullets h1{
+.bullets h1 {
 	text-align: left;
 }
 
-.content{
+.content {
 	display: grid;
 	grid-template-columns: 75% 1fr;
 }
 
-
-
-.linkList h1{
+.linkList h1 {
 	text-align: left;
-	
 }
 
-.linkList ul{
-	font-size: 14px;
-	color: black;	
+.linkList ul {
+	font-size: 18px;
+	color: black;
 }
