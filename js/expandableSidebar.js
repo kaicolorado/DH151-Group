@@ -6,11 +6,9 @@ function updateCurrentCorrelation() {
 	const activeOverlayIndices = getActiveOverlayIndices();
 
 	if (activeOverlayIndices.length != 2 || activeOverlayIndices.includes(0) || activeOverlayIndices.includes(1)) {
-		$("#correlation-stats").html(/*html*/ `
-				<div>
-					<h4>Please select two layers to view correlation data.</h4>
-					<h5>(not including Custom Metric and Arts Education Policies Summary Layers)</h5>
-				</div>`);
+		$("#correlation-stats").html(
+			/*html*/ `<h4>Please select two policy/scores layers to view correlation data.</h4>`
+		);
 	} else {
 		//* -2 to account for Custom Metric and Summary overlays
 		const correlation = layersCorrelationMatrix[activeOverlayIndices[0] - 2][activeOverlayIndices[1] - 2];
