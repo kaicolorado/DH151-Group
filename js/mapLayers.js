@@ -50,14 +50,14 @@ function createArtsEduPolicyLayers() {
 	);
 	controls.addOverlay(artsEducationPolicyLayers[0], artsEducationPolicyTitles[0]);
 
-	for (let i = 0; i < 10; i++) {
+	for (let i = 1; i <= 10; i++) {
 		artsEducationPolicyLayers.push(
 			L.geoJson(statesPolygonsJSON, {
 				style: (feature) =>
 					useMonoColorsForArtsEduPolicyLayers
-						? getArtsEducationPolicyStyleMono(feature, i + 1)
-						: getArtsEducationPolicyStyle(feature, i + 1),
-				onEachFeature: (feature, layer) => onEachFeature(feature, layer, "AEP", i + 1), //* `i + 1` b/c of the summary layer
+						? getArtsEducationPolicyStyleMono(feature, i)
+						: getArtsEducationPolicyStyle(feature, i),
+				onEachFeature: (feature, layer) => onEachFeature(feature, layer, "AEP", i), //* `i + 1` b/c of the summary layer
 				pane: "AEPPane",
 			})
 		);
