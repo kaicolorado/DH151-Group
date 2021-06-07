@@ -5,14 +5,19 @@ function updateCurrentCorrelation() {
 	//* get current index (from list of toggleable layers in the top right of the map) of the layer that was passed to this function
 	const activeOverlayIndices = getActiveOverlayIndices();
 
-	if (activeOverlayIndices.length != 2) {
-		$("#correlation-stats").html(`<h4>Please select two layers to view correlation data.</h4>`);
+	if (activeOverlayIndices.length != 2 || activeOverlayIndices.includes(0) || activeOverlayIndices.includes(1)) {
+		$("#correlation-stats").html(/*html*/ `
+				<div>
+					<h4>Please select two layers to view correlation data.</h4>
+					<h5>(not including Custom Metric and Arts Education Policies Summary Layers)</h5>
+				</div>`);
 	} else {
-		const correlation = layersCorrelationMatrix[activeOverlayIndices[0]][activeOverlayIndices[1]];
+		//* -2 to account for Custom Metric and Summary overlays
+		const correlation = layersCorrelationMatrix[activeOverlayIndices[0] - 2][activeOverlayIndices[1] - 2];
 		if (correlation === null) {
-			$("#correlation-stats").html("<h4>N/A</h4>");
+			$("#correlation-stats").html(`<h4 style="font-size: x-large">N/A</h4>`);
 		} else {
-			$("#correlation-stats").html(`<h4>${correlation.toFixed(5)}</h4>`);
+			$("#correlation-stats").html(`<h4 style="font-size: x-large">${correlation.toFixed(5)}</h4>`);
 		}
 	}
 }
