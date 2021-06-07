@@ -10,7 +10,7 @@ function updateCurrentCorrelation() {
 			/*html*/ `<h4>Please select two policy/scores layers to view correlation data.</h4>`
 		);
 	} else {
-		//* -2 to account for Custom Metric and Summary overlays
+		//* -2 to account for Overall Score and Summary overlays
 		const correlation = layersCorrelationMatrix[activeOverlayIndices[0] - 2][activeOverlayIndices[1] - 2];
 		if (correlation === null) {
 			$("#correlation-stats").html(`<h4 style="font-size: x-large">N/A</h4>`);
@@ -27,7 +27,7 @@ function setExpandableSidebarContent() {
 	// 		<label class="switch">
 	// 			<input type="checkbox"">
 	// 			<span class="slider round"></span>
-	// 			<div class="layer-control-item-text"><p>Custom Metric</p></div>
+	// 			<div class="layer-control-item-text"><p>Overall Score</p></div>
 	// 		</label>
 	// 	</div>`);
 

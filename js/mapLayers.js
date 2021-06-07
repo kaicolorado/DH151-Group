@@ -34,7 +34,7 @@ function createCustomMetricLayer() {
 	});
 
 	customMetricLayer = L.layerGroup([customMetricNumberLayer, customMetricColorLayer]);
-	controls.addOverlay(customMetricLayer, "Custom Metric");
+	controls.addOverlay(customMetricLayer, "Overall Score");
 }
 
 function createArtsEduPolicyLayers() {
@@ -50,14 +50,14 @@ function createArtsEduPolicyLayers() {
 	);
 	controls.addOverlay(artsEducationPolicyLayers[0], artsEducationPolicyTitles[0]);
 
-	for (let i = 0; i < 10; i++) {
+	for (let i = 1; i <= 10; i++) {
 		artsEducationPolicyLayers.push(
 			L.geoJson(statesPolygonsJSON, {
 				style: (feature) =>
 					useMonoColorsForArtsEduPolicyLayers
-						? getArtsEducationPolicyStyleMono(feature, i + 1)
-						: getArtsEducationPolicyStyle(feature, i + 1),
-				onEachFeature: (feature, layer) => onEachFeature(feature, layer, "AEP", i + 1), //* `i + 1` b/c of the summary layer
+						? getArtsEducationPolicyStyleMono(feature, i)
+						: getArtsEducationPolicyStyle(feature, i),
+				onEachFeature: (feature, layer) => onEachFeature(feature, layer, "AEP", i), //* `i + 1` b/c of the summary layer
 				pane: "AEPPane",
 			})
 		);
@@ -113,8 +113,10 @@ function getMarker(stateCenter, score, min, max) {
 		icon: L.divIcon({
 			iconSize: null,
 			className: "score-overlay",
+
+			//*  if score has icon next to it i.e. if score val is a max or a min, shift it to the left so it looks centered
 			html: /*html*/ `
-						<div>
+						<div ${score === max || score === min ? `style="margin-left: -40px"` : ""}> 
 							${score === max ? bestStateIcon : score === min ? worstStateIcon : ""} ${score}
 						</div>`,
 		}),

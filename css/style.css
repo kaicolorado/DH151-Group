@@ -218,6 +218,10 @@ body {
 	margin-top: 0;
 }
 
+.formula {
+	overflow-x: auto;
+}
+
 /* *************** Expandable Sidebar */
 
 #expandable-sidebar {
@@ -337,12 +341,13 @@ body {
 	padding-bottom: 0;
 }
 
-.layer-control-item-text {
-	margin-left: 70px;
-}
-
 .layer-control-item-text p {
 	margin: 0;
+}
+
+.switch {
+	display: flex;
+	align-items: center;
 }
 
 .switch input {
@@ -356,6 +361,7 @@ body {
 	position: relative;
 	top: 50%;
 	float: left;
+	flex-shrink: 0;
 
 	transform: translateY(-50%);
 
@@ -364,6 +370,7 @@ body {
 
 	width: 60px;
 	height: 34px;
+	margin-right: 10px;
 
 	cursor: pointer;
 	background-color: #ccc;
