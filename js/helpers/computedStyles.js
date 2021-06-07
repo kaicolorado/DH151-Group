@@ -171,7 +171,7 @@ function getScoresStyle(feature, csvPathsIndex, min, max) {
 
 		return {
 			fillColor: fillColor,
-			fillOpacity: 0.4,
+			fillOpacity: 0.2,
 			color: "black",
 			weight: 0.3,
 		};

@@ -9,8 +9,8 @@ const useMonoColorsForArtsEduPolicyLayers = 1;
 const useClassyBrewColorsForScores = 0;
 const useD3Colors = 1;
 
-const bestStateIcon = "&#9733;"; //* ★
-const worstStateIcon = "&#9785;"; //* ☹
+const bestStateIcon = "&#9650;"; //* ▲
+const worstStateIcon = "&#9660;"; //* ▼
 
 /* ---------------------------- Global Variables ---------------------------- */
 
