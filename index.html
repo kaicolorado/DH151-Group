@@ -26,7 +26,7 @@
 		<script src="js/libraries/classybrew.js"></script>
 
 		<!-- apex charts -->
-		<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+		<!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
 
 		<!-- chartjs -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.0/chart.min.js"></script>
@@ -35,6 +35,20 @@
 		<script src="https://d3js.org/d3-color.v2.min.js"></script>
 		<script src="https://d3js.org/d3-interpolate.v2.min.js"></script>
 		<script src="https://d3js.org/d3-scale-chromatic.v2.min.js"></script>
+
+		<!-- mathjax -->
+		<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+		<script>
+			MathJax = {
+				tex: {
+					inlineMath: [
+						["$", "$"],
+						["\\(", "\\)"],
+					],
+				},
+			};
+		</script>
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 		<script>
 			var expanded = false;
@@ -132,6 +146,12 @@
 							AEP's implemented and the state's overall academic success. To calculate this score, the
 							standardized test scores are totaled. This total is multiplied by the number of AEP's
 							implemented over 10.
+						</p>
+						<!-- TODO: maybe put this in About page instead -->
+						<p class="formula" style="padding-bottom: 20px">
+							$\text{Overall Score} = \frac{\text{# Policies Implemented}}{\text{# Total Policies}} \times
+							\left( \text{Grade 4 Math Score} + \text{Grade 8 Math Score} + \text{Grade 4 Reading Score}
+							+ \text{Grade 8 Reading Score} \right)$
 						</p>
 					</div>
 

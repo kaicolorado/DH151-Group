@@ -15,10 +15,10 @@ function getNewLegendContent() {
 
 		const activeTitles = activeOverlayTitles.map((titleObj) => Object.keys(titleObj)[0]);
 
-		if (activeTitles.includes("Custom Metric")) {
+		if (activeTitles.includes("Overall Score")) {
 			newLegendContent += /*html*/ `
 				<div class="legend-layer-info">
-					<p>Custom Metric</p>
+					<p>Overall Score</p>
 				</div>
 				<br>`;
 		}
@@ -114,7 +114,7 @@ function createInfoPanel() {
 
 			var html = "";
 
-			html += `<h3>Custom Metric</h3>`;
+			html += `<h3>Overall Score</h3>`;
 			html += `<ul id="custom-metric-list">`;
 			html += `<li>${stateInfo.customMetric["Custom Metric"]}</li>`;
 			html += `</ul>`;
